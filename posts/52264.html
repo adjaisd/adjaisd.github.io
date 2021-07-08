@@ -465,7 +465,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2021-07-01
+                    2021-07-08
                 </div>
                 
 
@@ -474,7 +474,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    3 分
+                    5 分
                 </div>
                 
 
@@ -604,6 +604,64 @@ docker inspect 容器id # 查看容器元数据<span aria-hidden="true" class="l
 
 <hr>
 <p><font face="楷体" color="blue" size="2">2021-7-1 更新docker命令，后序附上docker的操作练习题</font></p>
+<hr>
+<h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3><pre class="line-numbers language-none"><code class="language-none">// dockerfile生成镜像
+docker build -f ./test_file -t mycentos:0.1 .   // 根据名为test_file的dockerfile构建名为mycentos:0.1的镜像，当前路径为上下文
+
+// 提交镜像
+docker commit -a="author" -m="comment" 容器id 目标镜像名
+// e. docker commit -a="adjaisd" -m="test" ec4b test_tomcat:1.0
+
+// 卷技术同步本地与容器
+docker run -it -v 主机目录，容器内目录
+// e. docker run -it -v /home/ubuntu/workspace/:/home/ centos /bin/bash
+// e. docker run -d -p 3310:3306 -v /home/mysql/conf:/etc/mysql/conf.d -v /home/mysql/data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=123456 --name mysql1 mysql:5.7
+
+// 其中-v后的格式可以有以下组成：
+// -v 容器内路径    # 路径挂载
+// -v 卷名:容器内路径 # 具名挂载
+// -v /宿主机路径:容器内路径  # 指定路径挂载
+
+//docker网络的操作，留待之后用到集群的时候学习，下面给出一些示例
+docker network create --driver bridge --subnet 192.168.0.0/16 --gateway 192.168.0.1 mynet
+docker run -d -P --name tomcat1 --net mynet tomcat
+docker exec -it 426 ping tomcat1
+docker network connect mynet tomcat1
+
+// 登录百度的镜像仓库
+docker login --username=[ username ] registry.baidubce.com
+// e. docker login --username=5c7c1fddee7344a79f8528eb782e11ee registry.baidubce.com
+
+// 提交新建的镜像
+docker tag [ImageId] registry.baidubce.com/[namespace]/[ImageName]:[镜像版本号]
+docker push registry.baidubce.com/[namespace]/[ImageName]:[镜像版本号]
+
+// 登出
+docker logout<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="实战-网站迁移到云服务器上"><a href="#实战-网站迁移到云服务器上" class="headerlink" title="实战-网站迁移到云服务器上"></a>实战-网站迁移到云服务器上</h3><p> 网站就用静态网页展示</p>
+<ol>
+<li>在云服务器新建目录并准备文件</li>
+</ol>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">mkdir /server/nginx/www
+mkdir /server/nginx/conf
+mkdir /server/nginx/logs
+git clone https://gitee.com/adjaisd/adjaisd.git // 然后输入帐号密码
+cp ./adjaisd/* /server/nginx/www/<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ol start="2">
+<li>启动nginx</li>
+</ol>
+<p> 这里通过卷同步，将本地文件同步到容器中，需要同步的文件分别为：<br>/usr/share/nginx/html<br>/etc/nginx/nginx.conf<br>/var/log/nginx nginx</p>
+<pre class="line-numbers language-none"><code class="language-none">docker run -d -p 9091:80 --name nginx01 -v /server/nginx/www/:/usr/share/nginx/html -v /server/nginx/conf/nginx.conf:/etc/nginx/nginx.conf -v /server/nginx/logs:/var/log/nginx nginx<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<ol start="3">
+<li>通过公网+端口访问网站</li>
+</ol>
+<img loading="lazy" src="https://cdn.jsdelivr.net/gh/shw2018/cdn@1.0/sakura/img/loader/orange.progress-bar-stripe-loader.svg" data-original="/posts/52264/6.png" style="display: inline-block;" width="600">
+
+<hr>
+<p><font face="楷体" size="3" color="blue">2021-7-8 更新</font></p>
 <hr>
 
                 
