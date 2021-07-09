@@ -465,7 +465,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2021-07-08
+                    2021-07-09
                 </div>
                 
 
@@ -474,7 +474,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    5 分
+                    6 分
                 </div>
                 
 
@@ -602,6 +602,17 @@ docker inspect 容器id # 查看容器元数据<span aria-hidden="true" class="l
 </ol>
 <img loading="lazy" src="https://cdn.jsdelivr.net/gh/shw2018/cdn@1.0/sakura/img/loader/orange.progress-bar-stripe-loader.svg" data-original="/posts/52264/5.png" style="display: inline-block;" width="600">
 
+<ol start="3">
+<li>docker pull下载速度慢解决措施</li>
+</ol>
+<pre class="line-numbers language-none"><code class="language-none">[root@localhost ~]# mkdir -p /etc/docker
+[root@localhost ~]# cat /etc/docker/daemon.json
+{
+ "registry-mirrors": ["https://9cpn8tt6.mirror.aliyuncs.com"]
+}
+[root@localhost ~]# systemctl daemon-reload
+[root@localhost ~]# systemctl restart docker<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <hr>
 <p><font face="楷体" color="blue" size="2">2021-7-1 更新docker命令，后序附上docker的操作练习题</font></p>
 <hr>
@@ -626,18 +637,26 @@ docker run -it -v 主机目录，容器内目录
 docker network create --driver bridge --subnet 192.168.0.0/16 --gateway 192.168.0.1 mynet
 docker run -d -P --name tomcat1 --net mynet tomcat
 docker exec -it 426 ping tomcat1
-docker network connect mynet tomcat1
+docker network connect mynet tomcat1<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-// 登录百度的镜像仓库
+<pre class="line-numbers language-none"><code class="language-none">// 登录百度的镜像仓库
 docker login --username=[ username ] registry.baidubce.com
 // e. docker login --username=5c7c1fddee7344a79f8528eb782e11ee registry.baidubce.com
 
-// 提交新建的镜像
+// 提交百度新建的镜像
 docker tag [ImageId] registry.baidubce.com/[namespace]/[ImageName]:[镜像版本号]
 docker push registry.baidubce.com/[namespace]/[ImageName]:[镜像版本号]
 
+// 登录腾讯的镜像仓库
+docker login --username=[username] ccr.ccs.tencentyun.com
+// e. docker login --username=100017399854 ccr.ccs.tencentyun.com
+
+// 提交腾讯新建的镜像
+docker tag [ImageId] ccr.ccs.tencentyun.com/[namespace]/[ImageName]:[镜像版本号]
+docker push ccr.ccs.tencentyun.com/[namespace]/[ImageName]:[镜像版本号]
+
 // 登出
-docker logout<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+docker logout<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="实战-网站迁移到云服务器上"><a href="#实战-网站迁移到云服务器上" class="headerlink" title="实战-网站迁移到云服务器上"></a>实战-网站迁移到云服务器上</h3><p> 网站就用静态网页展示</p>
 <ol>
@@ -659,6 +678,51 @@ cp ./adjaisd/* /server/nginx/www/<span aria-hidden="true" class="line-numbers-ro
 <li>通过公网+端口访问网站</li>
 </ol>
 <img loading="lazy" src="https://cdn.jsdelivr.net/gh/shw2018/cdn@1.0/sakura/img/loader/orange.progress-bar-stripe-loader.svg" data-original="/posts/52264/6.png" style="display: inline-block;" width="600">
+
+<hr>
+<h3 id="设置开机自启动"><a href="#设置开机自启动" class="headerlink" title="设置开机自启动"></a>设置开机自启动</h3><p> 可以参考<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/147648458">知乎</a></p>
+<ol>
+<li>首先创建一个文件，内容如下</li>
+</ol>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">root@adjaisd:~/workspace# cat auto_run.sh 
+docker run -d -p 9091:80 --name nginx01 -v /server/nginx/www/:/usr/share/nginx/html -v /server/nginx/conf/nginx.conf:/etc/nginx/nginx.conf -v /server/nginx/logs:/var/log/nginx nginx<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<ol start="2">
+<li>接着写一个脚本，内容如下</li>
+</ol>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">root@adjaisd:~/workspace# cat auto_run_script.service 
+[Unit]
+Description=Run a Custom Script at Startup
+After=default.target
+
+[Service]
+ExecStart=/root/workspace/auto_run.sh 
+
+[Install]
+WantedBy=default.target<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ol start="3">
+<li>然后将该文件放在/etc/systemd/system/下</li>
+</ol>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">root@adjaisd:~/workspace# cp ./auto_run_script.service /etc/systemd/system/
+root@adjaisd:~/workspace# cat /etc/systemd/system/auto_run_script.service 
+[Unit]
+Description=Run a Custom Script at Startup
+After=default.target
+
+[Service]
+ExecStart=/root/workspace/auto_run.sh 
+
+[Install]
+WantedBy=default.target<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ol start="4">
+<li>最后设置开机自动执行这个脚本</li>
+</ol>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">root@adjaisd:~/workspace# systemctl daemon-reload 
+root@adjaisd:~/workspace# systemctl enable auto_run_script.service 
+Created symlink /etc/systemd/system/default.target.wants/auto_run_script.service → /etc/systemd/system/auto_run_script.service.
+root@adjaisd:~/workspace# reboot<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
 <hr>
 <p><font face="楷体" size="3" color="blue">2021-7-8 更新</font></p>
@@ -1497,12 +1561,12 @@ $(function () {
     <script src="https://cdn.jsdelivr.net/gh/adjaisd/adjaisd.github.io/libs/instantpage/instantpage.js" type="module"></script>
     
 
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/shizuku.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"react":{"opacity":0.9}});</script><script>
+<script>
             window.imageLazyLoadSetting = {
                 isSPA: false,
                 preloadRatio: 1,
                 processImages: null,
             };
-        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script></body>
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/shizuku.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"react":{"opacity":0.9}});</script></body>
 
 </html>
