@@ -1,0 +1,222 @@
+<!DOCTYPE HTML><html lang="zh-CN"><head><meta charset="utf-8"><meta name="keywords" content="docker搭建halo博客系统, adjaisd, java, golang, 网络"><meta name="description" content="docker搭建halo博客系统 记录第二次搭建博客的经历
+搭建mysql环境# 创建 Docker 自定义桥接网络
+docker network create halo-mysql-nginx-net 
+# 拉取 MySQL 镜像
+doc"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"><meta name="renderer" content="webkit|ie-stand|ie-comp"><meta name="mobile-web-app-capable" content="yes"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="referrer" content="no-referrer-when-downgrade"><title>docker搭建halo博客系统 | adjaisd&#39;s Blog</title><link rel="icon" type="image/png" href="/favicon.png"><style>body{background-image:url(http://api.btstu.cn/sjbz/api.php?method=zsy&lx=fengjing&format=images);background-repeat:no-repeat;background-size:100% 100%;background-attachment:fixed}</style><link rel="stylesheet" href="/libs/awesome/css/all.min.css"><link rel="stylesheet" href="/libs/materialize/materialize.min.css"><link rel="stylesheet" href="/libs/aos/aos.css"><link rel="stylesheet" href="/libs/animate/animate.min.css"><link rel="stylesheet" href="/libs/lightGallery/css/lightgallery.min.css"><link rel="stylesheet" href="/css/matery.css"><link rel="stylesheet" href="/css/my.css"><link rel="stylesheet" href="/css/dark.css" media="none" onload='"all"!=media&&(media="all")'><link rel="stylesheet" href="/libs/tocbot/tocbot.css"><link rel="stylesheet" href="/css/post.css"><link rel="stylesheet" href="/css/reward.css"><script src="/libs/jquery/jquery-3.6.0.min.js"></script><meta name="generator" content="Hexo 5.4.2"><style>.github-emoji{position:relative;display:inline-block;width:1.2em;min-height:1.2em;overflow:hidden;vertical-align:top;color:transparent}.github-emoji>span{position:relative;z-index:10}.github-emoji .fancybox,.github-emoji img{margin:0!important;padding:0!important;border:none!important;outline:0!important;text-decoration:none!important;user-select:none!important;cursor:auto!important}.github-emoji img{height:1.2em!important;width:1.2em!important;position:absolute!important;left:50%!important;top:50%!important;transform:translate(-50%,-50%)!important;user-select:none!important;cursor:auto!important}.github-emoji-fallback{color:inherit}.github-emoji-fallback img{opacity:0!important}</style></head><body><header class="navbar-fixed"><nav id="headNav" class="bg-color nav-transparent"><div id="navContainer" class="nav-wrapper container"><div class="brand-logo"><a href="/" class="waves-effect waves-light"><img src="/medias/logo.png" class="logo-img" alt="LOGO"> <span class="logo-span">adjaisd&#39;s Blog</span></a></div><a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a><ul class="right nav-menu"><li class="hide-on-med-and-down nav-item"><a href="/" class="waves-effect waves-light"><i class="fas fa-home" style="zoom:.6"></i> <span>首页</span></a></li><li class="hide-on-med-and-down nav-item"><a href="/tags" class="waves-effect waves-light"><i class="fas fa-tags" style="zoom:.6"></i> <span>标签</span></a></li><li class="hide-on-med-and-down nav-item"><a href="/categories" class="waves-effect waves-light"><i class="fas fa-bookmark" style="zoom:.6"></i> <span>分类</span></a></li><li class="hide-on-med-and-down nav-item"><a href="/archives" class="waves-effect waves-light"><i class="fas fa-archive" style="zoom:.6"></i> <span>归档</span></a></li><li class="hide-on-med-and-down nav-item"><a href="/about" class="waves-effect waves-light"><i class="fas fa-user-circle" style="zoom:.6"></i> <span>关于</span></a></li><li class="hide-on-med-and-down nav-item"><a href="/friends" class="waves-effect waves-light"><i class="fas fa-address-book" style="zoom:.6"></i> <span>友情链接</span></a></li><li class="hide-on-med-and-down nav-item"><a href="/contact" class="waves-effect waves-light"><i class="fas fa-comments" style="zoom:.6"></i> <span>留言板</span></a></li><li><a href="#searchModal" class="modal-trigger waves-effect waves-light"><i id="searchIcon" class="fas fa-search" title="搜索" style="zoom:.85"></i></a></li><li><a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式"><i id="sum-moon-icon" class="fas fa-sun" style="zoom:.85"></i></a></li></ul><div id="mobile-nav" class="side-nav sidenav"><div class="mobile-head bg-color"><img src="/medias/avatar.jpg" class="logo-img circle responsive-img"><div class="logo-name">adjaisd&#39;s Blog</div><div class="logo-desc">目标是成为全栈工程师，理想成为网络安全工程师。</div></div><ul class="menu-list mobile-menu-list"><li class="m-nav-item"><a href="/" class="waves-effect waves-light"><i class="fa-fw fas fa-home"></i> 首页</a></li><li class="m-nav-item"><a href="/tags" class="waves-effect waves-light"><i class="fa-fw fas fa-tags"></i> 标签</a></li><li class="m-nav-item"><a href="/categories" class="waves-effect waves-light"><i class="fa-fw fas fa-bookmark"></i> 分类</a></li><li class="m-nav-item"><a href="/archives" class="waves-effect waves-light"><i class="fa-fw fas fa-archive"></i> 归档</a></li><li class="m-nav-item"><a href="/about" class="waves-effect waves-light"><i class="fa-fw fas fa-user-circle"></i> 关于</a></li><li class="m-nav-item"><a href="/friends" class="waves-effect waves-light"><i class="fa-fw fas fa-address-book"></i> 友情链接</a></li><li class="m-nav-item"><a href="/contact" class="waves-effect waves-light"><i class="fa-fw fas fa-comments"></i> 留言板</a></li></ul></div></div></nav></header><div class="bg-cover pd-header post-cover" style="background-image:url(/medias/featureimages/21.jpg)"><div class="container" style="right:0;left:0"><div class="row"><div class="col s12 m12 l12"><div class="brand"><h1 class="description center-align post-title">docker搭建halo博客系统</h1></div></div></div></div></div><main class="post-container content"><div class="row"><div id="main-content" class="col s12 m12 l9"><div id="artDetail"><div class="card"><div class="card-content article-info"><div class="row tag-cate"><div class="col s7"><div class="article-tag"><a href="/tags/%E5%AE%9E%E8%B7%B5/"><span class="chip bg-color">实践</span></a></div></div><div class="col s5 right-align"><div class="post-cate"><i class="fas fa-bookmark fa-fw icon-category"></i> <a href="/categories/%E5%AE%9E%E8%B7%B5/" class="post-category">实践</a></div></div></div><div class="post-info"><div class="post-date info-break-policy"><i class="far fa-calendar-minus fa-fw"></i> 发布日期:&nbsp;&nbsp; 2022-05-06</div><div class="post-date info-break-policy"><i class="far fa-calendar-check fa-fw"></i> 更新日期:&nbsp;&nbsp; 2022-05-18</div><div class="info-break-policy"><i class="far fa-file-word fa-fw"></i> 文章字数:&nbsp;&nbsp; 965</div><div class="info-break-policy"><i class="far fa-clock fa-fw"></i> 阅读时长:&nbsp;&nbsp; 4 分</div><div id="busuanzi_container_page_pv" class="info-break-policy"><i class="far fa-eye fa-fw"></i> 阅读次数:&nbsp;&nbsp;<span id="busuanzi_value_page_pv"></span></div></div></div><hr class="clearfix"><link rel="stylesheet" href="/libs/prism/prism.css"><div class="card-content article-card-content"><div id="articleContent"><h2 id="docker搭建halo博客系统"><a href="#docker搭建halo博客系统" class="headerlink" title="docker搭建halo博客系统"></a>docker搭建halo博客系统</h2><p> 记录第二次搭建博客的经历</p><h3 id="搭建mysql环境"><a href="#搭建mysql环境" class="headerlink" title="搭建mysql环境"></a>搭建mysql环境</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 创建 Docker 自定义桥接网络</span>
+<span class="token function">docker</span> network create halo-mysql-nginx-net 
+<span class="token comment"># 拉取 MySQL 镜像</span>
+<span class="token function">docker</span> pull mysql:8.0.27
+<span class="token comment"># 创建文件夹</span>
+<span class="token function">mkdir</span> <span class="token parameter variable">-p</span> ~/.halo/mysql
+
+<span class="token comment"># 启动 MySQL 实例 xxxxxxxxx为你自己设置的密码</span>
+<span class="token function">docker</span> run <span class="token parameter variable">--name</span> halo-mysql <span class="token parameter variable">-v</span> ~/.halo/mysql:/var/lib/mysql <span class="token parameter variable">-e</span> <span class="token assign-left variable">MYSQL_ROOT_PASSWORD</span><span class="token operator">=</span>xxxxxxxxx <span class="token parameter variable">--net</span> halo-mysql-nginx-net <span class="token parameter variable">--restart</span><span class="token operator">=</span>unless-stopped <span class="token parameter variable">-d</span> mysql:8.0.27
+
+<span class="token comment"># 进入 MySQL 容器中登录 MySQL 并创建 Halo 需要的数据库</span>
+<span class="token function">docker</span> <span class="token builtin class-name">exec</span> <span class="token parameter variable">-it</span> halo-mysql /bin/bash
+
+<span class="token comment"># 登录 MySQL</span>
+mysql <span class="token parameter variable">-u</span> root <span class="token parameter variable">-p</span>
+<span class="token comment"># 输入 MySQL 数据库密码</span>
+
+<span class="token comment"># 创建数据库</span>
+create database halodb character <span class="token builtin class-name">set</span> utf8mb4 collate utf8mb4_bin<span class="token punctuation">;</span>
+
+<span class="token comment"># 使用 exit 退出MySQL </span>
+<span class="token comment"># 使用 exit 退出容器 因为之前设置了--restart=unless-stopped 不用担心容器停止</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><h3 id="安装halo"><a href="#安装halo" class="headerlink" title="安装halo"></a>安装halo</h3><h4 id="配置halo"><a href="#配置halo" class="headerlink" title="配置halo"></a>配置halo</h4><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 创建 Halo 工作目录</span>
+<span class="token function">mkdir</span> <span class="token parameter variable">-p</span> ~/.halo/halo <span class="token operator">&amp;&amp;</span> <span class="token builtin class-name">cd</span> ~/.halo/halo
+
+<span class="token comment"># 下载示例配置文件到工作目录</span>
+<span class="token function">wget</span> https://dl.halo.run/config/application-template.yaml <span class="token parameter variable">-O</span> ./application.yaml
+
+<span class="token comment"># vim编辑配置文件 </span>
+<span class="token function">vim</span> application.yaml
+<span class="token comment"># 你需要做如下几个步骤：</span>
+
+<span class="token comment"># 注释 H2 database configuration.部分</span>
+<span class="token comment"># 启用 MySQL database configuration.部分</span>
+<span class="token comment"># 修改 datasource 下的 url 中的 ip 地址部分为容器名称并修改密码为您设定的 MySQL 密码</span>
+
+<span class="token comment"># 可以进入vim 后 ggdG 删除所有内容，再复制以下内容 粘贴</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p> 修改后的application.yaml文件内容如下:</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">server:
+  port: <span class="token number">8090</span>
+
+  <span class="token comment"># Response data gzip.</span>
+  compression:
+    enabled: <span class="token boolean">false</span>
+spring:
+  datasource:
+
+    <span class="token comment"># H2 database configuration.</span>
+    <span class="token comment">#driver-class-name: org.h2.Driver</span>
+    <span class="token comment">#url: jdbc:h2:file:~/.halo/db/halo</span>
+    <span class="token comment">#username: admin</span>
+    <span class="token comment">#password: 123456</span>
+
+    <span class="token comment"># MySQL database configuration.</span>
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://halo-mysql:3306/halodb?characterEncoding<span class="token operator">=</span>utf8<span class="token operator">&amp;</span><span class="token assign-left variable">useSSL</span><span class="token operator">=</span>false<span class="token operator">&amp;</span><span class="token assign-left variable">serverTimezone</span><span class="token operator">=</span>Asia/Shanghai<span class="token operator">&amp;</span><span class="token assign-left variable">allowPublicKeyRetrieval</span><span class="token operator">=</span>true
+    username: root
+    password: xxxxxxxx
+
+  <span class="token comment"># H2 database console configuration.</span>
+    h2:
+    console:
+      settings:
+        web-allow-others: <span class="token boolean">false</span>
+      path: /h2-console
+      enabled: <span class="token boolean">false</span>
+
+halo:
+
+  <span class="token comment"># Your admin client path is https://your-domain/{admin-path}</span>
+  admin-path: admin
+
+  <span class="token comment"># memory or level</span>
+  cache: memory<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><h4 id="启用halo"><a href="#启用halo" class="headerlink" title="启用halo"></a>启用halo</h4><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">docker</span> run <span class="token parameter variable">-it</span> <span class="token parameter variable">-d</span> <span class="token parameter variable">--name</span> halo <span class="token parameter variable">-p</span> <span class="token number">8090</span>:8090 <span class="token parameter variable">-v</span> ~/.halo/halo:/root/.halo <span class="token parameter variable">--net</span> halo-mysql-nginx-net <span class="token parameter variable">--restart</span><span class="token operator">=</span>unless-stopped halohub/halo:1.5.2<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><h4 id="启用nginx"><a href="#启用nginx" class="headerlink" title="启用nginx"></a>启用nginx</h4><p> 获取nginx配置</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 先运行一个nginx容器test</span>
+<span class="token function">docker</span> run <span class="token parameter variable">--name</span> <span class="token builtin class-name">test</span> <span class="token parameter variable">-p</span> <span class="token number">81</span>:80 <span class="token parameter variable">-d</span> nginx
+
+<span class="token comment"># 建立服务器本地的文件夹</span>
+<span class="token function">mkdir</span> <span class="token parameter variable">-p</span> ~/.halo/nginx/data/nginx/conf ~/.halo/nginx/data/nginx/conf.d ~/.halo/nginx/data/nginx
+
+<span class="token comment"># 从test容器拷贝文件到本地方便之后挂载</span>
+<span class="token function">docker</span> <span class="token function">cp</span> test:/etc/nginx/nginx.conf ~/.halo/nginx/data/nginx/conf <span class="token operator">&amp;&amp;</span> <span class="token function">docker</span> <span class="token function">cp</span> test:/etc/nginx/conf.d/default.conf ~/.halo/nginx/data/nginx/conf.d <span class="token operator">&amp;&amp;</span> <span class="token function">docker</span> <span class="token function">cp</span> test:/usr/share/nginx/html ~/.halo/nginx/data/nginx
+
+<span class="token comment"># 删除这个测试容器</span>
+<span class="token function">docker</span> <span class="token function">rm</span> <span class="token builtin class-name">test</span> <span class="token parameter variable">-f</span>
+
+<span class="token comment"># 再安装需要的nginx容器</span>
+<span class="token function">docker</span> run <span class="token punctuation">\</span>
+<span class="token parameter variable">--name</span> halo-nginx <span class="token punctuation">\</span>
+<span class="token parameter variable">-p</span> <span class="token number">80</span>:80 <span class="token punctuation">\</span>
+<span class="token parameter variable">-p</span> <span class="token number">443</span>:443 <span class="token punctuation">\</span>
+<span class="token parameter variable">-v</span> ~/.halo/nginx/data/nginx/conf/nginx.conf:/etc/nginx/nginx.conf <span class="token punctuation">\</span>
+<span class="token parameter variable">-v</span> ~/.halo/nginx/data/nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf <span class="token punctuation">\</span>
+<span class="token parameter variable">-v</span> ~/.halo/nginx/data/nginx/html:/usr/share/nginx/html <span class="token punctuation">\</span>
+<span class="token parameter variable">-v</span> ~/.halo/nginx/data/nginx/log:/var/log/nginx <span class="token punctuation">\</span>
+<span class="token parameter variable">-v</span> ~/.halo/nginx/data/nginx/certs:/etc/nginx/certs <span class="token punctuation">\</span>
+<span class="token parameter variable">--network</span> halo-mysql-nginx-net <span class="token punctuation">\</span>
+<span class="token parameter variable">--restart</span><span class="token operator">=</span>unless-stopped <span class="token punctuation">\</span>
+<span class="token parameter variable">-d</span> <span class="token punctuation">\</span>
+nginx<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p> 自定义nginx配置</p><p> 下面用购买的域名绑定服务器，并配置只用https访问</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">server <span class="token punctuation">{</span>
+        listen <span class="token number">80</span> default_server<span class="token punctuation">;</span>
+        listen <span class="token punctuation">[</span>::<span class="token punctuation">]</span>:80 default_server<span class="token punctuation">;</span>
+        server_name _<span class="token punctuation">;</span>
+        <span class="token builtin class-name">return</span> <span class="token number">404</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+server <span class="token punctuation">{</span>
+    listen      <span class="token number">80</span><span class="token punctuation">;</span>
+    server_name adja.com.cn www.adja.com.cn<span class="token punctuation">;</span>
+    <span class="token builtin class-name">return</span> <span class="token number">301</span>  https://<span class="token variable">$host</span><span class="token variable">$request_uri</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+server <span class="token punctuation">{</span>
+    listen <span class="token number">443</span> ssl default_server<span class="token punctuation">;</span>
+    listen <span class="token punctuation">[</span>::<span class="token punctuation">]</span>:443 ssl default_server<span class="token punctuation">;</span>
+    ssl_certificate     /etc/nginx/certs/adja.com.cn_bundle.crt<span class="token punctuation">;</span>
+    ssl_certificate_key /etc/nginx/certs/adja.com.cn.key<span class="token punctuation">;</span>
+    server_name _<span class="token punctuation">;</span>
+    <span class="token builtin class-name">return</span> <span class="token number">404</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+server <span class="token punctuation">{</span>
+    listen       <span class="token number">443</span> ssl<span class="token punctuation">;</span>
+    server_name  adja.com.cn<span class="token punctuation">;</span>
+
+    ssl_certificate     /etc/nginx/certs/adja.com.cn_bundle.crt<span class="token punctuation">;</span>
+    ssl_certificate_key /etc/nginx/certs/adja.com.cn.key<span class="token punctuation">;</span>
+
+    ssl_session_timeout 5m<span class="token punctuation">;</span>
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2<span class="token punctuation">;</span>
+    ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:HIGH:<span class="token operator">!</span>aNULL:<span class="token operator">!</span>MD5:<span class="token operator">!</span>RC4:<span class="token operator">!</span>DHE<span class="token punctuation">;</span>
+    ssl_prefer_server_ciphers on<span class="token punctuation">;</span>
+
+    client_max_body_size 1024m<span class="token punctuation">;</span>
+    location / <span class="token punctuation">{</span>
+      gzip_static on<span class="token punctuation">;</span> <span class="token comment"># 静态压缩</span>
+      add_header Cache-Control public,max-age<span class="token operator">=</span><span class="token number">60</span>,s-maxage<span class="token operator">=</span><span class="token number">60</span><span class="token punctuation">;</span> <span class="token comment"># 配置缓存</span>
+      proxy_pass http://halo:8090<span class="token punctuation">;</span>
+      proxy_set_header HOST <span class="token variable">$host</span><span class="token punctuation">;</span>
+      proxy_set_header X-Forwarded-Proto <span class="token variable">$scheme</span><span class="token punctuation">;</span>
+      proxy_set_header X-Real-IP <span class="token variable">$remote_addr</span><span class="token punctuation">;</span>
+      proxy_set_header X-Forwarded-For
+      <span class="token variable">$proxy_add_x_forwarded_for</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    location /upload/ <span class="token punctuation">{</span>
+      access_log off<span class="token punctuation">;</span>
+      <span class="token comment"># 域名白名单，去掉则阻止所有非本站请求</span>
+      valid_referers none blocked adja.com.cn www.adja.com.cn *.bbchin.com <span class="token number">127.0</span>.0.1 localhost ~<span class="token punctuation">\</span>.google<span class="token punctuation">\</span>. ~<span class="token punctuation">\</span>.baidu<span class="token punctuation">\</span>. ~<span class="token punctuation">\</span>.qq<span class="token punctuation">\</span>.<span class="token punctuation">;</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token variable">$invalid_referer</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        rewrite ^/ https://cdn.jsdelivr.net/gh/qinhua/cdn_assets/img/robber.jpg<span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+     proxy_pass http://127.0.0.1:8090<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p> 注意开放服务器的安全组中对应入端口和出端口</p><pre class="line-numbers language-none"><code class="language-none"># 访问博客界面
+http://${IP}:${HOST}:8090/
+http://${域名}/
+https://${域名}/
+
+# 后台界面
+http://${IP}:${HOST}:8090/admin
+http://${域名}/admin
+https://${域名}/admin<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><hr><p><font face="楷体" size="4" color="blue">最后感谢阅读^-^…</font></p></div><hr><div class="tag_share" style="display:block"><div class="post-meta__tag-list" style="display:inline-block"><div class="article-tag"><a href="/tags/%E5%AE%9E%E8%B7%B5/"><span class="chip bg-color">实践</span></a></div></div><div class="post_share" style="zoom:80%;width:fit-content;display:inline-block;float:right;margin:-.15rem 0"><link rel="stylesheet" href="/libs/share/css/share.min.css"><div id="article-share"><div class="social-share" data-sites="qq,qzone,wechat" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div><script src="/libs/share/js/social-share.min.js"></script></div></div></div><div id="reward"><a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a><div id="rewardModal" class="modal"><div class="modal-content"><a class="close modal-close"><i class="fas fa-times"></i></a><h4 class="reward-title">你的赏识是我前进的动力</h4><div class="reward-content"><div class="reward-tabs"><ul class="tabs row"><li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li><li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li></ul><div id="alipay"><img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码"></div><div id="wechat"><img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码"></div></div></div></div></div></div><script>$(function(){$(".tabs").tabs()})</script></div></div><style>.waline-card{margin:1.5rem auto}.waline-card .card-content{padding:20px 20px 5px 20px}#waline p{margin:2px 2px 10px;font-size:1.05rem;line-height:1.78rem}#waline blockquote p{text-indent:.2rem}#waline a{padding:0 2px;color:#4cbf30;font-weight:500;text-decoration:none}#waline img{max-width:100%;cursor:pointer}#waline ol li{list-style-type:decimal}#waline ol,ul{display:block;padding-left:2em;word-spacing:.05rem}#waline ul li,ol li{display:list-item;line-height:1.8rem;font-size:1rem}#waline ul li{list-style-type:disc}#waline ul ul li{list-style-type:circle}#waline table,td,th{padding:12px 13px;border:1px solid #dfe2e5}#waline table,td,th{border:0}table tr:nth-child(2n),thead{background-color:#fafafa}#waline table th{background-color:#f2f2f2;min-width:80px}#waline table td{min-width:80px}#waline h1{font-size:1.85rem;font-weight:700;line-height:2.2rem}#waline h2{font-size:1.65rem;font-weight:700;line-height:1.9rem}#waline h3{font-size:1.45rem;font-weight:700;line-height:1.7rem}#waline h4{font-size:1.25rem;font-weight:700;line-height:1.5rem}#waline h5{font-size:1.1rem;font-weight:700;line-height:1.4rem}#waline h6{font-size:1rem;line-height:1.3rem}#waline p{font-size:1rem;line-height:1.5rem}#waline hr{margin:12px 0;border:0;border-top:1px solid #ccc}#waline blockquote{margin:15px 0;border-left:5px solid #42b983;padding:1rem .8rem .3rem .8rem;color:#666;background-color:rgba(66,185,131,.1)}#waline pre{font-family:monospace,monospace;padding:1.2em;margin:.5em 0;background:#272822;overflow:auto;border-radius:.3em;tab-size:4}#waline code{font-family:monospace,monospace;padding:1px 3px;font-size:.92rem;color:#e96900;background-color:#f8f8f8;border-radius:2px}#waline pre code{font-family:monospace,monospace;padding:0;color:#e8eaf6;background-color:#272822}#waline pre[class*=language-]{padding:1.2em;margin:.5em 0}#waline code[class*=language-],pre[class*=language-]{color:#e8eaf6}#waline [type=checkbox]:not(:checked),[type=checkbox]:checked{position:inherit;margin-left:-1.3rem;margin-right:.4rem;margin-top:-1px;vertical-align:middle;left:unset;visibility:visible}#waline b,strong{font-weight:700}#waline dfn{font-style:italic}#waline small{font-size:85%}#waline cite{font-style:normal}#waline mark{background-color:#fcf8e3;padding:.2em}#waline table,td,th{padding:12px 13px;border:1px solid #dfe2e5}table tr:nth-child(2n),thead{background-color:#fafafa}#waline table th{background-color:#f2f2f2;min-width:80px}#waline table td{min-width:80px}#waline [type=checkbox]:not(:checked),[type=checkbox]:checked{position:inherit;margin-left:-1.3rem;margin-right:.4rem;margin-top:-1px;vertical-align:middle;left:unset;visibility:visible}</style><div class="card waline-card" data-aos="fade-up"><div class="comment_headling" style="font-size:20px;font-weight:700;position:relative;padding-left:20px;top:15px;padding-bottom:5px"><i class="fas fa-comments fa-fw" aria-hidden="true"></i> <span>评论</span></div><div id="waline" class="card-content" style="display:grid"></div></div><script src="/libs/waline/Waline.min.js"></script><script>new Waline({el:"#waline",serverURL:"https://hexo-waline-h3fqxfz0o-adjaisd.vercel.app",avatar:"mm"})</script><article id="prenext-posts" class="prev-next articles"><div class="row article-row"><div class="article col s12 m6" data-aos="fade-up"><div class="article-badge left-badge text-color"><i class="fas fa-chevron-left"></i> &nbsp;上一篇</div><div class="card"><a href="/2022/05/docker-da-jian-softethervpn.html"><div class="card-image"><img src="/medias/featureimages/13.jpg" class="responsive-img" alt="docker搭建SoftEtherVPN"> <span class="card-title">docker搭建SoftEtherVPN</span></div></a><div class="card-content article-content"><div class="summary block-with-text"></div><div class="publish-info"><span class="publish-date"><i class="far fa-clock fa-fw icon-date"></i> 2022-05-07</span><span class="publish-author"><i class="fas fa-bookmark fa-fw icon-category"></i> <a href="/categories/%E5%AE%9E%E8%B7%B5/" class="post-category">实践</a></span></div></div><div class="card-action article-tags"><a href="/tags/%E7%BD%91%E7%BB%9C/"><span class="chip bg-color">网络</span></a></div></div></div><div class="article col s12 m6" data-aos="fade-up"><div class="article-badge right-badge text-color">下一篇&nbsp;<i class="fas fa-chevron-right"></i></div><div class="card"><a href="/2021/06/docker-xue-xi-bi-ji.html"><div class="card-image"><img src="/medias/featureimages/14.jpg" class="responsive-img" alt="Docker学习笔记"> <span class="card-title">Docker学习笔记</span></div></a><div class="card-content article-content"><div class="summary block-with-text"></div><div class="publish-info"><span class="publish-date"><i class="far fa-clock fa-fw icon-date"></i> 2021-06-29</span><span class="publish-author"><i class="fas fa-bookmark fa-fw icon-category"></i> <a href="/categories/%E5%B7%A5%E5%85%B7/" class="post-category">工具</a></span></div></div><div class="card-action article-tags"><a href="/tags/%E5%B7%A5%E5%85%B7/"><span class="chip bg-color">工具</span></a></div></div></div></div></article></div><script>$("#articleContent").on("copy",function(e){if(void 0!==window.getSelection){var n=window.getSelection();if(!((""+n).length<Number.parseInt("120"))){var t=document.getElementsByTagName("body")[0],o=document.createElement("div");o.style.position="absolute",o.style.left="-99999px",t.appendChild(o),o.appendChild(n.getRangeAt(0).cloneContents()),"PRE"!==n.getRangeAt(0).commonAncestorContainer.nodeName&&"CODE"!==n.getRangeAt(0).commonAncestorContainer.nodeName||(o.innerHTML="<pre>"+o.innerHTML+"</pre>");var i=document.location.href;o.innerHTML+='<br />来源: adjaisd&#39;s Blog<br />文章作者: adjaisd<br />文章链接: <a href="'+i+'">'+i+"</a><br />本文章著作权归作者所有，任何形式的转载都请注明出处。",n.selectAllChildren(o),window.setTimeout(function(){t.removeChild(o)},200)}}})</script><script src="/libs/codeBlock/codeBlockFuction.js"></script><script src="/libs/prism/prism.js"></script><script src="/libs/codeBlock/codeShrink.js"></script></div><div id="toc-aside" class="expanded col l3 hide-on-med-and-down"><div class="toc-widget card" style="background-color:#fff"><div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div><div id="toc-content"></div></div></div></div><div id="floating-toc-btn" class="hide-on-med-and-down"><a class="btn-floating btn-large bg-color"><i class="fas fa-list-ul"></i></a></div><script src="/libs/tocbot/tocbot.min.js"></script><script>$(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });</script></main><footer class="page-footer bg-color"><link rel="stylesheet" href="/libs/aplayer/APlayer.min.css"><style>.aplayer .aplayer-lrc p{display:none;font-size:12px;font-weight:700;line-height:16px!important}.aplayer .aplayer-lrc p.aplayer-lrc-current{display:none;font-size:15px;color:#542674}.aplayer.aplayer-fixed.aplayer-narrow .aplayer-body{left:-66px!important}.aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover{left:0!important}</style><div><div class="row"><meting-js class="col l8 offset-l2 m10 offset-m1 s12" server="netease" type="playlist" id="7420433965" fixed="true" autoplay theme="#542674" loop order="random" preload="auto" volume="0.1" list-folded="true"></meting-js></div></div><script src="/libs/aplayer/APlayer.min.js"></script><script src="/libs/aplayer/Meting.min.js"></script><div class="container row center-align" style="margin-bottom:15px!important"><div class="col s12 m8 l8 copy-right">Copyright&nbsp;&copy; <span id="year">2021-2023</span> <a href="/about" target="_blank">adjaisd</a> |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a> |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a><br>&nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span class="white-color">68.6k</span> <span id="busuanzi_container_site_pv">&nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv" class="white-color"></span></span> <span id="busuanzi_container_site_uv">&nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;<span id="busuanzi_value_site_uv" class="white-color"></span></span><br><span id="sitetime">Loading ...</span><script>var calcSiteTime=function(){var e=new Date,t="2021",n=e.getFullYear(),i=e.getMonth()+1,a=e.getDate(),r=e.getHours(),s=e.getMinutes(),o=e.getSeconds(),g=Date.UTC(t,"4","5","0","0","0"),d=Date.UTC(n,i,a,r,s,o)-g,m=Math.floor(d/31536e6),l=Math.floor(d/864e5-365*m);if(t===String(n)){document.getElementById("year").innerHTML=n;var c="This site has been running for "+l+" days";c="本站已运行 "+l+" 天",document.getElementById("sitetime").innerHTML=c}else{document.getElementById("year").innerHTML=t+" - "+n;var u="This site has been running for "+m+" years and "+l+" days";u="本站已运行 "+m+" 年 "+l+" 天",document.getElementById("sitetime").innerHTML=u}};calcSiteTime()</script><br></div><div class="col s12 m4 l4 social-link social-statis"><a href="https://github.com/adjaisd" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50"><i class="fab fa-github"></i></a><a href="mailto:2390248029@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50"><i class="fas fa-envelope-open"></i></a><a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=2390248029" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 2390248029" data-position="top" data-delay="50"><i class="fab fa-qq"></i></a><a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50"><i class="fas fa-rss"></i></a></div></div></footer><div class="progress-bar"></div><div id="searchModal" class="modal"><div class="modal-content"><div class="search-header"><span class="title"><i class="fas fa-search"></i> &nbsp;&nbsp;搜索</span> <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字" class="search-input"></div><div id="searchResult"></div></div></div><script>$(function(){!function(t,a,s){"use strict";$.ajax({url:t,dataType:"xml",success:function(t){var e=$("entry",t).map(function(){return{title:$("title",this).text(),content:$("content",this).text(),url:$("url",this).text()}}).get(),r=document.getElementById(a),n=document.getElementById(s);r.addEventListener("input",function(){var f='<ul class="search-result-list">',m=this.value.trim().toLowerCase().split(/[\s\-]+/);n.innerHTML="",this.value.trim().length<=0||(e.forEach(function(t){var r=!0,n=t.title.trim().toLowerCase(),a=t.content.trim().replace(/<[^>]+>/g,"").toLowerCase(),e=t.url;e=0===e.indexOf("/")?t.url:"/"+e;var s=-1,i=-1,l=-1;if(""!==n&&""!==a&&m.forEach(function(t,e){s=n.indexOf(t),i=a.indexOf(t),s<0&&i<0?r=!1:(i<0&&(i=0),0===e&&(l=i))}),r){f+="<li><a href='"+e+"' class='search-result-title'>"+n+"</a>";var c=t.content.trim().replace(/<[^>]+>/g,"");if(0<=l){var u=l-20,o=l+80;u<0&&(u=0),0===u&&(o=100),o>c.length&&(o=c.length);var h=c.substr(u,o);m.forEach(function(t){var e=new RegExp(t,"gi");h=h.replace(e,'<em class="search-keyword">'+t+"</em>")}),f+='<p class="search-result">'+h+"...</p>"}f+="</li>"}}),f+="</ul>",n.innerHTML=f)})}})}("/search.xml","searchInput","searchResult")})</script><div class="stars-con"><div id="stars"></div><div id="stars2"></div><div id="stars3"></div></div><div class="sun-moon-box"><a class="btn-floating btn-large waves-effect waves-light" onclick="switchNightMode()" title="切换主题"><i id="sun-moon-icon" class="fas fa-sun" style="width:48px;height:48px;font-size:28px"></i></a></div><script>function switchNightMode(){$('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($("body")),setTimeout(function(){$("body").hasClass("DarkMode")?($("body").removeClass("DarkMode"),localStorage.setItem("isDark","0"),$("#sun-moon-icon").removeClass("fa-sun").addClass("fa-moon"),$("#sun-moon-icon").removeClass("fa-sun").addClass("fa-moon")):($("body").addClass("DarkMode"),localStorage.setItem("isDark","1"),$("#sun-moon-icon").addClass("fa-sun").removeClass("fa-moon"),$("#sun-moon-icon").addClass("fa-sun").removeClass("fa-moon")),setTimeout(function(){$(".Cuteen_DarkSky").fadeOut(1e3,function(){$(this).remove()})},2e3)})}</script><div id="backTop" class="top-scroll"><a class="btn-floating btn-large waves-effect waves-light" href="#!"><i class="fas fa-arrow-up"></i></a></div><script src="/libs/materialize/materialize.min.js"></script><script src="/libs/masonry/masonry.pkgd.min.js"></script><script src="/libs/aos/aos.js"></script><script src="/libs/scrollprogress/scrollProgress.min.js"></script><script src="/libs/lightGallery/js/lightgallery-all.min.js"></script><script src="/js/matery.js"></script><script>var st,OriginTitile=document.title;document.addEventListener("visibilitychange",function(){document.hidden?(document.title="ヽ(●-`Д´-)ノ你要玩捉迷藏嘛",clearTimeout(st)):(document.title="(Ő∀Ő3)ノ好哦！",st=setTimeout(function(){document.title=OriginTitile},3e3))})</script><script>var windowWidth=$(window).width();768<windowWidth&&document.write('<script type="text/javascript" src="/libs/others/snow.js"><\/script>')</script><script>var windowWidth=$(window).width();768<windowWidth&&document.write('<script type="text/javascript" src="/libs/others/star.js"><\/script>')</script><script src="https://ssl.captcha.qq.com/TCaptcha.js"></script><script src="/libs/others/TencentCaptcha.js"></script><button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button><script>!function(){var t=document.createElement("script"),e=window.location.protocol.split(":")[0];t.src="https"===e?"https://zz.bdstatic.com/linksubmit/push.js":"http://push.zhanzhang.baidu.com/push.js";var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(t,s)}()</script><script async src="/libs/others/busuanzi.pure.mini.js"></script><script src="/libs/background/ribbon-dynamic.js" async></script><script src="/libs/instantpage/instantpage.js" type="module"></script><style>[bg-lazy]{background-image:none!important;background-color:#eee!important}</style><script>window.imageLazyLoadSetting={isSPA:!1,preloadRatio:1,processImages:null}</script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})})</script><script>!function(r){r.imageLazyLoadSetting.processImages=t;var e=r.imageLazyLoadSetting.isSPA,n=r.imageLazyLoadSetting.preloadRatio||1,c=a();function a(){var t=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")),e=Array.prototype.slice.call(document.querySelectorAll("[bg-lazy]"));return t.concat(e)}function t(){e&&(c=a());for(var t,o=0;o<c.length;o++)0<=(t=(t=c[o]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(r.innerHeight*n||document.documentElement.clientHeight*n)&&function(){var t,e,n,a,i=c[o];e=function(){c=c.filter(function(t){return i!==t}),r.imageLazyLoadSetting.onImageLoaded&&r.imageLazyLoadSetting.onImageLoaded(i)},(t=i).hasAttribute("bg-lazy")?(t.removeAttribute("bg-lazy"),e()):(n=new Image,a=t.getAttribute("data-original"),n.onload=function(){t.src=a,t.removeAttribute("data-original"),e()},t.src!==a&&(n.src=a))}()}function i(){clearTimeout(t.tId),t.tId=setTimeout(t,500)}t(),document.addEventListener("scroll",i),r.addEventListener("resize",i),r.addEventListener("orientationchange",i)}(this)</script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({pluginRootPath:"live2dw/",pluginJsPath:"lib/",pluginModelPath:"assets/",tagMode:!1,log:!1,model:{jsonPath:"/live2dw/assets/shizuku.model.json"},display:{position:"right",width:90,height:180},mobile:{show:!1},react:{opacity:.9}})</script></body></html>
