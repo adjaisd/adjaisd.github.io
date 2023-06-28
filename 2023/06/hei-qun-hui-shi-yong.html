@@ -1,0 +1,1671 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="黑群晖使用, adjaisd, java, golang, 网络">
+    <meta name="description" content="黑群晖使用 刚毕业想到去年在淘宝买的蜗牛星际NAS存储，直到有较充裕的时间开始折腾下;
+ 说明下我的NAS为四盘位的蜗牛星际，待安装的系统为7.1.0-42661，可参考http://k.8x6x.com/thread-72641-1-1.">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>黑群晖使用 | adjaisd&#39;s Blog</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+    <style>
+        body{
+            background-image: url(http://api.btstu.cn/sjbz/api.php?method=zsy&lx=fengjing&format=images);
+            background-repeat:no-repeat;
+            background-size: 100% 100%;
+            background-attachment:fixed;
+        }
+    </style>
+
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 5.4.2">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">adjaisd&#39;s Blog</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/avatar.jpg" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">adjaisd&#39;s Blog</div>
+        <div class="logo-desc">
+            
+            目标是成为全栈工程师，理想成为网络安全工程师。
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			留言板
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/12.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">黑群晖使用</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/%E5%AE%9E%E8%B7%B5/">
+                                <span class="chip bg-color">实践</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E5%AE%9E%E8%B7%B5/" class="post-category">
+                                实践
+                            </a>
+                        
+                            <a href="/categories/%E5%AE%9E%E8%B7%B5/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="post-category">
+                                操作系统
+                            </a>
+                        
+                            <a href="/categories/%E5%AE%9E%E8%B7%B5/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E7%BD%91%E7%BB%9C/" class="post-category">
+                                网络
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2023-06-28
+                </div>
+                
+
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
+                    2023-06-28
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    3.1k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    13 分
+                </div>
+                
+
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h2 id="黑群晖使用"><a href="#黑群晖使用" class="headerlink" title="黑群晖使用"></a>黑群晖使用</h2><p> 刚毕业想到去年在淘宝买的<code>蜗牛星际NAS存储</code>，直到有较充裕的时间开始折腾下;</p>
+<p> 说明下我的NAS为四盘位的蜗牛星际，待安装的系统为7.1.0-42661，可参考<a target="_blank" rel="noopener" href="http://k.8x6x.com/thread-72641-1-1.html%EF%BC%8C%E7%94%B1%E4%BA%8E%E8%AF%A5%E6%95%99%E7%A8%8B%E8%BF%87%E4%BA%8E%E7%AE%80%E9%99%8B%EF%BC%8C%E6%89%80%E4%BB%A5%E4%B8%8B%E9%9D%A2%E4%BB%8B%E7%BB%8D%E6%88%91%E7%9A%84%E5%AE%89%E8%A3%85%E8%BF%87%E7%A8%8B%EF%BC%8C%E9%A1%BA%E4%BE%BF%E8%A1%A5%E5%85%85%E7%B3%BB%E7%BB%9F%E4%BD%BF%E7%94%A8%E4%B8%8A%E7%9A%84%E9%97%AE%E9%A2%98">http://k.8x6x.com/thread-72641-1-1.html，由于该教程过于简陋，所以下面介绍我的安装过程，顺便补充系统使用上的问题</a>.</p>
+<h3 id="制作U盘引导"><a href="#制作U盘引导" class="headerlink" title="制作U盘引导"></a>制作U盘引导</h3><p> 引导一定要根据系统型号与版本进行选择，一般卖家做好U盘引导，并提供了特定pat文件;后续如果升级系统，可参考该引导配置制作新的U盘引导，最好用新的U盘制作U引导，下面介绍U盘引导的制作.</p>
+<ol>
+<li>准备工作</li>
+</ol>
+<p> 首先需要下载必要工具，链接：<a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1o8v7xdCPXgh3zIocm-iPcA">https://pan.baidu.com/s/1o8v7xdCPXgh3zIocm-iPcA</a><br> 提取码：adja </p>
+<p> 先烧录7.1的镜像，再修改U盘的grub.cfg文件，待修改参数包括pid、vid、sn、mac1、mac2、netif_num、DiskIdxMap、SataPortMap和SasIdxMap;</p>
+<ol start="2">
+<li>获取pid、vid</li>
+</ol>
+<p> pid和vid参数可在插入U盘后，通过<code>ChipEasyv1.6(pid vid读取工具）.exe</code>获取;</p>
+<ol start="3">
+<li>获取sn、mac、netif_num</li>
+</ol>
+<p> sn和mac(指mac1、mac2)可保持不变，也可以采用去某宝买全洗白的sn码;</p>
+<p> netif_num表示网卡数量，有1个网卡则值为1，值为网卡数;</p>
+<ol start="4">
+<li>获取DiskIdxMap、SataPortMap和SasIdxMap</li>
+</ol>
+<p> DiskIdxMap、SataPortMap和SasIdxMap可参考<a target="_blank" rel="noopener" href="https://www.openos.org/threads/diskidxmap-sataportmap-sasidxmap.3675/">该文章</a>，具体取值可问卖家客服或者通过tinycore工具(镜像为网盘的<code>tinycore-redpill.v0.9.4.9.img</code>文件，需烧录到U盘插入NAS)，tinycore工具使用可参考<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_35379989/article/details/129287254">该文章</a>，由于没有显示屏只有物理机无法看到NAS重启的引导界面，所以DiskIdxMap等直接采用卖家提供引导U盘的参数;</p>
+<p> SataPortMap: 描述各控制器的接口数，比如<code>SataPortMap=22</code>，表示第1个控制器有2个接口、第2个控制有2个接口，<code>SataPortMap=345</code>，表示第1个控制器有3个接口、第2个控制有4个接口、第3个控制有5个接口;</p>
+<p> DiskIdxMap: 描述磁盘的顺序，用2位16进制数表示1个控制器，比如<code>SataPortMap=22 DiskIdxMap=0002</code>，表示第1个控制器从第0号(00)磁盘开始，第2个控制器从第2号(02)磁盘开始，又比如<code>SataPortMap=345 DiskIdxMap=070c00</code>，表示第1个控制器从第7号(07)磁盘开始，第2个控制器从第12号(0c)磁盘开始，第3个控制器从第0号磁盘(00)开始，假设各控制器头顺序为<code>BCA</code>，如果<code>DiskIdxMap</code>取值为<code>00070c</code>，则顺序为<code>ABC</code>;</p>
+<p> SasIdxMap: 不清楚具体功能，文章说按照正确的顺序，默认加上;</p>
+<ol start="5">
+<li>烧录镜像与修改grub.cfg</li>
+</ol>
+<p> <code>Diskgenius（改pid vid sn mac删除硬盘）.exe</code>用于修改img镜像文件，但不建议修改，由于只要修改grub.cfg文件，可先烧录img镜像到U盘，然后在U盘中修改;</p>
+<p> 上面提到的烧录工具为<code>Win32DiskImager(写盘工具）.exe</code>，选择镜像和盘符，然后点击写入直到进度条满.</p>
+<p> 最后给出我的grub.cfg文件:</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">#
+# ### !!! WARNING - READ ME !!! ###
+#
+# DO NOT edit this file. This file has been generated automatically by the loader generator.
+# If you were asked to use a pre-made image and asked by someone to edit this file DO NOT do it. The only
+# supported method of obtaining the loader image is generating it using the loader generator provided.
+#
+
+terminal_output console
+if serial --unit=0 --speed=115200; then
+    terminal_input --append serial_com0
+    terminal_output --append serial_com0
+fi
+
+set default="0"
+set timeout="5"
+set timeout_style="menu"
+
+if [ -s $prefix/grubenv ]; then
+    load_env --file $prefix/grubenv --skip-sig
+    set has_env="1"
+    if [ -n "${saved_entry}" ]; then
+        set default="${saved_entry}"
+    fi
+else
+    set has_env="0"
+    echo "WARN: failed to load env. Default choice will NOT be saved!"
+fi
+
+function savedefault {
+    saved_entry="${chosen}"
+    save_env --file $prefix/grubenv saved_entry
+}
+
+insmod usb_keyboard
+insmod part_msdos
+insmod ext2
+insmod fat
+insmod linux
+insmod gzio
+
+set gfxmode=auto
+insmod vbe
+insmod vga
+
+# UEFI
+insmod efi_gop
+insmod efi_uga
+
+insmod font
+if loadfont ${prefix}/unicode.pf2
+then
+    insmod gfxterm
+    set gfxmode=auto
+    set gfxpayload=keep
+    terminal_output gfxterm
+fi
+
+menuentry 'RedPill DS918+ v7.1.0-42661 (USB, Verbose)' {
+    savedefault
+    set root=(hd0,msdos1)
+    echo Loading Linux...
+    linux /zImage HddHotplug=0 withefi console=ttyS0,115200n8 netif_num=2 syno_hdd_detect=0 syno_port_thaw=1 vender_format_version=2 sn=xxx mac1=xxx mac2=xxx earlyprintk syno_hdd_powerup_seq=1 pid=0x5678 log_buf_len=32M syno_hw_version=DS918+ vid=0xffff earlycon=uart8250,io,0x3f8,115200n8 elevator=elevator root=/dev/md0 loglevel=15 DiskIdxMap=0002 SataPortMap=22 SasIdxMap=0
+    echo Loading initramfs...
+    initrd /rd.gz /custom.gz
+    echo Starting kernel with USB boot
+}
+
+menuentry 'RedPill DS918+ v7.1.0-42661 (SATA, Verbose)' {
+    savedefault
+    set root=(hd0,msdos1)
+    echo Loading Linux...
+    linux /zImage HddHotplug=0 withefi console=ttyS0,115200n8 synoboot_satadom=2 DiskIdxMap=00 netif_num=1 syno_hdd_detect=0 syno_port_thaw=1 SasIdxMap=0 vender_format_version=2 earlyprintk mac1=xxx syno_hdd_powerup_seq=1 pid=0x5678 log_buf_len=32M syno_hw_version=DS918+ vid=0xffff earlycon=uart8250,io,0x3f8,115200n8 sn=xxx elevator=elevator root=/dev/md0 loglevel=15 SataPortMap=1
+    echo Loading initramfs...
+    initrd /rd.gz /custom.gz
+    echo Starting kernel with SATA boot
+    echo WARNING: SATA boot support on this platform is experimental!
+}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="系统安装"><a href="#系统安装" class="headerlink" title="系统安装"></a>系统安装</h3><p> 在安装之前，需要运行<code>synology-assistant-7.win系统版.exe</code>安装程序，在网盘已提供，用于扫描局域网中存在的NAS;</p>
+<p> 在制作完成U盘引导后，插入到NAS中，然后启动NAS，运行<code>Synology Assistant</code>，具体安装过程略;</p>
+<p><font size="3" color="red">注意</font></p>
+<ol>
+<li><p>对于黑群晖，在安装过程中最好断网，即便是全洗白的(有时成功、但也有失败)，最后导致系统被锁，无限还原，在出现10分钟倒计时开始就断开与互联网的连接;</p>
+</li>
+<li><p>对于初学者，提前准备1个硬盘盒(3.5寸)、多个引导U盘，当系统无限还原，那么就格式化磁盘吧，过程略;</p>
+</li>
+<li><p>系统如果需要升级，需做好备份，然后找到对应的img镜像和pat文件，再尝试新U盘制作引导，由于没亲历过(只重装系统)，可参考<a target="_blank" rel="noopener" href="https://post.smzdm.com/p/a0q4zgx9/p4/?sort_tab=hot/#comments">该文章</a></p>
+</li>
+</ol>
+<h3 id="系统使用"><a href="#系统使用" class="headerlink" title="系统使用"></a>系统使用</h3><p> 在装完系统后，可以体验群晖简单实用的功能了，但其中有些注意点，可参考<a target="_blank" rel="noopener" href="https://www.ainas.cc:88/?page_id=8">该系列文章</a>:</p>
+<h4 id="登录Synology账户"><a href="#登录Synology账户" class="headerlink" title="登录Synology账户"></a>登录Synology账户</h4><p> 由于许多功能依赖于群晖账户，比如QuickConnect、ActiveInsight、DDNS等，此外还有其他的一些功能;</p>
+<p> 群晖账户尽量在全球站注册，可参考<a target="_blank" rel="noopener" href="https://www.ainas.cc:88/?p=572">该文章</a>，具体原因也在其中说明;</p>
+<p> 注册完账户后，可在群晖控制面板中登录群晖账户，然后可体验部分功能，QuickConnect需绑定电话(但不建议绑定，会导致群晖变黑)，DDNS可直接采用官方提供的域名(证书支持泛域名，较简单，但时常会失败);</p>
+<h4 id="DDNS与证书续期"><a href="#DDNS与证书续期" class="headerlink" title="DDNS与证书续期"></a>DDNS与证书续期</h4><p> DDNS可查看先前我记录的<code>DDNS踩坑经历</code>文章，DDNS服务提供商建议采用Cloudflare，将域名的DNS服务器设为Cloudflare(CF)的，主要是为了方便之后通过acme.sh自动申请证书，经过测试采用dns_dp即腾讯的域名解析，申请不知为何原因失败，到了第二天换成dns_cf一次便成功，下面介绍整个过程;</p>
+<ol>
+<li>DDNS配置</li>
+</ol>
+<p> 前提条件，具备公网IPv4或IPv6，家庭的话IPv6应该都有，没的话需咨询宽带提供商，如果因为光猫配置问题，可致电询问光猫超级用户账号密码(用于将路由桥接修改为路由模式)，或者参考网上教程去破解(需注意型号问题);</p>
+<p> 对于DDNS，首先需购买域名，然后将其DNS服务器设置为CF的，接着在系统中可以通过docker或套件中心来安装<code>DDNS-GO</code>;</p>
+<p> 然后在CF中添加该域名，并在<a target="_blank" rel="noopener" href="https://dash.cloudflare.com/profile">My Profile</a>中的<code>API Tokens</code>分别添加<code>API Token</code>(用于DDNS-GO服务)和<code>Global API Key</code>(用于自动申请证书)</p>
+<p> 其中，<code>API Token</code>中选择<code>Create Token</code>，模板选择<code>Edit zone DNS</code>，在<code>Zone Resources</code>中选择包含的可作用域名;<code>Global API Key</code>可直接查看，略;</p>
+<ol start="2">
+<li>证书申请</li>
+</ol>
+<p> 需要注意几个问题，证书是否需要泛域名，证书是否频繁更新，根据需求选择采用ZeroSSL还是Letsencrypt证书提供商;</p>
+<p> 关于泛域名，如果没有相关需求，建议采用ZeroSSL，优势是不限制申请次数;</p>
+<p> 群晖支持采用Letsencrypt申请泛域名证书，但只为群晖提供的域名后缀提供服务，因此若不采用群晖的DDNS，且考虑到便利性，那么需要借助类似<code>acme.sh</code>的工具来自动申请证书，可参考<a target="_blank" rel="noopener" href="https://post.smzdm.com/p/a6d5dl6e/">该文章</a>，具体过程如下:</p>
+<p> 首先，需要申请证书，这里<code>acme.sh</code>采用dns_cf的方式，需要借助上文提到的<code>Global API Key</code>的<code>Global API Key</code>和该账户的邮箱，然后在ssh终端执行以下指令:</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 你的域名</span>
+<span class="token assign-left variable">DOMAIN</span><span class="token operator">=</span><span class="token string">'xxx.xxx'</span>
+<span class="token comment"># DNS供应商 可选 dns_dp(腾讯云) dns_ali(阿里云)  dns_cf  其他可查https://github.com/acmesh-official/acme.sh/wiki/dnsapi</span>
+<span class="token assign-left variable">DNS</span><span class="token operator">=</span><span class="token string">"dns_cf"</span>
+<span class="token comment">#证书供应商</span>
+<span class="token assign-left variable">CERT_SERVER</span><span class="token operator">=</span><span class="token string">"letsencrypt"</span>
+<span class="token assign-left variable">CF_Key</span><span class="token operator">=</span><span class="token string">'xxx'</span>
+<span class="token assign-left variable">CF_Email</span><span class="token operator">=</span><span class="token string">'xxx'</span>
+<span class="token function">docker</span> run <span class="token parameter variable">--rm</span> <span class="token punctuation">\</span>
+  <span class="token parameter variable">-v</span> <span class="token string">"/volume1/docker/acme:/acme.sh"</span> <span class="token punctuation">\</span>
+  <span class="token parameter variable">-e</span> <span class="token string">"CF_Key=<span class="token variable">${CF_Key}</span>"</span> <span class="token parameter variable">-e</span> <span class="token string">"CF_Email=<span class="token variable">${CF_Email}</span>"</span> <span class="token punctuation">\</span>
+  neilpang/acme.sh <span class="token punctuation">\</span>
+  acme.sh <span class="token parameter variable">--dns</span> <span class="token string">"<span class="token variable">${DNS}</span>"</span> <span class="token punctuation">\</span>
+  <span class="token parameter variable">--server</span> <span class="token string">"<span class="token variable">${CERT_SERVER}</span>"</span> <span class="token punctuation">\</span>
+  <span class="token parameter variable">--issue</span> <span class="token parameter variable">-d</span> <span class="token string">"<span class="token variable">${DOMAIN}</span>"</span> <span class="token parameter variable">-d</span> <span class="token string">"*.<span class="token variable">${DOMAIN}</span>"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p> 可能由于网络或脚本版本问题，Letsencrypt证书不一定一次成功，需注意申请次数不能短时间太多，当出现Success，至此已经申请到带泛域名的证书，然后需要将证书通过acme.sh提供的群晖部署方式部署，脚本如下:</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment">#群晖账号密码</span>
+<span class="token assign-left variable">SYNO_Username</span><span class="token operator">=</span><span class="token string">'xxx'</span>
+<span class="token assign-left variable">SYNO_Password</span><span class="token operator">=</span><span class="token string">'xxx'</span>
+<span class="token comment">#如果开启了双重验证请在浏览器登录时选中保存此设备，然后从COOKIE中获取did cookie</span>
+<span class="token assign-left variable">SYNO_TOTP_SECRET</span><span class="token operator">=</span><span class="token string">""</span>
+<span class="token comment">#以下群晖配置非必要不要更改</span>
+<span class="token assign-left variable">SYNO_Hostname</span><span class="token operator">=</span><span class="token string">"localhost"</span> <span class="token comment"># Specify if not using on localhost</span>
+<span class="token assign-left variable">SYNO_Scheme</span><span class="token operator">=</span><span class="token string">"http"</span>
+<span class="token assign-left variable">SYNO_Port</span><span class="token operator">=</span><span class="token string">"5000"</span>
+<span class="token comment"># 经测试发现localhost不行，而通过网卡的IPv4可以</span>
+<span class="token assign-left variable">ipv4</span><span class="token operator">=</span><span class="token string">"<span class="token variable"><span class="token variable">$(</span><span class="token function">ifconfig</span> eth0 <span class="token operator">|</span> <span class="token function">grep</span> <span class="token parameter variable">-E</span> <span class="token string">'inet addr'</span> <span class="token operator">|</span> <span class="token function">cut</span> -d: <span class="token parameter variable">-f2</span> <span class="token operator">|</span> <span class="token function">awk</span> <span class="token string">'{print $1}'</span>
+<span class="token variable">)</span></span>"</span>
+<span class="token assign-left variable">SYNO_Hostname</span><span class="token operator">=</span><span class="token string">"<span class="token variable">${ipv4}</span>"</span> <span class="token comment"># Specify if not using on localhost</span>
+<span class="token comment">#要添加的证书的名字，空字符串（""）的话就是替代默认证书，一般建议使用空字符串，除非你有多个证书</span>
+<span class="token assign-left variable">SYNO_Certificate</span><span class="token operator">=</span><span class="token string">'xxx'</span>  <span class="token comment"># 建议和域名保持一致</span>
+<span class="token comment"># 以下为acme.sh通过dsm_deploy部署到系统的必要参数</span>
+<span class="token assign-left variable">c</span><span class="token operator">=</span><span class="token string">"SYNO_Username=<span class="token variable">${SYNO_Username}</span>"</span>
+<span class="token assign-left variable">d</span><span class="token operator">=</span><span class="token string">"SYNO_Password=<span class="token variable">${SYNO_Password}</span>"</span>
+<span class="token assign-left variable">e</span><span class="token operator">=</span><span class="token string">"SYNO_TOTP_SECRET=<span class="token variable">${SYNO_TOTP_SECRET}</span>"</span>
+<span class="token assign-left variable">f</span><span class="token operator">=</span><span class="token string">"SYNO_Hostname=<span class="token variable">${SYNO_Hostname}</span>"</span>
+<span class="token assign-left variable">g</span><span class="token operator">=</span><span class="token string">"SYNO_Scheme=<span class="token variable">${SYNO_Scheme}</span>"</span>
+<span class="token assign-left variable">h</span><span class="token operator">=</span><span class="token string">"SYNO_Port=<span class="token variable">${SYNO_Port}</span>"</span>
+<span class="token assign-left variable">i</span><span class="token operator">=</span><span class="token string">"SYNO_Certificate=<span class="token variable">${SYNO_Certificate}</span>"</span>
+<span class="token assign-left variable">j</span><span class="token operator">=</span><span class="token string">"SYNO_DID=<span class="token variable">${SYNO_TOTP_SECRET}</span>"</span>
+<span class="token function">docker</span> run <span class="token parameter variable">--rm</span> <span class="token punctuation">\</span>
+  <span class="token parameter variable">-v</span> <span class="token string">"/volume1/docker/acme:/acme.sh"</span> <span class="token punctuation">\</span>
+  <span class="token parameter variable">-e</span> <span class="token variable">${c}</span> <span class="token parameter variable">-e</span> <span class="token variable">${d}</span> <span class="token parameter variable">-e</span> <span class="token variable">${e}</span> <span class="token parameter variable">-e</span> <span class="token variable">${f}</span> <span class="token parameter variable">-e</span> <span class="token variable">${g}</span> <span class="token parameter variable">-e</span> <span class="token variable">${h}</span> <span class="token parameter variable">-e</span> <span class="token variable">${i}</span> <span class="token parameter variable">-e</span> <span class="token variable">${j}</span> <span class="token punctuation">\</span>
+  neilpang/acme.sh <span class="token punctuation">\</span>
+  acme.sh <span class="token parameter variable">--dns</span> <span class="token string">"<span class="token variable">${DNS}</span>"</span> <span class="token punctuation">\</span>
+  <span class="token parameter variable">--issue</span> <span class="token parameter variable">-d</span> <span class="token string">"<span class="token variable">${DOMAIN}</span>"</span> <span class="token parameter variable">-d</span> <span class="token string">"*.<span class="token variable">${DOMAIN}</span>"</span> <span class="token punctuation">\</span>
+  <span class="token parameter variable">--deploy</span> --deploy-hook synology_dsm<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p> 至此，通过acme.sh的docker容器申请证书与部署到群晖已完成，脚本参考<a target="_blank" rel="noopener" href="https://github.com/GuaiMiu/Synology-Auto-SSL/blob/main/acme.sh">该仓库</a>，修改后的脚本如下:</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token shebang important">#!/bin/bash</span>
+<span class="token comment"># 你的域名</span>
+<span class="token assign-left variable">DOMAIN</span><span class="token operator">=</span><span class="token string">'xxx'</span>
+<span class="token comment">#证书供应商</span>
+<span class="token assign-left variable">CERT_SERVER</span><span class="token operator">=</span><span class="token string">'letsencrypt'</span>
+<span class="token comment">#DNS供应商 可选 dns_dp(腾讯云) dns_ali(阿里云)  dns_cf  其他可查https://github.com/acmesh-official/acme.sh/wiki/dnsapi</span>
+<span class="token assign-left variable">DNS</span><span class="token operator">=</span><span class="token string">"dns_cf"</span>
+<span class="token comment">#群晖账号密码</span>
+<span class="token assign-left variable">SYNO_Username</span><span class="token operator">=</span><span class="token string">'xxx'</span>
+<span class="token assign-left variable">SYNO_Password</span><span class="token operator">=</span><span class="token string">'xxx'</span>
+<span class="token comment">#如果开启了双重验证请在浏览器登录时选中保存此设备，然后从COOKIE中获取did cookie</span>
+<span class="token assign-left variable">SYNO_TOTP_SECRET</span><span class="token operator">=</span><span class="token string">""</span>
+<span class="token comment">#以下群晖配置非必要不要更改</span>
+<span class="token assign-left variable">SYNO_Hostname</span><span class="token operator">=</span><span class="token string">"localhost"</span> <span class="token comment"># Specify if not using on localhost</span>
+<span class="token assign-left variable">SYNO_Scheme</span><span class="token operator">=</span><span class="token string">"http"</span>
+<span class="token assign-left variable">SYNO_Port</span><span class="token operator">=</span><span class="token string">"5000"</span>
+<span class="token assign-left variable">ipv4</span><span class="token operator">=</span><span class="token string">"<span class="token variable"><span class="token variable">$(</span><span class="token function">ifconfig</span> eth0 <span class="token operator">|</span> <span class="token function">grep</span> <span class="token parameter variable">-E</span> <span class="token string">'inet addr'</span> <span class="token operator">|</span> <span class="token function">cut</span> -d: <span class="token parameter variable">-f2</span> <span class="token operator">|</span> <span class="token function">awk</span> <span class="token string">'{print $1}'</span>
+<span class="token variable">)</span></span>"</span>
+<span class="token assign-left variable">SYNO_Hostname</span><span class="token operator">=</span><span class="token string">"<span class="token variable">${ipv4}</span>"</span> <span class="token comment"># Specify if not using on localhost</span>
+<span class="token comment">#要添加的证书的名字，空字符串（""）的话就是替代默认证书，一般建议使用空字符串，除非你有多个证书</span>
+<span class="token assign-left variable">SYNO_Certificate</span><span class="token operator">=</span><span class="token string">'xxx'</span>
+<span class="token comment">#以下三选一</span>
+<span class="token comment">#DNSPOD.CN 腾讯云</span>
+<span class="token assign-left variable">DP_Id</span><span class="token operator">=</span><span class="token string">''</span>
+<span class="token assign-left variable">DP_Key</span><span class="token operator">=</span><span class="token string">''</span>
+<span class="token comment">#阿里云</span>
+<span class="token assign-left variable">Ali_Key</span><span class="token operator">=</span><span class="token string">''</span>
+<span class="token assign-left variable">Ali_Secret</span><span class="token operator">=</span><span class="token string">''</span>
+<span class="token comment">#CF</span>
+<span class="token assign-left variable">CF_Key</span><span class="token operator">=</span><span class="token string">'xxx'</span>
+<span class="token assign-left variable">CF_Email</span><span class="token operator">=</span><span class="token string">'xxx'</span>
+<span class="token keyword">case</span> <span class="token variable">$DNS</span> <span class="token keyword">in</span>
+    <span class="token string">"dns_dp"</span><span class="token punctuation">)</span>
+    <span class="token assign-left variable">a</span><span class="token operator">=</span><span class="token string">"DP_Id=<span class="token variable">${DP_Id}</span>"</span><span class="token operator">&amp;&amp;</span><span class="token assign-left variable">b</span><span class="token operator">=</span><span class="token string">"DP_Key=<span class="token variable">${DP_Key}</span>"</span>
+    <span class="token punctuation">;</span><span class="token punctuation">;</span>
+    <span class="token string">"dns_ali"</span><span class="token punctuation">)</span>
+    <span class="token assign-left variable">a</span><span class="token operator">=</span><span class="token string">"Ali_Key=<span class="token variable">${Ali_Key}</span>"</span><span class="token operator">&amp;&amp;</span><span class="token assign-left variable">b</span><span class="token operator">=</span><span class="token string">"Ali_Secret=<span class="token variable">${Ali_Secret}</span>"</span>
+    <span class="token punctuation">;</span><span class="token punctuation">;</span>
+    <span class="token string">"dns_cf"</span><span class="token punctuation">)</span>
+    <span class="token assign-left variable">a</span><span class="token operator">=</span><span class="token string">"CF_Key=<span class="token variable">${CF_Key}</span>"</span><span class="token operator">&amp;&amp;</span><span class="token assign-left variable">b</span><span class="token operator">=</span><span class="token string">"CF_Email=<span class="token variable">${CF_Email}</span>"</span>
+    <span class="token punctuation">;</span><span class="token punctuation">;</span>
+<span class="token keyword">esac</span>
+<span class="token assign-left variable">c</span><span class="token operator">=</span><span class="token string">"SYNO_Username=<span class="token variable">${SYNO_Username}</span>"</span>
+<span class="token assign-left variable">d</span><span class="token operator">=</span><span class="token string">"SYNO_Password=<span class="token variable">${SYNO_Password}</span>"</span>
+<span class="token assign-left variable">e</span><span class="token operator">=</span><span class="token string">"SYNO_TOTP_SECRET=<span class="token variable">${SYNO_TOTP_SECRET}</span>"</span>
+<span class="token assign-left variable">f</span><span class="token operator">=</span><span class="token string">"SYNO_Hostname=<span class="token variable">${SYNO_Hostname}</span>"</span>
+<span class="token assign-left variable">g</span><span class="token operator">=</span><span class="token string">"SYNO_Scheme=<span class="token variable">${SYNO_Scheme}</span>"</span>
+<span class="token assign-left variable">h</span><span class="token operator">=</span><span class="token string">"SYNO_Port=<span class="token variable">${SYNO_Port}</span>"</span>
+<span class="token assign-left variable">i</span><span class="token operator">=</span><span class="token string">"SYNO_Certificate=<span class="token variable">${SYNO_Certificate}</span>"</span>
+<span class="token assign-left variable">j</span><span class="token operator">=</span><span class="token string">"SYNO_DID=<span class="token variable">${SYNO_TOTP_SECRET}</span>"</span>
+<span class="token comment"># 申请证书</span>
+<span class="token function">docker</span> run <span class="token parameter variable">--rm</span> <span class="token punctuation">\</span>
+  <span class="token parameter variable">-v</span> <span class="token string">"/volume1/docker/acme:/acme.sh"</span> <span class="token punctuation">\</span>
+  <span class="token parameter variable">-e</span> <span class="token variable">${a}</span> <span class="token parameter variable">-e</span> <span class="token variable">${b}</span> <span class="token punctuation">\</span>
+  neilpang/acme.sh <span class="token punctuation">\</span>
+  acme.sh <span class="token parameter variable">--dns</span> <span class="token string">"<span class="token variable">${DNS}</span>"</span> <span class="token punctuation">\</span>
+  <span class="token parameter variable">--server</span> <span class="token string">"<span class="token variable">${CERT_SERVER}</span>"</span> <span class="token punctuation">\</span>
+  <span class="token parameter variable">--renew</span> <span class="token parameter variable">-d</span> <span class="token string">"<span class="token variable">${DOMAIN}</span>"</span> <span class="token parameter variable">-d</span> <span class="token string">"*.<span class="token variable">${DOMAIN}</span>"</span>
+<span class="token comment">#  --issue -d "${DOMAIN}" -d "*.${DOMAIN}"</span>
+<span class="token comment"># 部署证书到群晖</span>
+<span class="token function">docker</span> run <span class="token parameter variable">--rm</span> <span class="token punctuation">\</span>
+  <span class="token parameter variable">-v</span> <span class="token string">"/volume1/docker/acme:/acme.sh"</span> <span class="token punctuation">\</span>
+  <span class="token parameter variable">-e</span> <span class="token variable">${c}</span> <span class="token parameter variable">-e</span> <span class="token variable">${d}</span> <span class="token parameter variable">-e</span> <span class="token variable">${e}</span> <span class="token parameter variable">-e</span> <span class="token variable">${f}</span> <span class="token parameter variable">-e</span> <span class="token variable">${g}</span> <span class="token parameter variable">-e</span> <span class="token variable">${h}</span> <span class="token parameter variable">-e</span> <span class="token variable">${i}</span> <span class="token parameter variable">-e</span> <span class="token variable">${j}</span> <span class="token punctuation">\</span>
+  neilpang/acme.sh <span class="token punctuation">\</span>
+  acme.sh <span class="token parameter variable">--dns</span> <span class="token string">"<span class="token variable">${DNS}</span>"</span> <span class="token punctuation">\</span>
+  <span class="token parameter variable">--issue</span> <span class="token parameter variable">-d</span> <span class="token string">"<span class="token variable">${DOMAIN}</span>"</span> <span class="token parameter variable">-d</span> <span class="token string">"*.<span class="token variable">${DOMAIN}</span>"</span> <span class="token punctuation">\</span>
+  <span class="token parameter variable">--deploy</span> --deploy-hook synology_dsm<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p> 如果想要定时更新证书，可在控制面板中的<code>任务计划</code>添加任务，由于有些指令与目录访问需要高权限，比如docker指令和某些路径，以root身份执行，每月执行一次;</p>
+<p> 但仍存在些小问题，比如两步验证，开启了两步验证，但没有配置<code>SYNO_TOTP_SECRET</code>参数，执行脚本仍可以成功;采用腾讯云的api-id和api-key方式申请Letsencrypt证书始终不成功，在相关Issue中说明需更新acme.sh或换网络等，具体没尝试过.</p>
+<h4 id="SSO单点登录"><a href="#SSO单点登录" class="headerlink" title="SSO单点登录"></a>SSO单点登录</h4><p> 琢磨良久，没成功，暂时略，后续补充.</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ol>
+<li><p><a target="_blank" rel="noopener" href="http://k.8x6x.com/thread-72641-1-1.html">http://k.8x6x.com/thread-72641-1-1.html</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.openos.org/threads/diskidxmap-sataportmap-sasidxmap.3675/">https://www.openos.org/threads/diskidxmap-sataportmap-sasidxmap.3675/</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_35379989/article/details/129287254">https://blog.csdn.net/qq_35379989/article/details/129287254</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://post.smzdm.com/p/a0q4zgx9/p4/?sort_tab=hot/#comments">https://post.smzdm.com/p/a0q4zgx9/p4/?sort_tab=hot/#comments</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.ainas.cc:88/?page_id=8">https://www.ainas.cc:88/?page_id=8</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.ainas.cc:88/?p=572">https://www.ainas.cc:88/?p=572</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://post.smzdm.com/p/a6d5dl6e/">https://post.smzdm.com/p/a6d5dl6e/</a></p>
+</li>
+</ol>
+<hr>
+<p><font face="楷体" size="5" color="blue">2023-06-28 首次更新</font></p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/%E5%AE%9E%E8%B7%B5/">
+                                    <span class="chip bg-color">实践</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="qq,qzone,wechat" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <style>
+    .waline-card {
+        margin: 1.5rem auto;
+    }
+    .waline-card .card-content {
+        padding: 20px 20px 5px 20px;
+    }
+
+    #waline p {
+        margin: 2px 2px 10px;
+        font-size: 1.05rem;
+        line-height: 1.78rem;
+    }
+    #waline blockquote p {
+        text-indent: 0.2rem;
+    }
+    #waline a {
+        padding: 0 2px;
+        color: #4cbf30;
+        font-weight: 500;
+        text-decoration: none;
+    }
+    #waline img {
+        max-width: 100%;
+        cursor: pointer;
+    }
+    #waline ol li {
+        list-style-type: decimal;
+    }
+    #waline ol,
+    ul {
+        display: block;
+        padding-left: 2em;
+        word-spacing: 0.05rem;
+    }
+    #waline ul li,
+    ol li {
+        display: list-item;
+        line-height: 1.8rem;
+        font-size: 1rem;
+    }
+    #waline ul li {
+        list-style-type: disc;
+    }
+    #waline ul ul li {
+        list-style-type: circle;
+    }
+    #waline table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+    #waline table, th, td {
+        border: 0;
+    }
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+    #waline table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+    #waline table td {
+        min-width: 80px;
+    }
+    #waline h1 {
+        font-size: 1.85rem;
+        font-weight: bold;
+        line-height: 2.2rem;
+    }
+    #waline h2 {
+        font-size: 1.65rem;
+        font-weight: bold;
+        line-height: 1.9rem;
+    }
+    #waline h3 {
+        font-size: 1.45rem;
+        font-weight: bold;
+        line-height: 1.7rem;
+    }
+    #waline h4 {
+        font-size: 1.25rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+    #waline h5 {
+        font-size: 1.1rem;
+        font-weight: bold;
+        line-height: 1.4rem;
+    }
+    #waline h6 {
+        font-size: 1rem;
+        line-height: 1.3rem;
+    }
+    #waline p {
+        font-size: 1rem;
+        line-height: 1.5rem;
+    }
+    #waline hr {
+        margin: 12px 0;
+        border: 0;
+        border-top: 1px solid #ccc;
+    }
+    #waline blockquote {
+        margin: 15px 0;
+        border-left: 5px solid #42b983;
+        padding: 1rem 0.8rem 0.3rem 0.8rem;
+        color: #666;
+        background-color: rgba(66, 185, 131, .1);
+    }
+    #waline pre {
+        font-family: monospace, monospace;
+        padding: 1.2em;
+        margin: .5em 0;
+        background: #272822;
+        overflow: auto;
+        border-radius: 0.3em;
+        tab-size: 4;
+    }
+    #waline code {
+        font-family: monospace, monospace;
+        padding: 1px 3px;
+        font-size: 0.92rem;
+        color: #e96900;
+        background-color: #f8f8f8;
+        border-radius: 2px;
+    }
+    #waline pre code {
+        font-family: monospace, monospace;
+        padding: 0;
+        color: #e8eaf6;
+        background-color: #272822;
+    }
+    #waline pre[class*="language-"] {
+        padding: 1.2em;
+        margin: .5em 0;
+    }
+    #waline code[class*="language-"],
+    pre[class*="language-"] {
+        color: #e8eaf6;
+    }
+    #waline [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+    #waline b,
+    strong {
+        font-weight: bold;
+    }
+    #waline dfn {
+        font-style: italic;
+    }
+    #waline small {
+        font-size: 85%;
+    }
+    #waline cite {
+        font-style: normal;
+    }
+    #waline mark {
+        background-color: #fcf8e3;
+        padding: .2em;
+    }
+    #waline table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+    #waline table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+    #waline table td {
+        min-width: 80px;
+    }
+    #waline [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+  </style>
+  
+  <div class="card waline-card" data-aos="fade-up">
+    <div class="comment_headling" style="font-size: 20px; font-weight: 700; position: relative; padding-left: 20px; top: 15px; padding-bottom: 5px;">
+        <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
+        <span>评论</span>
+    </div>
+    <div id="waline" class="card-content" style="display: grid">
+    </div>
+  </div>
+
+
+  <!-- <script src="//cdn.jsdelivr.net/npm/@waline/client"></script> -->
+  <script src="/libs/waline/Waline.min.js"></script>
+  <script>
+    new Waline({
+        el: '#waline',
+        serverURL: 'https://hexo-waline-h3fqxfz0o-adjaisd.vercel.app',
+        avatar: 'mm'    
+    });
+  </script> 
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
+            <div class="card">
+                <a href="/2023/06/hei-qun-hui-shi-yong.html">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="黑群晖使用">
+                        
+                        <span class="card-title">黑群晖使用</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-06-28
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E5%AE%9E%E8%B7%B5/" class="post-category">
+                                    实践
+                                </a>
+                            
+                            <a href="/categories/%E5%AE%9E%E8%B7%B5/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="post-category">
+                                    操作系统
+                                </a>
+                            
+                            <a href="/categories/%E5%AE%9E%E8%B7%B5/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E7%BD%91%E7%BB%9C/" class="post-category">
+                                    网络
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E5%AE%9E%E8%B7%B5/">
+                        <span class="chip bg-color">实践</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2023/05/cun-chu-qi-ying-she.html">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="存储器映射">
+                        
+                        <span class="card-title">存储器映射</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-05-31
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E7%90%86%E8%AE%BA/" class="post-category">
+                                    理论
+                                </a>
+                            
+                            <a href="/categories/%E7%90%86%E8%AE%BA/%E7%A1%AC%E4%BB%B6/" class="post-category">
+                                    硬件
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+
+                <!--修复标签为空时card不对齐-->
+                <div class="card-action article-tags">
+                    
+                        
+                        <a href="/tags/%E7%A1%AC%E4%BB%B6/">
+                            <span class="chip bg-color">硬件</span>
+                        </a>
+                        
+                    
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('120')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE' || selection.getRangeAt(0).commonAncestorContainer.nodeName === 'CODE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + '来源: adjaisd&#39;s Blog<br />'
+            + '文章作者: adjaisd<br />'
+            + '文章链接: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归作者所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
+    });
+</script>
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 使用主题的 prismjs. -->
+<script type="text/javascript" src="/libs/prism/prism.js"></script>
+
+<!-- 代码语言 -->
+
+
+<!-- 代码块复制 -->
+
+
+<!-- 代码块收缩 -->
+
+    <script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #542674;
+    }
+
+    
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+        left: -66px !important;
+    }
+
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+        left: 0px !important;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="7420433965"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#542674'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.1'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="/libs/aplayer/APlayer.min.js"></script>
+<script src="/libs/aplayer/Meting.min.js"></script>
+
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 15px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2021-2023</span>
+            
+            <a href="/about" target="_blank">adjaisd</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+                &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
+                        class="white-color">72.8k</span>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+                <span id="sitetime"> Loading ...</span>
+                <script>
+                    var calcSiteTime = function () {
+                        var seconds = 1000;
+                        var minutes = seconds * 60;
+                        var hours = minutes * 60;
+                        var days = hours * 24;
+                        var years = days * 365;
+                        var today = new Date();
+                        var startYear = "2021";
+                        var startMonth = "4";
+                        var startDate = "5";
+                        var startHour = "0";
+                        var startMinute = "0";
+                        var startSecond = "0";
+                        var todayYear = today.getFullYear();
+                        var todayMonth = today.getMonth() + 1;
+                        var todayDate = today.getDate();
+                        var todayHour = today.getHours();
+                        var todayMinute = today.getMinutes();
+                        var todaySecond = today.getSeconds();
+                        var t1 = Date.UTC(startYear, startMonth, startDate, startHour, startMinute, startSecond);
+                        var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+                        var diff = t2 - t1;
+                        var diffYears = Math.floor(diff / years);
+                        var diffDays = Math.floor((diff / days) - diffYears * 365);
+
+                        // 区分是否有年份.
+                        var language = 'zh-CN';
+                        if (startYear === String(todayYear)) {
+                            document.getElementById("year").innerHTML = todayYear;
+                            var daysTip = 'This site has been running for ' + diffDays + ' days';
+                            if (language === 'zh-CN') {
+                                daysTip = '本站已运行 ' + diffDays + ' 天';
+                            } else if (language === 'zh-HK') {
+                                daysTip = '本站已運行 ' + diffDays + ' 天';
+                            }
+                            document.getElementById("sitetime").innerHTML = daysTip;
+                        } else {
+                            document.getElementById("year").innerHTML = startYear + " - " + todayYear;
+                            var yearsAndDaysTip = 'This site has been running for ' + diffYears + ' years and '
+                                + diffDays + ' days';
+                            if (language === 'zh-CN') {
+                                yearsAndDaysTip = '本站已运行 ' + diffYears + ' 年 ' + diffDays + ' 天';
+                            } else if (language === 'zh-HK') {
+                                yearsAndDaysTip = '本站已運行 ' + diffYears + ' 年 ' + diffDays + ' 天';
+                            }
+                            document.getElementById("sitetime").innerHTML = yearsAndDaysTip;
+                        }
+                    }
+
+                    calcSiteTime();
+                </script>
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/adjaisd" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:2390248029@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=2390248029" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 2390248029" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>
+</div>
+<div class="sun-moon-box">
+  <a class="btn-floating btn-large waves-effect waves-light" onclick="switchNightMode()" title="切换主题" >
+    <i id="sun-moon-icon" class="fas fa-sun" style="width:48px; height:48px; font-size: 28px;"></i>
+  </a>
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sun-moon-icon').removeClass("fa-sun").addClass('fa-moon')
+                , $('#sun-moon-icon').removeClass("fa-sun").addClass('fa-moon'))
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sun-moon-icon').addClass("fa-sun").removeClass('fa-moon')
+                , $('#sun-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!--动态标题-->
+    <script>
+        var OriginTitile=document.title,st;
+    	document.addEventListener("visibilitychange",function(){
+            document.hidden?(document.title="ヽ(●-`Д´-)ノ你要玩捉迷藏嘛", clearTimeout(st)):(document.title="(Ő∀Ő3)ノ好哦！",st=setTimeout(function(){document.title=OriginTitile},3e3))
+        })
+    </script>
+
+
+    
+
+    
+
+    <!-- 雪花特效 -->
+    
+        <script type="text/javascript">
+            // 只在桌面版网页启用特效
+            var windowWidth = $(window).width();
+            if (windowWidth > 768) {
+                document.write('<script type="text/javascript" src="/libs/others/snow.js"><\/script>');
+            }
+        </script>
+    
+
+    <!-- 鼠标星星特效 -->
+    
+        <script type="text/javascript">
+            // 只在桌面版网页启用特效
+            var windowWidth = $(window).width();
+            if (windowWidth > 768) {
+                document.write('<script type="text/javascript" src="/libs/others/star.js"><\/script>');
+            }
+        </script>
+    
+
+    
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    <!--腾讯兔小巢-->
+    
+    
+
+    
+
+    
+    <script type="text/javascript" src="/libs/background/ribbon-dynamic.js" async="async"></script>
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/shizuku.model.json"},"display":{"position":"right","width":90,"height":180},"mobile":{"show":false},"react":{"opacity":0.9}});</script>
+        <style>
+            [bg-lazy] {
+                background-image: none !important;
+                background-color: #eee !important;
+            }
+        </style>
+        <script>
+            window.imageLazyLoadSetting = {
+                isSPA: false,
+                preloadRatio: 1,
+                processImages: null,
+            };
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(r){r.imageLazyLoadSetting.processImages=t;var e=r.imageLazyLoadSetting.isSPA,n=r.imageLazyLoadSetting.preloadRatio||1,c=a();function a(){var t=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")),e=Array.prototype.slice.call(document.querySelectorAll("[bg-lazy]"));return t.concat(e)}function t(){e&&(c=a());for(var t,o=0;o<c.length;o++)0<=(t=(t=c[o]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(r.innerHeight*n||document.documentElement.clientHeight*n)&&function(){var t,e,n,a,i=c[o];e=function(){c=c.filter(function(t){return i!==t}),r.imageLazyLoadSetting.onImageLoaded&&r.imageLazyLoadSetting.onImageLoaded(i)},(t=i).hasAttribute("bg-lazy")?(t.removeAttribute("bg-lazy"),e&&e()):(n=new Image,a=t.getAttribute("data-original"),n.onload=function(){t.src=a,t.removeAttribute("data-original"),e&&e()},t.src!==a&&(n.src=a))}()}function i(){clearTimeout(t.tId),t.tId=setTimeout(t,500)}t(),document.addEventListener("scroll",i),r.addEventListener("resize",i),r.addEventListener("orientationchange",i)}(this);</script></body>
+
+</html>

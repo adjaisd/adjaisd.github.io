@@ -1,5 +1,399 @@
-<!DOCTYPE HTML><html lang="zh-CN"><head><meta charset="utf-8"><meta name="keywords" content="Jenkins自动构建首个应用, adjaisd, java, golang, 网络"><meta name="description" content="Jenkins自动构建首个应用 最近，参加到团队一个开源团队项目，考虑到后期开发与发布效率问题，尝试学习使用Jenkins来自动化构建项目;
- 其实在先前搭建hexo的评论系统时采用了vercel的服务，可以前往vercel.com体验下自"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"><meta name="renderer" content="webkit|ie-stand|ie-comp"><meta name="mobile-web-app-capable" content="yes"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="referrer" content="no-referrer-when-downgrade"><title>Jenkins自动构建首个应用 | adjaisd&#39;s Blog</title><link rel="icon" type="image/png" href="/favicon.png"><style>body{background-image:url(http://api.btstu.cn/sjbz/api.php?method=zsy&lx=fengjing&format=images);background-repeat:no-repeat;background-size:100% 100%;background-attachment:fixed}</style><link rel="stylesheet" href="/libs/awesome/css/all.min.css"><link rel="stylesheet" href="/libs/materialize/materialize.min.css"><link rel="stylesheet" href="/libs/aos/aos.css"><link rel="stylesheet" href="/libs/animate/animate.min.css"><link rel="stylesheet" href="/libs/lightGallery/css/lightgallery.min.css"><link rel="stylesheet" href="/css/matery.css"><link rel="stylesheet" href="/css/my.css"><link rel="stylesheet" href="/css/dark.css" media="none" onload='"all"!=media&&(media="all")'><link rel="stylesheet" href="/libs/tocbot/tocbot.css"><link rel="stylesheet" href="/css/post.css"><link rel="stylesheet" href="/css/reward.css"><script src="/libs/jquery/jquery-3.6.0.min.js"></script><meta name="generator" content="Hexo 5.4.2"><style>.github-emoji{position:relative;display:inline-block;width:1.2em;min-height:1.2em;overflow:hidden;vertical-align:top;color:transparent}.github-emoji>span{position:relative;z-index:10}.github-emoji .fancybox,.github-emoji img{margin:0!important;padding:0!important;border:none!important;outline:0!important;text-decoration:none!important;user-select:none!important;cursor:auto!important}.github-emoji img{height:1.2em!important;width:1.2em!important;position:absolute!important;left:50%!important;top:50%!important;transform:translate(-50%,-50%)!important;user-select:none!important;cursor:auto!important}.github-emoji-fallback{color:inherit}.github-emoji-fallback img{opacity:0!important}</style></head><body><header class="navbar-fixed"><nav id="headNav" class="bg-color nav-transparent"><div id="navContainer" class="nav-wrapper container"><div class="brand-logo"><a href="/" class="waves-effect waves-light"><img src="/medias/logo.png" class="logo-img" alt="LOGO"> <span class="logo-span">adjaisd&#39;s Blog</span></a></div><a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a><ul class="right nav-menu"><li class="hide-on-med-and-down nav-item"><a href="/" class="waves-effect waves-light"><i class="fas fa-home" style="zoom:.6"></i> <span>首页</span></a></li><li class="hide-on-med-and-down nav-item"><a href="/tags" class="waves-effect waves-light"><i class="fas fa-tags" style="zoom:.6"></i> <span>标签</span></a></li><li class="hide-on-med-and-down nav-item"><a href="/categories" class="waves-effect waves-light"><i class="fas fa-bookmark" style="zoom:.6"></i> <span>分类</span></a></li><li class="hide-on-med-and-down nav-item"><a href="/archives" class="waves-effect waves-light"><i class="fas fa-archive" style="zoom:.6"></i> <span>归档</span></a></li><li class="hide-on-med-and-down nav-item"><a href="/about" class="waves-effect waves-light"><i class="fas fa-user-circle" style="zoom:.6"></i> <span>关于</span></a></li><li class="hide-on-med-and-down nav-item"><a href="/friends" class="waves-effect waves-light"><i class="fas fa-address-book" style="zoom:.6"></i> <span>友情链接</span></a></li><li class="hide-on-med-and-down nav-item"><a href="/contact" class="waves-effect waves-light"><i class="fas fa-comments" style="zoom:.6"></i> <span>留言板</span></a></li><li><a href="#searchModal" class="modal-trigger waves-effect waves-light"><i id="searchIcon" class="fas fa-search" title="搜索" style="zoom:.85"></i></a></li><li><a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式"><i id="sum-moon-icon" class="fas fa-sun" style="zoom:.85"></i></a></li></ul><div id="mobile-nav" class="side-nav sidenav"><div class="mobile-head bg-color"><img src="/medias/avatar.jpg" class="logo-img circle responsive-img"><div class="logo-name">adjaisd&#39;s Blog</div><div class="logo-desc">目标是成为全栈工程师，理想成为网络安全工程师。</div></div><ul class="menu-list mobile-menu-list"><li class="m-nav-item"><a href="/" class="waves-effect waves-light"><i class="fa-fw fas fa-home"></i> 首页</a></li><li class="m-nav-item"><a href="/tags" class="waves-effect waves-light"><i class="fa-fw fas fa-tags"></i> 标签</a></li><li class="m-nav-item"><a href="/categories" class="waves-effect waves-light"><i class="fa-fw fas fa-bookmark"></i> 分类</a></li><li class="m-nav-item"><a href="/archives" class="waves-effect waves-light"><i class="fa-fw fas fa-archive"></i> 归档</a></li><li class="m-nav-item"><a href="/about" class="waves-effect waves-light"><i class="fa-fw fas fa-user-circle"></i> 关于</a></li><li class="m-nav-item"><a href="/friends" class="waves-effect waves-light"><i class="fa-fw fas fa-address-book"></i> 友情链接</a></li><li class="m-nav-item"><a href="/contact" class="waves-effect waves-light"><i class="fa-fw fas fa-comments"></i> 留言板</a></li></ul></div></div></nav></header><div class="bg-cover pd-header post-cover" style="background-image:url(/medias/featureimages/18.jpg)"><div class="container" style="right:0;left:0"><div class="row"><div class="col s12 m12 l12"><div class="brand"><h1 class="description center-align post-title">Jenkins自动构建首个应用</h1></div></div></div></div></div><main class="post-container content"><div class="row"><div id="main-content" class="col s12 m12 l9"><div id="artDetail"><div class="card"><div class="card-content article-info"><div class="row tag-cate"><div class="col s7"><div class="article-tag"><a href="/tags/%E5%B7%A5%E5%85%B7/"><span class="chip bg-color">工具</span></a> <a href="/tags/%E8%87%AA%E5%8A%A8%E5%8C%96/"><span class="chip bg-color">自动化</span></a></div></div><div class="col s5 right-align"><div class="post-cate"><i class="fas fa-bookmark fa-fw icon-category"></i> <a href="/categories/%E5%AE%9E%E8%B7%B5/" class="post-category">实践</a></div></div></div><div class="post-info"><div class="post-date info-break-policy"><i class="far fa-calendar-minus fa-fw"></i> 发布日期:&nbsp;&nbsp; 2022-12-10</div><div class="post-date info-break-policy"><i class="far fa-calendar-check fa-fw"></i> 更新日期:&nbsp;&nbsp; 2023-02-09</div><div class="info-break-policy"><i class="far fa-file-word fa-fw"></i> 文章字数:&nbsp;&nbsp; 4.3k</div><div class="info-break-policy"><i class="far fa-clock fa-fw"></i> 阅读时长:&nbsp;&nbsp; 18 分</div><div id="busuanzi_container_page_pv" class="info-break-policy"><i class="far fa-eye fa-fw"></i> 阅读次数:&nbsp;&nbsp;<span id="busuanzi_value_page_pv"></span></div></div></div><hr class="clearfix"><link rel="stylesheet" href="/libs/prism/prism.css"><div class="card-content article-card-content"><div id="articleContent"><h2 id="Jenkins自动构建首个应用"><a href="#Jenkins自动构建首个应用" class="headerlink" title="Jenkins自动构建首个应用"></a>Jenkins自动构建首个应用</h2><p> 最近，参加到团队一个开源团队项目，考虑到后期开发与发布效率问题，尝试学习使用Jenkins来自动化构建项目;</p><p> 其实在先前搭建hexo的评论系统时采用了vercel的服务，可以前往vercel.com体验下自动化构建;之所以不使用vercel，考虑后续团队公司可能都用jenkins，借助其它工具安全性得不到保证.</p><p> 采用docker构建Jenkins，由于涉及敏感信息，彩用ssl来保证安全性.</p><h3 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h3><p> 系统centos7;考虑到jenkins内部的自动安装不太方便，故采用手动配置的方式装须要的依赖，这里的jdk和Maven都安装在本地vps，再挂载到容器内部;</p><h4 id="宿主机上准备工作"><a href="#宿主机上准备工作" class="headerlink" title="宿主机上准备工作"></a>宿主机上准备工作</h4><ol><li>安装jdk1.8</li></ol><p> 注意那个配置环境变量的cat命令须要单独输入，直接执行可能会有问题</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">rm</span> /tmp/jdk*.tar.gz <span class="token parameter variable">-f</span>
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Jenkins自动构建首个应用, adjaisd, java, golang, 网络">
+    <meta name="description" content="Jenkins自动构建首个应用 最近，参加到团队一个开源团队项目，考虑到后期开发与发布效率问题，尝试学习使用Jenkins来自动化构建项目;
+ 其实在先前搭建hexo的评论系统时采用了vercel的服务，可以前往vercel.com体验下自">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Jenkins自动构建首个应用 | adjaisd&#39;s Blog</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+    <style>
+        body{
+            background-image: url(http://api.btstu.cn/sjbz/api.php?method=zsy&lx=fengjing&format=images);
+            background-repeat:no-repeat;
+            background-size: 100% 100%;
+            background-attachment:fixed;
+        }
+    </style>
+
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 5.4.2">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">adjaisd&#39;s Blog</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/avatar.jpg" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">adjaisd&#39;s Blog</div>
+        <div class="logo-desc">
+            
+            目标是成为全栈工程师，理想成为网络安全工程师。
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			留言板
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/18.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Jenkins自动构建首个应用</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/%E5%B7%A5%E5%85%B7/">
+                                <span class="chip bg-color">工具</span>
+                            </a>
+                        
+                            <a href="/tags/%E8%87%AA%E5%8A%A8%E5%8C%96/">
+                                <span class="chip bg-color">自动化</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E5%AE%9E%E8%B7%B5/" class="post-category">
+                                实践
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2022-12-10
+                </div>
+                
+
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
+                    2023-02-09
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    4.3k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    18 分
+                </div>
+                
+
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h2 id="Jenkins自动构建首个应用"><a href="#Jenkins自动构建首个应用" class="headerlink" title="Jenkins自动构建首个应用"></a>Jenkins自动构建首个应用</h2><p> 最近，参加到团队一个开源团队项目，考虑到后期开发与发布效率问题，尝试学习使用Jenkins来自动化构建项目;</p>
+<p> 其实在先前搭建hexo的评论系统时采用了vercel的服务，可以前往vercel.com体验下自动化构建;之所以不使用vercel，考虑后续团队公司可能都用jenkins，借助其它工具安全性得不到保证.</p>
+<p> 采用docker构建Jenkins，由于涉及敏感信息，彩用ssl来保证安全性.</p>
+<h3 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h3><p> 系统centos7;考虑到jenkins内部的自动安装不太方便，故采用手动配置的方式装须要的依赖，这里的jdk和Maven都安装在本地vps，再挂载到容器内部;</p>
+<h4 id="宿主机上准备工作"><a href="#宿主机上准备工作" class="headerlink" title="宿主机上准备工作"></a>宿主机上准备工作</h4><ol>
+<li>安装jdk1.8</li>
+</ol>
+<p> 注意那个配置环境变量的cat命令须要单独输入，直接执行可能会有问题</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">rm</span> /tmp/jdk*.tar.gz <span class="token parameter variable">-f</span>
 <span class="token function">wget</span> https://repo.huaweicloud.com/java/jdk/8u202-b08/jdk-8u202-linux-x64.tar.gz <span class="token parameter variable">-P</span> /tmp
 <span class="token function">ls</span> <span class="token parameter variable">-lht</span> /tmp/ <span class="token operator">|</span> <span class="token function">grep</span> jdk
 <span class="token function">mkdir</span> <span class="token parameter variable">-p</span> /usr/local/java/
@@ -14,7 +408,12 @@ EOF</span>
 
 <span class="token builtin class-name">source</span> /etc/profile.d/java.sh
 <span class="token function">ln</span> <span class="token parameter variable">-s</span> <span class="token variable">${JAVA_HOME}</span>/bin/java /usr/bin/java
-<span class="token function">java</span> <span class="token parameter variable">-version</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><ol start="2"><li>安装maven</li></ol><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># centos安装Maven</span>
+<span class="token function">java</span> <span class="token parameter variable">-version</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ol start="2">
+<li>安装maven</li>
+</ol>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># centos安装Maven</span>
 <span class="token function">rm</span> /tmp/*maven* <span class="token parameter variable">-f</span>
 <span class="token comment">#wget https://dlcdn.apache.org/maven/maven-3/3.9.0/binaries/apache-maven-3.9.0-bin.tar.gz -P /tmp</span>
 <span class="token function">wget</span> https://mirrors.aliyun.com/apache/maven/maven-3/3.9.0/binaries/apache-maven-3.9.0-bin.tar.gz <span class="token parameter variable">-P</span> /tmp
@@ -30,7 +429,10 @@ EOF</span>
 
 <span class="token function">chmod</span> +x /etc/profile.d/maven.sh
 <span class="token builtin class-name">source</span> /etc/profile.d/maven.sh
-mvn <span class="token parameter variable">-version</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p> 配置MAVEN_HOME路径下的conf/settings.xml内容如下所示:</p><pre class="line-numbers language-text" data-language="text"><code class="language-text">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+mvn <span class="token parameter variable">-version</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p> 配置MAVEN_HOME路径下的conf/settings.xml内容如下所示:</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd"&gt;
     &lt;mirrors&gt;
         &lt;mirror&gt;
@@ -46,15 +448,26 @@ mvn <span class="token parameter variable">-version</span><span aria-hidden="tru
             &lt;mirrorOf&gt;central&lt;/mirrorOf&gt;
         &lt;/mirror&gt;
     &lt;/mirrors&gt;
-&lt;/settings&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p><font size="2" color="red">注意: 如果PATH出现重复的路径，执行以下命令</font></p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">cat</span> <span class="token operator">&lt;&lt;</span><span class="token string">EOF<span class="token bash punctuation"> <span class="token operator">&gt;&gt;</span> /etc/profile</span>
+&lt;/settings&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><font size="2" color="red">注意: 如果PATH出现重复的路径，执行以下命令</font></p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">cat</span> <span class="token operator">&lt;&lt;</span><span class="token string">EOF<span class="token bash punctuation"> <span class="token operator">&gt;&gt;</span> /etc/profile</span>
 export PATH=\<span class="token variable"><span class="token variable">$(</span><span class="token builtin class-name">echo</span> <span class="token punctuation">\</span><span class="token environment constant">$PATH</span> <span class="token operator">|</span> <span class="token function">tr</span> <span class="token builtin class-name">:</span> <span class="token string">"<span class="token entity" title="\n">\n</span>"</span><span class="token operator">|</span> <span class="token function">sort</span> <span class="token operator">|</span> <span class="token function">uniq</span> <span class="token operator">|</span> <span class="token function">tr</span> <span class="token string">"<span class="token entity" title="\n">\n</span>"</span> <span class="token builtin class-name">:</span><span class="token variable">)</span></span>
 EOF</span>
 
-<span class="token builtin class-name">source</span> /etc/profile<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre><ol start="3"><li>安装docker-compose</li></ol><pre class="line-numbers language-text" data-language="text"><code class="language-text">#curl -L "https://github.com/docker/compose/releases/download/1.24.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+<span class="token builtin class-name">source</span> /etc/profile<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ol start="3">
+<li>安装docker-compose</li>
+</ol>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">#curl -L "https://github.com/docker/compose/releases/download/1.24.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 # 采用国内镜像
 curl -L https://get.daocloud.io/docker/compose/releases/download/1.24.0/docker-compose-`uname -s`-`uname -m`  -o /usr/local/bin/docker-compose
 chmod +x /usr/local/bin/docker-compose
-docker-compose -v<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre><p><font size="2" color="red">注意: 找的从国内源几乎都是get.daocloud.io域名下的，而且版本很久，查官方文档会发现许多功能不支持，建议手动从官方下载<a target="_blank" rel="noopener" href="https://github.com/docker/compose/releases">https://github.com/docker/compose/releases</a></font></p><h4 id="docker-compose构建jenkins-nginx"><a href="#docker-compose构建jenkins-nginx" class="headerlink" title="docker-compose构建jenkins+nginx"></a>docker-compose构建jenkins+nginx</h4><p> 我的docker-compose如下所示：</p><pre class="line-numbers language-text" data-language="text"><code class="language-text">version: '3'
+docker-compose -v<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><font size="2" color="red">注意: 找的从国内源几乎都是get.daocloud.io域名下的，而且版本很久，查官方文档会发现许多功能不支持，建议手动从官方下载<a target="_blank" rel="noopener" href="https://github.com/docker/compose/releases">https://github.com/docker/compose/releases</a></font></p>
+<h4 id="docker-compose构建jenkins-nginx"><a href="#docker-compose构建jenkins-nginx" class="headerlink" title="docker-compose构建jenkins+nginx"></a>docker-compose构建jenkins+nginx</h4><p> 我的docker-compose如下所示：</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">version: '3'
 services:                                      # 集合
   docker_jenkins:
     user: root                                 # 为了避免一些权限问题 在这我使用了root
@@ -98,7 +511,16 @@ networks:
     ipam:
       driver: bridge
       config:
-        - subnet: 172.30.0.0/16<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p> 然后执行<code>docker-compose up -d</code>进行构建;</p><h4 id="申请ip型ssl证书"><a href="#申请ip型ssl证书" class="headerlink" title="申请ip型ssl证书"></a>申请ip型ssl证书</h4><p> 尽管买了域名，但vps在国内，国内备案的话，比较麻烦而且严格，本人采用腾讯云，备案须要vps和定位在同一个地区，比如vps是北京的，但本人在江苏那么就不行。即便备案成功了光审核也要好久，类似的其它云服务供应商应该差不多情况;</p><p> 如果买的不是国外vps的话，那么ip型域名证书也算是一种应急;本人用过zerossl，有些操作可能要用到梯子;</p><ol><li>采用zerossl手动申请;</li></ol><p> 通过文件认证域名(可以是公网ip)，如果采用上面的docker-compose构建nginx的话，将认证文件放到挂载目录/home/docker/nginx/html下，并配置nginx，如下:</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 我的请求地址为http://{ip地址}/well-known/pki-validation/E07978EC02A019B2AE16CA6EBB6487FC.txt</span>
+        - subnet: 172.30.0.0/16<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p> 然后执行<code>docker-compose up -d</code>进行构建;</p>
+<h4 id="申请ip型ssl证书"><a href="#申请ip型ssl证书" class="headerlink" title="申请ip型ssl证书"></a>申请ip型ssl证书</h4><p> 尽管买了域名，但vps在国内，国内备案的话，比较麻烦而且严格，本人采用腾讯云，备案须要vps和定位在同一个地区，比如vps是北京的，但本人在江苏那么就不行。即便备案成功了光审核也要好久，类似的其它云服务供应商应该差不多情况;</p>
+<p> 如果买的不是国外vps的话，那么ip型域名证书也算是一种应急;本人用过zerossl，有些操作可能要用到梯子;</p>
+<ol>
+<li>采用zerossl手动申请;</li>
+</ol>
+<p> 通过文件认证域名(可以是公网ip)，如果采用上面的docker-compose构建nginx的话，将认证文件放到挂载目录/home/docker/nginx/html下，并配置nginx，如下:</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 我的请求地址为http://{ip地址}/well-known/pki-validation/E07978EC02A019B2AE16CA6EBB6487FC.txt</span>
 server <span class="token punctuation">{</span>
     listen         <span class="token number">80</span><span class="token punctuation">;</span>
     listen    <span class="token punctuation">[</span>::<span class="token punctuation">]</span>:80<span class="token punctuation">;</span>
@@ -107,7 +529,15 @@ server <span class="token punctuation">{</span>
         root /usr/share/nginx/html<span class="token punctuation">;</span>
         rewrite ^/well-known/pki-validation/<span class="token punctuation">(</span>.*<span class="token punctuation">)</span>$ /<span class="token variable">$1</span> <span class="token builtin class-name">break</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
-<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p> 认证完成后，下载nginx形式的证书文件，将ca_bundle.crt内容复制到certificate.crt文件末尾，保留certificate.crt和private.key文件.</p><ol start="2"><li>采用acme.sh脚本自动申请和续期ssl证书;</li></ol><p> 参考官网<a target="_blank" rel="noopener" href="https://github.com/acmesh-official/acme.sh">https://github.com/acmesh-official/acme.sh</a></p><h4 id="nginx配置https访问Jenkins"><a href="#nginx配置https访问Jenkins" class="headerlink" title="nginx配置https访问Jenkins"></a>nginx配置https访问Jenkins</h4><p> 在完成域名验证后，将key和crt证书文件上传到/home/docker/nginx/certs/ip_ssl目录下，然后参考下面nginx配置:</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">server <span class="token punctuation">{</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p> 认证完成后，下载nginx形式的证书文件，将ca_bundle.crt内容复制到certificate.crt文件末尾，保留certificate.crt和private.key文件.</p>
+<ol start="2">
+<li>采用acme.sh脚本自动申请和续期ssl证书;</li>
+</ol>
+<p> 参考官网<a target="_blank" rel="noopener" href="https://github.com/acmesh-official/acme.sh">https://github.com/acmesh-official/acme.sh</a></p>
+<h4 id="nginx配置https访问Jenkins"><a href="#nginx配置https访问Jenkins" class="headerlink" title="nginx配置https访问Jenkins"></a>nginx配置https访问Jenkins</h4><p> 在完成域名验证后，将key和crt证书文件上传到/home/docker/nginx/certs/ip_ssl目录下，然后参考下面nginx配置:</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">server <span class="token punctuation">{</span>
     listen       <span class="token number">443</span> ssl http2 default_server<span class="token punctuation">;</span>
     server_name  _<span class="token punctuation">;</span>
 
@@ -135,14 +565,24 @@ server <span class="token punctuation">{</span>
         proxy_pass http://jenkins:8080<span class="token punctuation">;</span>
         proxy_set_header X-Forwarded-Proto <span class="token variable">$scheme</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
-<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p> 记得重启nginx容器;</p><h4 id="1">问题</h4><h5 id="docker镜像拉取太慢"><a href="#docker镜像拉取太慢" class="headerlink" title="docker镜像拉取太慢"></a>docker镜像拉取太慢</h5><p> 修改/etc/docker/daemon.json文件，如下所示:</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@jenkins ~<span class="token punctuation">]</span><span class="token comment"># cat /etc/docker/daemon.json </span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p> 记得重启nginx容器;</p>
+<h4 id="1">问题</h4>
+
+<h5 id="docker镜像拉取太慢"><a href="#docker镜像拉取太慢" class="headerlink" title="docker镜像拉取太慢"></a>docker镜像拉取太慢</h5><p> 修改/etc/docker/daemon.json文件，如下所示:</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@jenkins ~<span class="token punctuation">]</span><span class="token comment"># cat /etc/docker/daemon.json </span>
 <span class="token punctuation">{</span>
         <span class="token string">"registry-mirrors"</span><span class="token builtin class-name">:</span> <span class="token punctuation">[</span>
                 <span class="token string">"https://docker.mirrors.ustc.edu.cn/"</span>,
                 <span class="token string">"https://hub-mirror.c.163.com"</span>,
                 <span class="token string">"https://registry.docker-cn.com"</span> 
         <span class="token punctuation">]</span>
-<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><h5 id="Maven拉取太慢或无法拉取"><a href="#Maven拉取太慢或无法拉取" class="headerlink" title="Maven拉取太慢或无法拉取"></a>Maven拉取太慢或无法拉取</h5><p> Maven的settings.xml配置问题，此时使用的Jenkins最新版本即2.38，报错如下:</p><p><img src="https://cdn.jsdelivr.net/gh/shw2018/cdn@1.0/sakura/img/loader/orange.progress-bar-stripe-loader.svg" data-original="/2022/12/jenkins-zi-dong-gou-jian-shou-ge-ying-yong/Jenkins%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA%E9%A6%96%E4%B8%AA%E5%BA%94%E7%94%A8@1.png" alt="1"></p><pre class="line-numbers language-text" data-language="text"><code class="language-text">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h5 id="Maven拉取太慢或无法拉取"><a href="#Maven拉取太慢或无法拉取" class="headerlink" title="Maven拉取太慢或无法拉取"></a>Maven拉取太慢或无法拉取</h5><p> Maven的settings.xml配置问题，此时使用的Jenkins最新版本即2.38，报错如下:</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shw2018/cdn@1.0/sakura/img/loader/orange.progress-bar-stripe-loader.svg" data-original="/2022/12/jenkins-zi-dong-gou-jian-shou-ge-ying-yong/Jenkins%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA%E9%A6%96%E4%B8%AA%E5%BA%94%E7%94%A8@1.png" alt="1"></p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd"&gt;
@@ -160,25 +600,95 @@ server <span class="token punctuation">{</span>
         &lt;mirrorOf&gt;central&lt;/mirrorOf&gt;
     &lt;/mirror&gt;
 &lt;/mirrors&gt;
-&lt;/settings&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p> 默认多个mirror，第一个mirror生效，安装的时候也是如此，全都从阿里下载的;即便配了多个镜像只有当第一个连接失败了才会尝试后面的镜像;</p><p> 主机配好vps的maven后，记得在Jenkins后台的Global Tool Configuration中手动配置jdk和maven，不要自动安装(没效果)，我的配置如下所示;</p><img src="https://cdn.jsdelivr.net/gh/shw2018/cdn@1.0/sakura/img/loader/orange.progress-bar-stripe-loader.svg" data-original="/2022/12/jenkins-zi-dong-gou-jian-shou-ge-ying-yong/Jenkins自动构建首个应用@2.png" style="display:inline;height:200px;width:200px"> <img src="https://cdn.jsdelivr.net/gh/shw2018/cdn@1.0/sakura/img/loader/orange.progress-bar-stripe-loader.svg" data-original="/2022/12/jenkins-zi-dong-gou-jian-shou-ge-ying-yong/Jenkins自动构建首个应用@3.png" style="display:inline;height:200px;width:200px"> <img src="https://cdn.jsdelivr.net/gh/shw2018/cdn@1.0/sakura/img/loader/orange.progress-bar-stripe-loader.svg" data-original="/2022/12/jenkins-zi-dong-gou-jian-shou-ge-ying-yong/Jenkins自动构建首个应用@4.png" style="display:inline;height:200px;width:200px"><p><font size="3" color="red">注意：在我安装common-lang3的时候，阿里的仓库会报错，部分包不在阿里仓库里，注释掉上方的阿里仓库镜像</font></p><h5 id="Jenkins版本问题"><a href="#Jenkins版本问题" class="headerlink" title="Jenkins版本问题"></a>Jenkins版本问题</h5><p> Jenkins镜像版本须要注意新版是否兼容项目jdk版本，至少jdk11，只能安装旧版jenkins镜像，容器内部构建镜像时出现错误如下:</p><pre class="line-numbers language-text" data-language="text"><code class="language-text">Exception in thread "main" jav.lang. UnsupportedclassversionEFrror: hudson/remot ing/Launcher has been compiled by a mone recent version ofthe Java Runtime (class file version 55.0), this version of the Java Runtime only recognizes class file versions up to 52.0<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p><img src="https://cdn.jsdelivr.net/gh/shw2018/cdn@1.0/sakura/img/loader/orange.progress-bar-stripe-loader.svg" data-original="/2022/12/jenkins-zi-dong-gou-jian-shou-ge-ying-yong/Jenkins%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA%E9%A6%96%E4%B8%AA%E5%BA%94%E7%94%A8@5.png" alt="2"></p><p> 只能从Jenkins的Maven插件官网找到对应问题的描述，参考<a target="_blank" rel="noopener" href="https://plugins.jenkins.io/maven-plugin/">https://plugins.jenkins.io/maven-plugin/</a></p><p><img src="https://cdn.jsdelivr.net/gh/shw2018/cdn@1.0/sakura/img/loader/orange.progress-bar-stripe-loader.svg" data-original="/2022/12/jenkins-zi-dong-gou-jian-shou-ge-ying-yong/Jenkins%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA%E9%A6%96%E4%B8%AA%E5%BA%94%E7%94%A8@6.png" alt="3"></p><p> 由于系统为centos7，项目采用jdk1.8挂载到容器，需要尽可能保持容器系统与vps系统一致，最终找到了一个较合适的镜像为<strong>jenkins/jenkins:lts-centos7-jdk8</strong>;</p><h5 id="jenkins的gitee插件显示问题"><a href="#jenkins的gitee插件显示问题" class="headerlink" title="jenkins的gitee插件显示问题"></a>jenkins的gitee插件显示问题</h5><p> 在新版Jenkins即jenkins/jenkins:lts中使用gitee插件毫无问题，但在旧版，发现即便添加了gitee的token，但在配置Maven的Job时发现gitee的token拉去不下来，意味着无法拉取仓库代码;</p><p> 并且gitee的token权限粒度太大，没有github那么细，通过token不能单独读取某个单独仓库，有较大的安全性隐患;</p><p> 综合考虑，在仓库中单独使用ssh部署公钥的方式，使jenkins容器能拉取代码.</p><h5 id="无法拉取仓库代码"><a href="#无法拉取仓库代码" class="headerlink" title="无法拉取仓库代码"></a>无法拉取仓库代码</h5><p> 这个问题原因有很多，首先，如果在本地虚拟机中，需要确定是否联网，ping下目标地址;</p><p> 如果通过部署公钥，往往第一次连接出错，因为容器know_hosts文件中不包含gitee.com;</p><p> 在Dashboard –&gt; Configure Global Security中手动配置know_hosts文件，如下所示:</p><p><img src="https://cdn.jsdelivr.net/gh/shw2018/cdn@1.0/sakura/img/loader/orange.progress-bar-stripe-loader.svg" data-original="/2022/12/jenkins-zi-dong-gou-jian-shou-ge-ying-yong/Jenkins%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA%E9%A6%96%E4%B8%AA%E5%BA%94%E7%94%A8@7.png" alt="7"></p><p> 在vps中通过ssh-keyscan命令获取目标地址的hosts指纹，将其输入到Approved Host keys中.</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@c3d2c42838e7 .ssh<span class="token punctuation">]</span><span class="token comment"># ssh-keyscan gitee.com</span>
+&lt;/settings&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p> 默认多个mirror，第一个mirror生效，安装的时候也是如此，全都从阿里下载的;即便配了多个镜像只有当第一个连接失败了才会尝试后面的镜像;</p>
+<p> 主机配好vps的maven后，记得在Jenkins后台的Global Tool Configuration中手动配置jdk和maven，不要自动安装(没效果)，我的配置如下所示;</p>
+<img src="https://cdn.jsdelivr.net/gh/shw2018/cdn@1.0/sakura/img/loader/orange.progress-bar-stripe-loader.svg" data-original="/2022/12/jenkins-zi-dong-gou-jian-shou-ge-ying-yong/Jenkins自动构建首个应用@2.png" style="display: inline;height: 200px;width: 200px;">
+<img src="https://cdn.jsdelivr.net/gh/shw2018/cdn@1.0/sakura/img/loader/orange.progress-bar-stripe-loader.svg" data-original="/2022/12/jenkins-zi-dong-gou-jian-shou-ge-ying-yong/Jenkins自动构建首个应用@3.png" style="display: inline;height: 200px;width: 200px;">
+<img src="https://cdn.jsdelivr.net/gh/shw2018/cdn@1.0/sakura/img/loader/orange.progress-bar-stripe-loader.svg" data-original="/2022/12/jenkins-zi-dong-gou-jian-shou-ge-ying-yong/Jenkins自动构建首个应用@4.png" style="display: inline;height: 200px;width: 200px;">
+
+<p><font size="3" color="red">注意：在我安装common-lang3的时候，阿里的仓库会报错，部分包不在阿里仓库里，注释掉上方的阿里仓库镜像</font></p>
+<h5 id="Jenkins版本问题"><a href="#Jenkins版本问题" class="headerlink" title="Jenkins版本问题"></a>Jenkins版本问题</h5><p> Jenkins镜像版本须要注意新版是否兼容项目jdk版本，至少jdk11，只能安装旧版jenkins镜像，容器内部构建镜像时出现错误如下:</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">Exception in thread "main" jav.lang. UnsupportedclassversionEFrror: hudson/remot ing/Launcher has been compiled by a mone recent version ofthe Java Runtime (class file version 55.0), this version of the Java Runtime only recognizes class file versions up to 52.0<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="https://cdn.jsdelivr.net/gh/shw2018/cdn@1.0/sakura/img/loader/orange.progress-bar-stripe-loader.svg" data-original="/2022/12/jenkins-zi-dong-gou-jian-shou-ge-ying-yong/Jenkins%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA%E9%A6%96%E4%B8%AA%E5%BA%94%E7%94%A8@5.png" alt="2"></p>
+<p> 只能从Jenkins的Maven插件官网找到对应问题的描述，参考<a target="_blank" rel="noopener" href="https://plugins.jenkins.io/maven-plugin/">https://plugins.jenkins.io/maven-plugin/</a></p>
+<p><img src="https://cdn.jsdelivr.net/gh/shw2018/cdn@1.0/sakura/img/loader/orange.progress-bar-stripe-loader.svg" data-original="/2022/12/jenkins-zi-dong-gou-jian-shou-ge-ying-yong/Jenkins%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA%E9%A6%96%E4%B8%AA%E5%BA%94%E7%94%A8@6.png" alt="3"></p>
+<p> 由于系统为centos7，项目采用jdk1.8挂载到容器，需要尽可能保持容器系统与vps系统一致，最终找到了一个较合适的镜像为<strong>jenkins/jenkins:lts-centos7-jdk8</strong>;</p>
+<h5 id="jenkins的gitee插件显示问题"><a href="#jenkins的gitee插件显示问题" class="headerlink" title="jenkins的gitee插件显示问题"></a>jenkins的gitee插件显示问题</h5><p> 在新版Jenkins即jenkins/jenkins:lts中使用gitee插件毫无问题，但在旧版，发现即便添加了gitee的token，但在配置Maven的Job时发现gitee的token拉去不下来，意味着无法拉取仓库代码;</p>
+<p> 并且gitee的token权限粒度太大，没有github那么细，通过token不能单独读取某个单独仓库，有较大的安全性隐患;</p>
+<p> 综合考虑，在仓库中单独使用ssh部署公钥的方式，使jenkins容器能拉取代码.</p>
+<h5 id="无法拉取仓库代码"><a href="#无法拉取仓库代码" class="headerlink" title="无法拉取仓库代码"></a>无法拉取仓库代码</h5><p> 这个问题原因有很多，首先，如果在本地虚拟机中，需要确定是否联网，ping下目标地址;</p>
+<p> 如果通过部署公钥，往往第一次连接出错，因为容器know_hosts文件中不包含gitee.com;</p>
+<p> 在Dashboard –&gt; Configure Global Security中手动配置know_hosts文件，如下所示:</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shw2018/cdn@1.0/sakura/img/loader/orange.progress-bar-stripe-loader.svg" data-original="/2022/12/jenkins-zi-dong-gou-jian-shou-ge-ying-yong/Jenkins%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA%E9%A6%96%E4%B8%AA%E5%BA%94%E7%94%A8@7.png" alt="7"></p>
+<p> 在vps中通过ssh-keyscan命令获取目标地址的hosts指纹，将其输入到Approved Host keys中.</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@c3d2c42838e7 .ssh<span class="token punctuation">]</span><span class="token comment"># ssh-keyscan gitee.com</span>
 <span class="token comment"># gitee.com:22 SSH-2.0-ssh-pilot-1.5.10</span>
 gitee.com ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBMuEoYdx6to5oxR60IWj8uoe1aI0X1fKOHWOtLqTg1tsLT1iFwXV5JmFjU46EzeMBV/6EmI1uaRI6HiEPtPtJHE<span class="token operator">=</span>
 <span class="token comment"># gitee.com:22 SSH-2.0-ssh-pilot-1.5.10</span>
 gitee.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDMzG3r+88lWSDK9fyjcZmYsWGDBDmGoAasKMAmjoFloGt9HRQX2Qp4f9FY2XK/hsHYinvoh5Xytl9iaUNUWMfYR8q6VEMtOO87DgoAFcfKZHt0/nbAg9RoNTKYt6v8tPwYpr7N0JP/01nE4LFsNDnstr6H0bXSAzbKWCETLZfdPV4l2uSpRn3bU0ugoZ0aSKz5Dc/IloBfGCTvkSsxUydMRd/Chpjt6VxncDbp+Fa6pzsseK8OQzrg6Fgc5783EN3EQqZ2skqyCwExtx95BJlfx1B3luZnWfpkwNDnrZRT/Qx0OrWqyf0q6f9uQr+UG1S8qDcUn3e/9onq3rwBri8/
 <span class="token comment"># gitee.com:22 SSH-2.0-ssh-pilot-1.5.10</span>
-gitee.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEKxHSJ7084RmkJ4YdEi5tngynE8aZe2uEoVVsB/OvYN<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p> 然后从hosts指纹中随便选一个比如<code>gitee.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEKxHSJ7084RmkJ4YdEi5tngynE8aZe2uEoVVsB/OvYN</code>作为Host key输入到Approved Host keys中;</p><p> 后续发布到远程服务器测试和部署遇到类似问题，也可以通过在Jenkins添加know_hosts解决;</p><p>补充：验证远程主机身份，即需要验证远程主机sshd的交换公钥的指纹，如果vps属于自己，在vps上执行以下命令:</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 列举sshd所有交换公钥</span>
+gitee.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEKxHSJ7084RmkJ4YdEi5tngynE8aZe2uEoVVsB/OvYN<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p> 然后从hosts指纹中随便选一个比如<code>gitee.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEKxHSJ7084RmkJ4YdEi5tngynE8aZe2uEoVVsB/OvYN</code>作为Host key输入到Approved Host keys中;</p>
+<p> 后续发布到远程服务器测试和部署遇到类似问题，也可以通过在Jenkins添加know_hosts解决;</p>
+<p>补充：验证远程主机身份，即需要验证远程主机sshd的交换公钥的指纹，如果vps属于自己，在vps上执行以下命令:</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 列举sshd所有交换公钥</span>
 <span class="token function">ls</span> /etc/ssh/ <span class="token parameter variable">-la</span> <span class="token operator">|</span> <span class="token function">egrep</span> .*<span class="token punctuation">\</span>.pub
 <span class="token comment"># 生成公钥指纹，远程的时候都采用16进制显示，下面一行命令的sha256改成md5或其它的加密算法</span>
-<span class="token function">ls</span> /etc/ssh/ <span class="token parameter variable">-la</span> <span class="token operator">|</span> <span class="token function">egrep</span> .*<span class="token punctuation">\</span>.pub <span class="token operator">|</span> <span class="token function">awk</span> <span class="token string">'{print $9}'</span> <span class="token operator">|</span> <span class="token function">xargs</span> <span class="token parameter variable">-I</span> % ssh-keygen <span class="token parameter variable">-E</span> sha256 <span class="token parameter variable">-lf</span> /etc/ssh/%<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre><h5 id="publish-over-ssh发布无法登录到远程"><a href="#publish-over-ssh发布无法登录到远程" class="headerlink" title="publish-over-ssh发布无法登录到远程"></a>publish-over-ssh发布无法登录到远程</h5><p> 配置/etc/ssh/sshd_config文件，如下所示，根据需要修改:</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">PermitRootLogin <span class="token function">yes</span> <span class="token comment"># yes则允许root用户登录</span>
+<span class="token function">ls</span> /etc/ssh/ <span class="token parameter variable">-la</span> <span class="token operator">|</span> <span class="token function">egrep</span> .*<span class="token punctuation">\</span>.pub <span class="token operator">|</span> <span class="token function">awk</span> <span class="token string">'{print $9}'</span> <span class="token operator">|</span> <span class="token function">xargs</span> <span class="token parameter variable">-I</span> % ssh-keygen <span class="token parameter variable">-E</span> sha256 <span class="token parameter variable">-lf</span> /etc/ssh/%<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h5 id="publish-over-ssh发布无法登录到远程"><a href="#publish-over-ssh发布无法登录到远程" class="headerlink" title="publish-over-ssh发布无法登录到远程"></a>publish-over-ssh发布无法登录到远程</h5><p> 配置/etc/ssh/sshd_config文件，如下所示，根据需要修改:</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">PermitRootLogin <span class="token function">yes</span> <span class="token comment"># yes则允许root用户登录</span>
 PubkeyAuthentication <span class="token function">yes</span>  <span class="token comment"># yes则允许私钥登录</span>
 PasswordAuthentication no <span class="token comment"># yes则允许密码登录</span>
-<span class="token comment">#AuthorizedKeysFile     .ssh/authorized_keys .ssh/authorized_keys2 # 认证公钥文件路径</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre><p> 说明下采用私钥登录的方式，需要将ssh-keygen生成的id_rsa.pub公钥内容添加到目标vps的~/.ssh/authorized_keys末尾，如果没有添加，会报错<code>Permission denied (publickey).</code>;</p><p> 此外，在迁移到服务器部署jenkins遇到了本地部署没出现过的问题，报错<code>Jenkins: 403 No valid crumb was included in the request</code>，我是通过为主用户添加api token解决的，Dashboard界面点击右上角用户头像 –&gt; 设置 –&gt; API token中点击添加新Token，问题得以解决，请参考:<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/44711696/jenkins-403-no-valid-crumb-was-included-in-the-request">https://stackoverflow.com/questions/44711696/jenkins-403-no-valid-crumb-was-included-in-the-request</a></p><h3 id="远程vps自动构建镜像"><a href="#远程vps自动构建镜像" class="headerlink" title="远程vps自动构建镜像"></a>远程vps自动构建镜像</h3><p> 大概过程是，先从源码仓库通过渠道(ssh公钥或token)克隆代码，再自动执行打包命令，将代码变为Jar包，然后再通过ssh或者代理将jar包发布到远程并执行自定义构建指令;</p><p> 如果自己手写脚本，需要非常熟悉shell脚本、maven指令与git指令还有配置，但通过jenkins可以很容易实现自动化构建，而且扩展性很高，可以邮件提醒，多元程发布等;</p><p> 实现自动化构建需要安装插件，Maven Integration plugin与Publish Over SSH，前者允许创建Maven项目的Job，后者用于通过ssh发布到远程服务器，只需要配置publish over ssh;</p><h4 id="准备工作-1"><a href="#准备工作-1" class="headerlink" title="准备工作"></a>准备工作</h4><ol><li>配置publish over ssh</li></ol><p> 请参考该视频<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1bS4y1471A/?p=11&amp;vd_source=55b0017bcef56ebdd1401ec0fe6fe6b7">https://www.bilibili.com/video/BV1bS4y1471A/?p=11&amp;vd_source=55b0017bcef56ebdd1401ec0fe6fe6b7</a></p><p> 在Dashboard –&gt; 系统管理 –&gt; 系统配置 –&gt; 找到publish-over-ssh，如下所示:</p><p><img src="https://cdn.jsdelivr.net/gh/shw2018/cdn@1.0/sakura/img/loader/orange.progress-bar-stripe-loader.svg" data-original="/2022/12/jenkins-zi-dong-gou-jian-shou-ge-ying-yong/Jenkins%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA%E9%A6%96%E4%B8%AA%E5%BA%94%E7%94%A8@8.png" alt="8"></p><p> 在ssh-server上面的是默认密码或私钥，在下面远程ssh没有配密码或私钥时会使用默认的密码或私钥;</p><p> 在ssh-server中，hostname为目标vps的ip，username为目标服务器的用户，高级设置为该用户对应的密码或私钥;关于密码或私钥配置，参考说明:</p><pre class="line-numbers language-text" data-language="text"><code class="language-text">Override the default authentication key.
+<span class="token comment">#AuthorizedKeysFile     .ssh/authorized_keys .ssh/authorized_keys2 # 认证公钥文件路径</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p> 说明下采用私钥登录的方式，需要将ssh-keygen生成的id_rsa.pub公钥内容添加到目标vps的~/.ssh/authorized_keys末尾，如果没有添加，会报错<code>Permission denied (publickey).</code>;</p>
+<p> 此外，在迁移到服务器部署jenkins遇到了本地部署没出现过的问题，报错<code>Jenkins: 403 No valid crumb was included in the request</code>，我是通过为主用户添加api token解决的，Dashboard界面点击右上角用户头像 –&gt; 设置 –&gt; API token中点击添加新Token，问题得以解决，请参考:<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/44711696/jenkins-403-no-valid-crumb-was-included-in-the-request">https://stackoverflow.com/questions/44711696/jenkins-403-no-valid-crumb-was-included-in-the-request</a></p>
+<h3 id="远程vps自动构建镜像"><a href="#远程vps自动构建镜像" class="headerlink" title="远程vps自动构建镜像"></a>远程vps自动构建镜像</h3><p> 大概过程是，先从源码仓库通过渠道(ssh公钥或token)克隆代码，再自动执行打包命令，将代码变为Jar包，然后再通过ssh或者代理将jar包发布到远程并执行自定义构建指令;</p>
+<p> 如果自己手写脚本，需要非常熟悉shell脚本、maven指令与git指令还有配置，但通过jenkins可以很容易实现自动化构建，而且扩展性很高，可以邮件提醒，多元程发布等;</p>
+<p> 实现自动化构建需要安装插件，Maven Integration plugin与Publish Over SSH，前者允许创建Maven项目的Job，后者用于通过ssh发布到远程服务器，只需要配置publish over ssh;</p>
+<h4 id="准备工作-1"><a href="#准备工作-1" class="headerlink" title="准备工作"></a>准备工作</h4><ol>
+<li>配置publish over ssh</li>
+</ol>
+<p> 请参考该视频<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1bS4y1471A/?p=11&amp;vd_source=55b0017bcef56ebdd1401ec0fe6fe6b7">https://www.bilibili.com/video/BV1bS4y1471A/?p=11&amp;vd_source=55b0017bcef56ebdd1401ec0fe6fe6b7</a></p>
+<p> 在Dashboard –&gt; 系统管理 –&gt; 系统配置 –&gt; 找到publish-over-ssh，如下所示:</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shw2018/cdn@1.0/sakura/img/loader/orange.progress-bar-stripe-loader.svg" data-original="/2022/12/jenkins-zi-dong-gou-jian-shou-ge-ying-yong/Jenkins%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA%E9%A6%96%E4%B8%AA%E5%BA%94%E7%94%A8@8.png" alt="8"></p>
+<p> 在ssh-server上面的是默认密码或私钥，在下面远程ssh没有配密码或私钥时会使用默认的密码或私钥;</p>
+<p> 在ssh-server中，hostname为目标vps的ip，username为目标服务器的用户，高级设置为该用户对应的密码或私钥;关于密码或私钥配置，参考说明:</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">Override the default authentication key.
 The key is specified by pasting into the Key section, or by providing the file path to the key in the Path to key. If both are provided, then the pasted Key will take precedence.
 If no key is set then the Passphrase / Password will be used for password authentication, else it is used for decrypting the key.
 ---
 覆盖默认身份验证密钥。
 通过粘贴到密钥部分或通过在密钥路径中提供密钥的文件路径来指定密钥。 如果两者都提供，则粘贴的密钥优先。
-如果未设置密钥，则密码短语/密码将用于密码验证，否则将用于解密密钥。<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p> 如果测试连接出现Fail或Error，请参考<a href="#1">问题 –&gt; publish-over-ssh发布无法登录到远程</a>;</p><ol start="2"><li>git源码管理</li></ol><p> 在远程仓库配置部署公钥或token，这样便能获取到远程仓库的代码，gitee中如下所示添加部署公钥:</p><p><img src="https://cdn.jsdelivr.net/gh/shw2018/cdn@1.0/sakura/img/loader/orange.progress-bar-stripe-loader.svg" data-original="/2022/12/jenkins-zi-dong-gou-jian-shou-ge-ying-yong/Jenkins%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA%E9%A6%96%E4%B8%AA%E5%BA%94%E7%94%A8@9.png" alt="9"></p><p> Jenkins中配置know_hosts，在Dashboard –&gt; 全局安全配置 –&gt; 找到Git Host Key Verification Configuration，我的配置如下:</p><p><img src="https://cdn.jsdelivr.net/gh/shw2018/cdn@1.0/sakura/img/loader/orange.progress-bar-stripe-loader.svg" data-original="/2022/12/jenkins-zi-dong-gou-jian-shou-ge-ying-yong/Jenkins%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA%E9%A6%96%E4%B8%AA%E5%BA%94%E7%94%A8@10.png" alt="10"></p><p> 上图中如果不清楚目标服务器的指纹，比如gitee.com通过<code>ssh-keyscan gitee.com</code>获取;</p><p> 然后配置凭据即credentials，步骤略;</p><p> 如果测试连不上远程库，请参考<a href="#1">问题 –&gt; 无法拉取仓库代码</a>;</p><ol start="3"><li>配置jdk和maven</li></ol><p> 在上面中已介绍，请参考<a href="#1">问题 –&gt; Maven拉取太慢或无法拉取</a></p><h4 id="开始构建"><a href="#开始构建" class="headerlink" title="开始构建"></a>开始构建</h4><p> 在Dashboard –&gt; 创建任务 –&gt; 输入任务名字(必填),选择Maven项目，点击确认;</p><p> 配置源码管理，当修改Repository Url时，Jenkins会测试是否联通，如下所示:</p><p><img src="https://cdn.jsdelivr.net/gh/shw2018/cdn@1.0/sakura/img/loader/orange.progress-bar-stripe-loader.svg" data-original="/2022/12/jenkins-zi-dong-gou-jian-shou-ge-ying-yong/Jenkins%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA%E9%A6%96%E4%B8%AA%E5%BA%94%E7%94%A8@11.png" alt="11"></p><p> 由于初次构建，其他不用管保持默认，接着修改Post Steps，用于发布到远程vps并执行指令，添加Send files or execute commands over SSH;</p><p><img src="https://cdn.jsdelivr.net/gh/shw2018/cdn@1.0/sakura/img/loader/orange.progress-bar-stripe-loader.svg" data-original="/2022/12/jenkins-zi-dong-gou-jian-shou-ge-ying-yong/Jenkins%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA%E9%A6%96%E4%B8%AA%E5%BA%94%E7%94%A8@12.png" alt="12"></p><p> 由于是从容器发布到宿主机，传输文件就不需要了，因为试过了传输jar包每次都导致网络卡顿，再加上已经挂载工作目录，这里只利用到远程执行脚本构建镜像，脚本如下:</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token assign-left variable">pro_name</span><span class="token operator">=</span>test <span class="token comment"># 项目名称</span>
+如果未设置密钥，则密码短语/密码将用于密码验证，否则将用于解密密钥。<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p> 如果测试连接出现Fail或Error，请参考<a href="#1">问题 –&gt; publish-over-ssh发布无法登录到远程</a>;</p>
+<ol start="2">
+<li>git源码管理</li>
+</ol>
+<p> 在远程仓库配置部署公钥或token，这样便能获取到远程仓库的代码，gitee中如下所示添加部署公钥:</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shw2018/cdn@1.0/sakura/img/loader/orange.progress-bar-stripe-loader.svg" data-original="/2022/12/jenkins-zi-dong-gou-jian-shou-ge-ying-yong/Jenkins%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA%E9%A6%96%E4%B8%AA%E5%BA%94%E7%94%A8@9.png" alt="9"></p>
+<p> Jenkins中配置know_hosts，在Dashboard –&gt; 全局安全配置 –&gt; 找到Git Host Key Verification Configuration，我的配置如下:</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shw2018/cdn@1.0/sakura/img/loader/orange.progress-bar-stripe-loader.svg" data-original="/2022/12/jenkins-zi-dong-gou-jian-shou-ge-ying-yong/Jenkins%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA%E9%A6%96%E4%B8%AA%E5%BA%94%E7%94%A8@10.png" alt="10"></p>
+<p> 上图中如果不清楚目标服务器的指纹，比如gitee.com通过<code>ssh-keyscan gitee.com</code>获取;</p>
+<p> 然后配置凭据即credentials，步骤略;</p>
+<p> 如果测试连不上远程库，请参考<a href="#1">问题 –&gt; 无法拉取仓库代码</a>;</p>
+<ol start="3">
+<li>配置jdk和maven</li>
+</ol>
+<p> 在上面中已介绍，请参考<a href="#1">问题 –&gt; Maven拉取太慢或无法拉取</a></p>
+<h4 id="开始构建"><a href="#开始构建" class="headerlink" title="开始构建"></a>开始构建</h4><p> 在Dashboard –&gt; 创建任务 –&gt; 输入任务名字(必填),选择Maven项目，点击确认;</p>
+<p> 配置源码管理，当修改Repository Url时，Jenkins会测试是否联通，如下所示:</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shw2018/cdn@1.0/sakura/img/loader/orange.progress-bar-stripe-loader.svg" data-original="/2022/12/jenkins-zi-dong-gou-jian-shou-ge-ying-yong/Jenkins%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA%E9%A6%96%E4%B8%AA%E5%BA%94%E7%94%A8@11.png" alt="11"></p>
+<p> 由于初次构建，其他不用管保持默认，接着修改Post Steps，用于发布到远程vps并执行指令，添加Send files or execute commands over SSH;</p>
+<p><img src="https://cdn.jsdelivr.net/gh/shw2018/cdn@1.0/sakura/img/loader/orange.progress-bar-stripe-loader.svg" data-original="/2022/12/jenkins-zi-dong-gou-jian-shou-ge-ying-yong/Jenkins%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA%E9%A6%96%E4%B8%AA%E5%BA%94%E7%94%A8@12.png" alt="12"></p>
+<p> 由于是从容器发布到宿主机，传输文件就不需要了，因为试过了传输jar包每次都导致网络卡顿，再加上已经挂载工作目录，这里只利用到远程执行脚本构建镜像，脚本如下:</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token assign-left variable">pro_name</span><span class="token operator">=</span>test <span class="token comment"># 项目名称</span>
 <span class="token assign-left variable">tmp_space</span><span class="token operator">=</span>/home/docker/jenkins/workspace  <span class="token comment"># 宿主机挂载jenkins目录的绝对路径</span>
 <span class="token assign-left variable">src</span><span class="token operator">=</span><span class="token variable">${tmp_space}</span>/<span class="token variable">${pro_name}</span>
 <span class="token assign-left variable">dst</span><span class="token operator">=</span>/home/workspace/app/<span class="token variable">${pro_name}</span> <span class="token comment"># 目标路径可以修改成自定义的</span>
@@ -196,7 +706,11 @@ If no key is set then the Passphrase / Password will be used for password authen
 <span class="token keyword">fi</span>
 <span class="token builtin class-name">echo</span> <span class="token string">"-----重新构建-----"</span>
 <span class="token function">docker-compose</span> up <span class="token parameter variable">-d</span>
-<span class="token builtin class-name">echo</span> <span class="token string">"-----构建结束-----"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p> 由于远程仓库已经上传了Dockerfile与docker-compose.yml文件，这里也展示下吧;</p><p> 显示Dockerfile;</p><pre class="line-numbers language-Dockerfile" data-language="Dockerfile"><code class="language-Dockerfile">FROM openjdk:8-jdk
+<span class="token builtin class-name">echo</span> <span class="token string">"-----构建结束-----"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p> 由于远程仓库已经上传了Dockerfile与docker-compose.yml文件，这里也展示下吧;</p>
+<p> 显示Dockerfile;</p>
+<pre class="line-numbers language-Dockerfile" data-language="Dockerfile"><code class="language-Dockerfile">FROM openjdk:8-jdk
 WORKDIR /root
 
 ENV TZ=Asia/Shanghai
@@ -207,7 +721,10 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime &amp;&amp; echo $TZ &gt; /etc
 COPY target/*.jar /root/app.jar
 
 # RUN_MODEL 为docker-compose中定义的参数
-CMD java -jar ${JAVA_OPTS} app.jar ${RUN_MODEL} --server.port=${PORT}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p> 然后docker-compose.yml</p><pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">version</span><span class="token punctuation">:</span> <span class="token string">'3'</span>
+CMD java -jar ${JAVA_OPTS} app.jar ${RUN_MODEL} --server.port=${PORT}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p> 然后docker-compose.yml</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">version</span><span class="token punctuation">:</span> <span class="token string">'3'</span>
 <span class="token key atrule">services</span><span class="token punctuation">:</span>
   <span class="token key atrule">docker_app</span><span class="token punctuation">:</span>
     <span class="token key atrule">build</span><span class="token punctuation">:</span>
@@ -225,7 +742,521 @@ CMD java -jar ${JAVA_OPTS} app.jar ${RUN_MODEL} --server.port=${PORT}<span aria-
       <span class="token key atrule">PORT</span><span class="token punctuation">:</span> <span class="token number">8080</span>
 <span class="token key atrule">networks</span><span class="token punctuation">:</span>
   <span class="token key atrule">jenkinsnginx_app_net</span><span class="token punctuation">:</span> <span class="token comment"># 网络名称需要自己修改，替换成nginx和jenkins所在网络</span>
-    <span class="token key atrule">external</span><span class="token punctuation">:</span> <span class="token boolean important">true</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p> 上面的Dockerfile和docker-compose.yml最好上传到远程仓库，方便运维快速构建;</p><p> 最后，配置nginx反向代理，转发请求到项目所在端口.</p><h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p> 通过这次实验，综合实践了docker+nginx+jenkins，能够实现https访问ip型jenkins后台;</p><p> 挑战虽多，未完整系统学习过nginx，没直接采用最稳妥方案搭建，以致遇到很多少见的问题，比如jenkins版本不兼容jdk1.8，自签名证书，为公网ip而非域名申请ssl证书，直接挂载vps的jdk和maven到容器是否会无法执行(容器不一定为centos7)等;</p><p> 意识到安全的重要性，尤其在Jenkins后台，要用到token(权限粒度粗)和远程vps的私钥等敏感信息，那么使用ssl就有必要了;zerossl的证书有效期只有9个月，后期考虑采用acme.sh脚本自动申请和部署证书.</p><p> 从零开始实现项目自动化构建并部署，有的没的坑都走过.</p><h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ol><li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1bS4y1471A">https://www.bilibili.com/video/BV1bS4y1471A</a></li><li><a target="_blank" rel="noopener" href="https://blog.csdn.net/monkey315/article/details/78936057">https://blog.csdn.net/monkey315/article/details/78936057</a></li><li><a target="_blank" rel="noopener" href="https://juejin.cn/post/6995588010934796302">https://juejin.cn/post/6995588010934796302</a></li><li><a target="_blank" rel="noopener" href="https://www.ruanyifeng.com/blog/2011/12/ssh_remote_login.html">https://www.ruanyifeng.com/blog/2011/12/ssh_remote_login.html</a></li><li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/44711696/jenkins-403-no-valid-crumb-was-included-in-the-request">https://stackoverflow.com/questions/44711696/jenkins-403-no-valid-crumb-was-included-in-the-request</a></li></ol><hr><p><font size="3" color="blue">2022-12-12更新</font></p><p><font size="3" color="blue">2022-12-13补充问题</font></p><p><font size="3" color="blue">2022-12-14补充自动构建第一个应用并修改文章名称</font></p></div><hr><div class="tag_share" style="display:block"><div class="post-meta__tag-list" style="display:inline-block"><div class="article-tag"><a href="/tags/%E5%B7%A5%E5%85%B7/"><span class="chip bg-color">工具</span></a> <a href="/tags/%E8%87%AA%E5%8A%A8%E5%8C%96/"><span class="chip bg-color">自动化</span></a></div></div><div class="post_share" style="zoom:80%;width:fit-content;display:inline-block;float:right;margin:-.15rem 0"><link rel="stylesheet" href="/libs/share/css/share.min.css"><div id="article-share"><div class="social-share" data-sites="qq,qzone,wechat" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div><script src="/libs/share/js/social-share.min.js"></script></div></div></div><div id="reward"><a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a><div id="rewardModal" class="modal"><div class="modal-content"><a class="close modal-close"><i class="fas fa-times"></i></a><h4 class="reward-title">你的赏识是我前进的动力</h4><div class="reward-content"><div class="reward-tabs"><ul class="tabs row"><li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li><li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li></ul><div id="alipay"><img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码"></div><div id="wechat"><img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码"></div></div></div></div></div></div><script>$(function(){$(".tabs").tabs()})</script></div></div><style>.waline-card{margin:1.5rem auto}.waline-card .card-content{padding:20px 20px 5px 20px}#waline p{margin:2px 2px 10px;font-size:1.05rem;line-height:1.78rem}#waline blockquote p{text-indent:.2rem}#waline a{padding:0 2px;color:#4cbf30;font-weight:500;text-decoration:none}#waline img{max-width:100%;cursor:pointer}#waline ol li{list-style-type:decimal}#waline ol,ul{display:block;padding-left:2em;word-spacing:.05rem}#waline ul li,ol li{display:list-item;line-height:1.8rem;font-size:1rem}#waline ul li{list-style-type:disc}#waline ul ul li{list-style-type:circle}#waline table,td,th{padding:12px 13px;border:1px solid #dfe2e5}#waline table,td,th{border:0}table tr:nth-child(2n),thead{background-color:#fafafa}#waline table th{background-color:#f2f2f2;min-width:80px}#waline table td{min-width:80px}#waline h1{font-size:1.85rem;font-weight:700;line-height:2.2rem}#waline h2{font-size:1.65rem;font-weight:700;line-height:1.9rem}#waline h3{font-size:1.45rem;font-weight:700;line-height:1.7rem}#waline h4{font-size:1.25rem;font-weight:700;line-height:1.5rem}#waline h5{font-size:1.1rem;font-weight:700;line-height:1.4rem}#waline h6{font-size:1rem;line-height:1.3rem}#waline p{font-size:1rem;line-height:1.5rem}#waline hr{margin:12px 0;border:0;border-top:1px solid #ccc}#waline blockquote{margin:15px 0;border-left:5px solid #42b983;padding:1rem .8rem .3rem .8rem;color:#666;background-color:rgba(66,185,131,.1)}#waline pre{font-family:monospace,monospace;padding:1.2em;margin:.5em 0;background:#272822;overflow:auto;border-radius:.3em;tab-size:4}#waline code{font-family:monospace,monospace;padding:1px 3px;font-size:.92rem;color:#e96900;background-color:#f8f8f8;border-radius:2px}#waline pre code{font-family:monospace,monospace;padding:0;color:#e8eaf6;background-color:#272822}#waline pre[class*=language-]{padding:1.2em;margin:.5em 0}#waline code[class*=language-],pre[class*=language-]{color:#e8eaf6}#waline [type=checkbox]:not(:checked),[type=checkbox]:checked{position:inherit;margin-left:-1.3rem;margin-right:.4rem;margin-top:-1px;vertical-align:middle;left:unset;visibility:visible}#waline b,strong{font-weight:700}#waline dfn{font-style:italic}#waline small{font-size:85%}#waline cite{font-style:normal}#waline mark{background-color:#fcf8e3;padding:.2em}#waline table,td,th{padding:12px 13px;border:1px solid #dfe2e5}table tr:nth-child(2n),thead{background-color:#fafafa}#waline table th{background-color:#f2f2f2;min-width:80px}#waline table td{min-width:80px}#waline [type=checkbox]:not(:checked),[type=checkbox]:checked{position:inherit;margin-left:-1.3rem;margin-right:.4rem;margin-top:-1px;vertical-align:middle;left:unset;visibility:visible}</style><div class="card waline-card" data-aos="fade-up"><div class="comment_headling" style="font-size:20px;font-weight:700;position:relative;padding-left:20px;top:15px;padding-bottom:5px"><i class="fas fa-comments fa-fw" aria-hidden="true"></i> <span>评论</span></div><div id="waline" class="card-content" style="display:grid"></div></div><script src="/libs/waline/Waline.min.js"></script><script>new Waline({el:"#waline",serverURL:"https://hexo-waline-h3fqxfz0o-adjaisd.vercel.app",avatar:"mm"})</script><article id="prenext-posts" class="prev-next articles"><div class="row article-row"><div class="article col s12 m6" data-aos="fade-up"><div class="article-badge left-badge text-color"><i class="fas fa-chevron-left"></i> &nbsp;上一篇</div><div class="card"><a href="/2022/12/bi-ye-xuan-ze.html"><div class="card-image"><img src="/medias/featureimages/5.jpg" class="responsive-img" alt="毕业选择"> <span class="card-title">毕业选择</span></div></a><div class="card-content article-content"><div class="summary block-with-text"></div><div class="publish-info"><span class="publish-date"><i class="far fa-clock fa-fw icon-date"></i> 2022-12-17</span><span class="publish-author"><i class="fas fa-bookmark fa-fw icon-category"></i> <a href="/categories/%E7%BB%8F%E5%8E%86/" class="post-category">经历</a></span></div></div><div class="card-action article-tags"><a href="/tags/%E7%BB%8F%E5%8E%86/"><span class="chip bg-color">经历</span></a></div></div></div><div class="article col s12 m6" data-aos="fade-up"><div class="article-badge right-badge text-color">下一篇&nbsp;<i class="fas fa-chevron-right"></i></div><div class="card"><a href="/2022/12/vmware-wang-luo-pei-zhi.html"><div class="card-image"><img src="/medias/featureimages/0.jpg" class="responsive-img" alt="VMware网络配置"> <span class="card-title">VMware网络配置</span></div></a><div class="card-content article-content"><div class="summary block-with-text"></div><div class="publish-info"><span class="publish-date"><i class="far fa-clock fa-fw icon-date"></i> 2022-12-04</span><span class="publish-author"><i class="fas fa-bookmark fa-fw icon-category"></i> <a href="/categories/%E7%BD%91%E7%BB%9C/" class="post-category">网络</a> <a href="/categories/%E7%BD%91%E7%BB%9C/%E5%B7%A5%E5%85%B7/" class="post-category">工具</a></span></div></div><div class="card-action article-tags"><a href="/tags/%E7%BD%91%E7%BB%9C/"><span class="chip bg-color">网络</span></a></div></div></div></div></article></div><script>$("#articleContent").on("copy",function(e){if(void 0!==window.getSelection){var n=window.getSelection();if(!((""+n).length<Number.parseInt("120"))){var t=document.getElementsByTagName("body")[0],o=document.createElement("div");o.style.position="absolute",o.style.left="-99999px",t.appendChild(o),o.appendChild(n.getRangeAt(0).cloneContents()),"PRE"!==n.getRangeAt(0).commonAncestorContainer.nodeName&&"CODE"!==n.getRangeAt(0).commonAncestorContainer.nodeName||(o.innerHTML="<pre>"+o.innerHTML+"</pre>");var i=document.location.href;o.innerHTML+='<br />来源: adjaisd&#39;s Blog<br />文章作者: adjaisd<br />文章链接: <a href="'+i+'">'+i+"</a><br />本文章著作权归作者所有，任何形式的转载都请注明出处。",n.selectAllChildren(o),window.setTimeout(function(){t.removeChild(o)},200)}}})</script><script src="/libs/codeBlock/codeBlockFuction.js"></script><script src="/libs/prism/prism.js"></script><script src="/libs/codeBlock/codeShrink.js"></script></div><div id="toc-aside" class="expanded col l3 hide-on-med-and-down"><div class="toc-widget card" style="background-color:#fff"><div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div><div id="toc-content"></div></div></div></div><div id="floating-toc-btn" class="hide-on-med-and-down"><a class="btn-floating btn-large bg-color"><i class="fas fa-list-ul"></i></a></div><script src="/libs/tocbot/tocbot.min.js"></script><script>$(function () {
+    <span class="token key atrule">external</span><span class="token punctuation">:</span> <span class="token boolean important">true</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p> 上面的Dockerfile和docker-compose.yml最好上传到远程仓库，方便运维快速构建;</p>
+<p> 最后，配置nginx反向代理，转发请求到项目所在端口.</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p> 通过这次实验，综合实践了docker+nginx+jenkins，能够实现https访问ip型jenkins后台;</p>
+<p> 挑战虽多，未完整系统学习过nginx，没直接采用最稳妥方案搭建，以致遇到很多少见的问题，比如jenkins版本不兼容jdk1.8，自签名证书，为公网ip而非域名申请ssl证书，直接挂载vps的jdk和maven到容器是否会无法执行(容器不一定为centos7)等;</p>
+<p> 意识到安全的重要性，尤其在Jenkins后台，要用到token(权限粒度粗)和远程vps的私钥等敏感信息，那么使用ssl就有必要了;zerossl的证书有效期只有9个月，后期考虑采用acme.sh脚本自动申请和部署证书.</p>
+<p> 从零开始实现项目自动化构建并部署，有的没的坑都走过.</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ol>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1bS4y1471A">https://www.bilibili.com/video/BV1bS4y1471A</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/monkey315/article/details/78936057">https://blog.csdn.net/monkey315/article/details/78936057</a></li>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/6995588010934796302">https://juejin.cn/post/6995588010934796302</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.ruanyifeng.com/blog/2011/12/ssh_remote_login.html">https://www.ruanyifeng.com/blog/2011/12/ssh_remote_login.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/44711696/jenkins-403-no-valid-crumb-was-included-in-the-request">https://stackoverflow.com/questions/44711696/jenkins-403-no-valid-crumb-was-included-in-the-request</a></li>
+</ol>
+<hr>
+<p><font size="3" color="blue">2022-12-12更新</font></p>
+<p><font size="3" color="blue">2022-12-13补充问题</font></p>
+<p><font size="3" color="blue">2022-12-14补充自动构建第一个应用并修改文章名称</font></p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/%E5%B7%A5%E5%85%B7/">
+                                    <span class="chip bg-color">工具</span>
+                                </a>
+                            
+                                <a href="/tags/%E8%87%AA%E5%8A%A8%E5%8C%96/">
+                                    <span class="chip bg-color">自动化</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="qq,qzone,wechat" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <style>
+    .waline-card {
+        margin: 1.5rem auto;
+    }
+    .waline-card .card-content {
+        padding: 20px 20px 5px 20px;
+    }
+
+    #waline p {
+        margin: 2px 2px 10px;
+        font-size: 1.05rem;
+        line-height: 1.78rem;
+    }
+    #waline blockquote p {
+        text-indent: 0.2rem;
+    }
+    #waline a {
+        padding: 0 2px;
+        color: #4cbf30;
+        font-weight: 500;
+        text-decoration: none;
+    }
+    #waline img {
+        max-width: 100%;
+        cursor: pointer;
+    }
+    #waline ol li {
+        list-style-type: decimal;
+    }
+    #waline ol,
+    ul {
+        display: block;
+        padding-left: 2em;
+        word-spacing: 0.05rem;
+    }
+    #waline ul li,
+    ol li {
+        display: list-item;
+        line-height: 1.8rem;
+        font-size: 1rem;
+    }
+    #waline ul li {
+        list-style-type: disc;
+    }
+    #waline ul ul li {
+        list-style-type: circle;
+    }
+    #waline table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+    #waline table, th, td {
+        border: 0;
+    }
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+    #waline table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+    #waline table td {
+        min-width: 80px;
+    }
+    #waline h1 {
+        font-size: 1.85rem;
+        font-weight: bold;
+        line-height: 2.2rem;
+    }
+    #waline h2 {
+        font-size: 1.65rem;
+        font-weight: bold;
+        line-height: 1.9rem;
+    }
+    #waline h3 {
+        font-size: 1.45rem;
+        font-weight: bold;
+        line-height: 1.7rem;
+    }
+    #waline h4 {
+        font-size: 1.25rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+    #waline h5 {
+        font-size: 1.1rem;
+        font-weight: bold;
+        line-height: 1.4rem;
+    }
+    #waline h6 {
+        font-size: 1rem;
+        line-height: 1.3rem;
+    }
+    #waline p {
+        font-size: 1rem;
+        line-height: 1.5rem;
+    }
+    #waline hr {
+        margin: 12px 0;
+        border: 0;
+        border-top: 1px solid #ccc;
+    }
+    #waline blockquote {
+        margin: 15px 0;
+        border-left: 5px solid #42b983;
+        padding: 1rem 0.8rem 0.3rem 0.8rem;
+        color: #666;
+        background-color: rgba(66, 185, 131, .1);
+    }
+    #waline pre {
+        font-family: monospace, monospace;
+        padding: 1.2em;
+        margin: .5em 0;
+        background: #272822;
+        overflow: auto;
+        border-radius: 0.3em;
+        tab-size: 4;
+    }
+    #waline code {
+        font-family: monospace, monospace;
+        padding: 1px 3px;
+        font-size: 0.92rem;
+        color: #e96900;
+        background-color: #f8f8f8;
+        border-radius: 2px;
+    }
+    #waline pre code {
+        font-family: monospace, monospace;
+        padding: 0;
+        color: #e8eaf6;
+        background-color: #272822;
+    }
+    #waline pre[class*="language-"] {
+        padding: 1.2em;
+        margin: .5em 0;
+    }
+    #waline code[class*="language-"],
+    pre[class*="language-"] {
+        color: #e8eaf6;
+    }
+    #waline [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+    #waline b,
+    strong {
+        font-weight: bold;
+    }
+    #waline dfn {
+        font-style: italic;
+    }
+    #waline small {
+        font-size: 85%;
+    }
+    #waline cite {
+        font-style: normal;
+    }
+    #waline mark {
+        background-color: #fcf8e3;
+        padding: .2em;
+    }
+    #waline table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+    #waline table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+    #waline table td {
+        min-width: 80px;
+    }
+    #waline [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+  </style>
+  
+  <div class="card waline-card" data-aos="fade-up">
+    <div class="comment_headling" style="font-size: 20px; font-weight: 700; position: relative; padding-left: 20px; top: 15px; padding-bottom: 5px;">
+        <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
+        <span>评论</span>
+    </div>
+    <div id="waline" class="card-content" style="display: grid">
+    </div>
+  </div>
+
+
+  <!-- <script src="//cdn.jsdelivr.net/npm/@waline/client"></script> -->
+  <script src="/libs/waline/Waline.min.js"></script>
+  <script>
+    new Waline({
+        el: '#waline',
+        serverURL: 'https://hexo-waline-h3fqxfz0o-adjaisd.vercel.app',
+        avatar: 'mm'    
+    });
+  </script> 
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2022/12/bi-ye-xuan-ze.html">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="毕业选择">
+                        
+                        <span class="card-title">毕业选择</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-12-17
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E7%BB%8F%E5%8E%86/" class="post-category">
+                                    经历
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+
+                <!--修复标签为空时card不对齐-->
+                <div class="card-action article-tags">
+                    
+                        
+                        <a href="/tags/%E7%BB%8F%E5%8E%86/">
+                            <span class="chip bg-color">经历</span>
+                        </a>
+                        
+                    
+                </div>
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2022/12/vmware-wang-luo-pei-zhi.html">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="VMware网络配置">
+                        
+                        <span class="card-title">VMware网络配置</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-12-04
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E7%BD%91%E7%BB%9C/" class="post-category">
+                                    网络
+                                </a>
+                            
+                            <a href="/categories/%E7%BD%91%E7%BB%9C/%E5%B7%A5%E5%85%B7/" class="post-category">
+                                    工具
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+
+                <!--修复标签为空时card不对齐-->
+                <div class="card-action article-tags">
+                    
+                        
+                        <a href="/tags/%E7%BD%91%E7%BB%9C/">
+                            <span class="chip bg-color">网络</span>
+                        </a>
+                        
+                    
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('120')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE' || selection.getRangeAt(0).commonAncestorContainer.nodeName === 'CODE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + '来源: adjaisd&#39;s Blog<br />'
+            + '文章作者: adjaisd<br />'
+            + '文章链接: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归作者所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
+    });
+</script>
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 使用主题的 prismjs. -->
+<script type="text/javascript" src="/libs/prism/prism.js"></script>
+
+<!-- 代码语言 -->
+
+
+<!-- 代码块复制 -->
+
+
+<!-- 代码块收缩 -->
+
+    <script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
         tocbot.init({
             tocSelector: '#toc-content',
             contentSelector: '#articleContent',
@@ -283,4 +1314,448 @@ CMD java -jar ${JAVA_OPTS} app.jar ${RUN_MODEL} --server.port=${PORT}<span aria-
             fixPostCardWidth('artDetail', 'prenext-posts');
         });
         
-    });</script></main><footer class="page-footer bg-color"><link rel="stylesheet" href="/libs/aplayer/APlayer.min.css"><style>.aplayer .aplayer-lrc p{display:none;font-size:12px;font-weight:700;line-height:16px!important}.aplayer .aplayer-lrc p.aplayer-lrc-current{display:none;font-size:15px;color:#542674}.aplayer.aplayer-fixed.aplayer-narrow .aplayer-body{left:-66px!important}.aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover{left:0!important}</style><div><div class="row"><meting-js class="col l8 offset-l2 m10 offset-m1 s12" server="netease" type="playlist" id="7420433965" fixed="true" autoplay theme="#542674" loop order="random" preload="auto" volume="0.1" list-folded="true"></meting-js></div></div><script src="/libs/aplayer/APlayer.min.js"></script><script src="/libs/aplayer/Meting.min.js"></script><div class="container row center-align" style="margin-bottom:15px!important"><div class="col s12 m8 l8 copy-right">Copyright&nbsp;&copy; <span id="year">2021-2023</span> <a href="/about" target="_blank">adjaisd</a> |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a> |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a><br>&nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span class="white-color">69.8k</span> <span id="busuanzi_container_site_pv">&nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv" class="white-color"></span></span> <span id="busuanzi_container_site_uv">&nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;<span id="busuanzi_value_site_uv" class="white-color"></span></span><br><span id="sitetime">Loading ...</span><script>var calcSiteTime=function(){var e=new Date,t="2021",n=e.getFullYear(),i=e.getMonth()+1,a=e.getDate(),r=e.getHours(),s=e.getMinutes(),o=e.getSeconds(),g=Date.UTC(t,"4","5","0","0","0"),d=Date.UTC(n,i,a,r,s,o)-g,m=Math.floor(d/31536e6),l=Math.floor(d/864e5-365*m);if(t===String(n)){document.getElementById("year").innerHTML=n;var c="This site has been running for "+l+" days";c="本站已运行 "+l+" 天",document.getElementById("sitetime").innerHTML=c}else{document.getElementById("year").innerHTML=t+" - "+n;var u="This site has been running for "+m+" years and "+l+" days";u="本站已运行 "+m+" 年 "+l+" 天",document.getElementById("sitetime").innerHTML=u}};calcSiteTime()</script><br></div><div class="col s12 m4 l4 social-link social-statis"><a href="https://github.com/adjaisd" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50"><i class="fab fa-github"></i></a><a href="mailto:2390248029@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50"><i class="fas fa-envelope-open"></i></a><a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=2390248029" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 2390248029" data-position="top" data-delay="50"><i class="fab fa-qq"></i></a><a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50"><i class="fas fa-rss"></i></a></div></div></footer><div class="progress-bar"></div><div id="searchModal" class="modal"><div class="modal-content"><div class="search-header"><span class="title"><i class="fas fa-search"></i> &nbsp;&nbsp;搜索</span> <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字" class="search-input"></div><div id="searchResult"></div></div></div><script>$(function(){!function(t,a,s){"use strict";$.ajax({url:t,dataType:"xml",success:function(t){var e=$("entry",t).map(function(){return{title:$("title",this).text(),content:$("content",this).text(),url:$("url",this).text()}}).get(),r=document.getElementById(a),n=document.getElementById(s);r.addEventListener("input",function(){var f='<ul class="search-result-list">',m=this.value.trim().toLowerCase().split(/[\s\-]+/);n.innerHTML="",this.value.trim().length<=0||(e.forEach(function(t){var r=!0,n=t.title.trim().toLowerCase(),a=t.content.trim().replace(/<[^>]+>/g,"").toLowerCase(),e=t.url;e=0===e.indexOf("/")?t.url:"/"+e;var s=-1,i=-1,l=-1;if(""!==n&&""!==a&&m.forEach(function(t,e){s=n.indexOf(t),i=a.indexOf(t),s<0&&i<0?r=!1:(i<0&&(i=0),0===e&&(l=i))}),r){f+="<li><a href='"+e+"' class='search-result-title'>"+n+"</a>";var c=t.content.trim().replace(/<[^>]+>/g,"");if(0<=l){var u=l-20,o=l+80;u<0&&(u=0),0===u&&(o=100),o>c.length&&(o=c.length);var h=c.substr(u,o);m.forEach(function(t){var e=new RegExp(t,"gi");h=h.replace(e,'<em class="search-keyword">'+t+"</em>")}),f+='<p class="search-result">'+h+"...</p>"}f+="</li>"}}),f+="</ul>",n.innerHTML=f)})}})}("/search.xml","searchInput","searchResult")})</script><div class="stars-con"><div id="stars"></div><div id="stars2"></div><div id="stars3"></div></div><div class="sun-moon-box"><a class="btn-floating btn-large waves-effect waves-light" onclick="switchNightMode()" title="切换主题"><i id="sun-moon-icon" class="fas fa-sun" style="width:48px;height:48px;font-size:28px"></i></a></div><script>function switchNightMode(){$('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($("body")),setTimeout(function(){$("body").hasClass("DarkMode")?($("body").removeClass("DarkMode"),localStorage.setItem("isDark","0"),$("#sun-moon-icon").removeClass("fa-sun").addClass("fa-moon"),$("#sun-moon-icon").removeClass("fa-sun").addClass("fa-moon")):($("body").addClass("DarkMode"),localStorage.setItem("isDark","1"),$("#sun-moon-icon").addClass("fa-sun").removeClass("fa-moon"),$("#sun-moon-icon").addClass("fa-sun").removeClass("fa-moon")),setTimeout(function(){$(".Cuteen_DarkSky").fadeOut(1e3,function(){$(this).remove()})},2e3)})}</script><div id="backTop" class="top-scroll"><a class="btn-floating btn-large waves-effect waves-light" href="#!"><i class="fas fa-arrow-up"></i></a></div><script src="/libs/materialize/materialize.min.js"></script><script src="/libs/masonry/masonry.pkgd.min.js"></script><script src="/libs/aos/aos.js"></script><script src="/libs/scrollprogress/scrollProgress.min.js"></script><script src="/libs/lightGallery/js/lightgallery-all.min.js"></script><script src="/js/matery.js"></script><script>var st,OriginTitile=document.title;document.addEventListener("visibilitychange",function(){document.hidden?(document.title="ヽ(●-`Д´-)ノ你要玩捉迷藏嘛",clearTimeout(st)):(document.title="(Ő∀Ő3)ノ好哦！",st=setTimeout(function(){document.title=OriginTitile},3e3))})</script><script>var windowWidth=$(window).width();768<windowWidth&&document.write('<script type="text/javascript" src="/libs/others/snow.js"><\/script>')</script><script>var windowWidth=$(window).width();768<windowWidth&&document.write('<script type="text/javascript" src="/libs/others/star.js"><\/script>')</script><script src="https://ssl.captcha.qq.com/TCaptcha.js"></script><script src="/libs/others/TencentCaptcha.js"></script><button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button><script>!function(){var t=document.createElement("script"),e=window.location.protocol.split(":")[0];t.src="https"===e?"https://zz.bdstatic.com/linksubmit/push.js":"http://push.zhanzhang.baidu.com/push.js";var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(t,s)}()</script><script async src="/libs/others/busuanzi.pure.mini.js"></script><script src="/libs/background/ribbon-dynamic.js" async></script><script src="/libs/instantpage/instantpage.js" type="module"></script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({pluginRootPath:"live2dw/",pluginJsPath:"lib/",pluginModelPath:"assets/",tagMode:!1,log:!1,model:{jsonPath:"/live2dw/assets/shizuku.model.json"},display:{position:"right",width:90,height:180},mobile:{show:!1},react:{opacity:.9}})</script><style>[bg-lazy]{background-image:none!important;background-color:#eee!important}</style><script>window.imageLazyLoadSetting={isSPA:!1,preloadRatio:1,processImages:null}</script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})})</script><script>!function(r){r.imageLazyLoadSetting.processImages=t;var e=r.imageLazyLoadSetting.isSPA,n=r.imageLazyLoadSetting.preloadRatio||1,c=a();function a(){var t=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")),e=Array.prototype.slice.call(document.querySelectorAll("[bg-lazy]"));return t.concat(e)}function t(){e&&(c=a());for(var t,o=0;o<c.length;o++)0<=(t=(t=c[o]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(r.innerHeight*n||document.documentElement.clientHeight*n)&&function(){var t,e,n,a,i=c[o];e=function(){c=c.filter(function(t){return i!==t}),r.imageLazyLoadSetting.onImageLoaded&&r.imageLazyLoadSetting.onImageLoaded(i)},(t=i).hasAttribute("bg-lazy")?(t.removeAttribute("bg-lazy"),e()):(n=new Image,a=t.getAttribute("data-original"),n.onload=function(){t.src=a,t.removeAttribute("data-original"),e()},t.src!==a&&(n.src=a))}()}function i(){clearTimeout(t.tId),t.tId=setTimeout(t,500)}t(),document.addEventListener("scroll",i),r.addEventListener("resize",i),r.addEventListener("orientationchange",i)}(this)</script></body></html>
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #542674;
+    }
+
+    
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+        left: -66px !important;
+    }
+
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+        left: 0px !important;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="7420433965"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#542674'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.1'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="/libs/aplayer/APlayer.min.js"></script>
+<script src="/libs/aplayer/Meting.min.js"></script>
+
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 15px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2021-2023</span>
+            
+            <a href="/about" target="_blank">adjaisd</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+                &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
+                        class="white-color">72.8k</span>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+                <span id="sitetime"> Loading ...</span>
+                <script>
+                    var calcSiteTime = function () {
+                        var seconds = 1000;
+                        var minutes = seconds * 60;
+                        var hours = minutes * 60;
+                        var days = hours * 24;
+                        var years = days * 365;
+                        var today = new Date();
+                        var startYear = "2021";
+                        var startMonth = "4";
+                        var startDate = "5";
+                        var startHour = "0";
+                        var startMinute = "0";
+                        var startSecond = "0";
+                        var todayYear = today.getFullYear();
+                        var todayMonth = today.getMonth() + 1;
+                        var todayDate = today.getDate();
+                        var todayHour = today.getHours();
+                        var todayMinute = today.getMinutes();
+                        var todaySecond = today.getSeconds();
+                        var t1 = Date.UTC(startYear, startMonth, startDate, startHour, startMinute, startSecond);
+                        var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+                        var diff = t2 - t1;
+                        var diffYears = Math.floor(diff / years);
+                        var diffDays = Math.floor((diff / days) - diffYears * 365);
+
+                        // 区分是否有年份.
+                        var language = 'zh-CN';
+                        if (startYear === String(todayYear)) {
+                            document.getElementById("year").innerHTML = todayYear;
+                            var daysTip = 'This site has been running for ' + diffDays + ' days';
+                            if (language === 'zh-CN') {
+                                daysTip = '本站已运行 ' + diffDays + ' 天';
+                            } else if (language === 'zh-HK') {
+                                daysTip = '本站已運行 ' + diffDays + ' 天';
+                            }
+                            document.getElementById("sitetime").innerHTML = daysTip;
+                        } else {
+                            document.getElementById("year").innerHTML = startYear + " - " + todayYear;
+                            var yearsAndDaysTip = 'This site has been running for ' + diffYears + ' years and '
+                                + diffDays + ' days';
+                            if (language === 'zh-CN') {
+                                yearsAndDaysTip = '本站已运行 ' + diffYears + ' 年 ' + diffDays + ' 天';
+                            } else if (language === 'zh-HK') {
+                                yearsAndDaysTip = '本站已運行 ' + diffYears + ' 年 ' + diffDays + ' 天';
+                            }
+                            document.getElementById("sitetime").innerHTML = yearsAndDaysTip;
+                        }
+                    }
+
+                    calcSiteTime();
+                </script>
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/adjaisd" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:2390248029@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=2390248029" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 2390248029" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>
+</div>
+<div class="sun-moon-box">
+  <a class="btn-floating btn-large waves-effect waves-light" onclick="switchNightMode()" title="切换主题" >
+    <i id="sun-moon-icon" class="fas fa-sun" style="width:48px; height:48px; font-size: 28px;"></i>
+  </a>
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sun-moon-icon').removeClass("fa-sun").addClass('fa-moon')
+                , $('#sun-moon-icon').removeClass("fa-sun").addClass('fa-moon'))
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sun-moon-icon').addClass("fa-sun").removeClass('fa-moon')
+                , $('#sun-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!--动态标题-->
+    <script>
+        var OriginTitile=document.title,st;
+    	document.addEventListener("visibilitychange",function(){
+            document.hidden?(document.title="ヽ(●-`Д´-)ノ你要玩捉迷藏嘛", clearTimeout(st)):(document.title="(Ő∀Ő3)ノ好哦！",st=setTimeout(function(){document.title=OriginTitile},3e3))
+        })
+    </script>
+
+
+    
+
+    
+
+    <!-- 雪花特效 -->
+    
+        <script type="text/javascript">
+            // 只在桌面版网页启用特效
+            var windowWidth = $(window).width();
+            if (windowWidth > 768) {
+                document.write('<script type="text/javascript" src="/libs/others/snow.js"><\/script>');
+            }
+        </script>
+    
+
+    <!-- 鼠标星星特效 -->
+    
+        <script type="text/javascript">
+            // 只在桌面版网页启用特效
+            var windowWidth = $(window).width();
+            if (windowWidth > 768) {
+                document.write('<script type="text/javascript" src="/libs/others/star.js"><\/script>');
+            }
+        </script>
+    
+
+    
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    <!--腾讯兔小巢-->
+    
+    
+
+    
+
+    
+    <script type="text/javascript" src="/libs/background/ribbon-dynamic.js" async="async"></script>
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/shizuku.model.json"},"display":{"position":"right","width":90,"height":180},"mobile":{"show":false},"react":{"opacity":0.9}});</script>
+        <style>
+            [bg-lazy] {
+                background-image: none !important;
+                background-color: #eee !important;
+            }
+        </style>
+        <script>
+            window.imageLazyLoadSetting = {
+                isSPA: false,
+                preloadRatio: 1,
+                processImages: null,
+            };
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(r){r.imageLazyLoadSetting.processImages=t;var e=r.imageLazyLoadSetting.isSPA,n=r.imageLazyLoadSetting.preloadRatio||1,c=a();function a(){var t=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")),e=Array.prototype.slice.call(document.querySelectorAll("[bg-lazy]"));return t.concat(e)}function t(){e&&(c=a());for(var t,o=0;o<c.length;o++)0<=(t=(t=c[o]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(r.innerHeight*n||document.documentElement.clientHeight*n)&&function(){var t,e,n,a,i=c[o];e=function(){c=c.filter(function(t){return i!==t}),r.imageLazyLoadSetting.onImageLoaded&&r.imageLazyLoadSetting.onImageLoaded(i)},(t=i).hasAttribute("bg-lazy")?(t.removeAttribute("bg-lazy"),e&&e()):(n=new Image,a=t.getAttribute("data-original"),n.onload=function(){t.src=a,t.removeAttribute("data-original"),e&&e()},t.src!==a&&(n.src=a))}()}function i(){clearTimeout(t.tId),t.tId=setTimeout(t,500)}t(),document.addEventListener("scroll",i),r.addEventListener("resize",i),r.addEventListener("orientationchange",i)}(this);</script></body>
+
+</html>
