@@ -30,7 +30,6 @@ https://adjaisd.github.io/2022/05/fen-xiang-xia-xue-xi-lian-jie.html
 https://adjaisd.github.io/2022/05/tan-yi-xia-da-chuang-gan-xiang.html
 https://adjaisd.github.io/2022/05/nvm-guan-li-node-huan-jing.html
 https://adjaisd.github.io/2022/05/virtualbox-jing-xiang-cao-zuo.html
-https://adjaisd.github.io/2022/05/docker-da-jian-softethervpn.html
 https://adjaisd.github.io/2022/05/docker-da-jian-halo-bo-ke-xi-tong.html
 https://adjaisd.github.io/2021/06/docker-xue-xi-bi-ji.html
 https://adjaisd.github.io/2021/06/lan-qiao-bei-jing-sai-jing-li.html
