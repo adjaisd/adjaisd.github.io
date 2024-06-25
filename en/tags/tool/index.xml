@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Tool on Loong's Blog</title><link>https://adja.com.cn/en/tags/tool/</link><description>Recent content in Tool on Loong's Blog</description><generator>Hugo -- gohugo.io</generator><language>en</language><copyright>Loong</copyright><lastBuildDate>Mon, 24 Jun 2024 12:28:44 +0800</lastBuildDate><atom:link href="https://adja.com.cn/en/tags/tool/index.xml" rel="self" type="application/rss+xml"/><item><title>Automated Build Via Jenkins</title><link>https://adja.com.cn/en/p/automated-build-via-jenkins/</link><pubDate>Mon, 24 Jun 2024 12:28:44 +0800</pubDate><guid>https://adja.com.cn/en/p/automated-build-via-jenkins/</guid><description>&lt;h1 id="automated-build-via-jenkins">Automated Build Via Jenkins
+&lt;/h1></description></item><item><title>Development Environment Management Tools</title><link>https://adja.com.cn/en/p/dev-environment-management-tools/</link><pubDate>Wed, 19 Jun 2024 07:34:46 +0800</pubDate><guid>https://adja.com.cn/en/p/dev-environment-management-tools/</guid><description>&lt;img src="https://adja.com.cn/p/dev-environment-management-tools/development-environment-management-tools-1.jpg" alt="Featured image of post Development Environment Management Tools" />&lt;h1 id="development-environment-management-tools">Development Environment Management Tools
+&lt;/h1>&lt;p> When developing, multiple development environments are often used. You may have used tools like &lt;em>miniconda&lt;/em>, &lt;em>nvm&lt;/em>, and &lt;em>gvm&lt;/em>, which are used to manage versions of &lt;em>python&lt;/em>, &lt;em>nodejs&lt;/em>, and &lt;em>go&lt;/em> respectively. in addition, there are package management tools such as &lt;em>maven&lt;/em>.&lt;/p>
+&lt;p> If you use a new programming language or package management tool, it is troublesome to install the corresponding version management tool. Next, we will introduce three development environment management tools: &lt;em>asdf&lt;/em>, &lt;em>mise&lt;/em>, and &lt;em>vfox&lt;/em>.&lt;/p>
+&lt;h2 id="comparison-of-asdf-mise-and-vfox">Comparison of &lt;em>asdf&lt;/em>, &lt;em>mise&lt;/em> and &lt;em>vfox&lt;/em>
+&lt;/h2>&lt;p> All three are tools for managing development environments, and all provide unified command line instructions. Their functions can be expanded by installing plugins.&lt;/p>
+&lt;ul>
+&lt;li>asdf&lt;/li>
+&lt;/ul>
+&lt;p> Asdf was born earlier, and its plug-in ecosystem is more complete. It is mainly developed using shell scripts and can be well adapted to Linux and Mac. When it comes to support for Windows, someone raised a similar issue to the official, but no version supporting Win was provided later.&lt;/p>
+&lt;p> Of course, if you must use asdf on the Win platform, you can install and use it in wsl, but considering that the speed of wsl is far inferior to that of the native exe format program, and the shell itself is interpreted and executed, the speed is even slower. Therefore, except for the Win platform, other platforms recommend using asdf.&lt;/p>
+&lt;ul>
+&lt;li>mise&lt;/li>
+&lt;/ul>
+&lt;p> The original name of this tool is &lt;em>rtx&lt;/em>. Since the original name is easily confused with the name of Nvidia&amp;rsquo;s graphics card, it was later renamed &lt;em>mise&lt;/em>. It is developed in the rust programming language.&lt;/p>
+&lt;p> Because the backend uses &lt;em>asdf&lt;/em>, it also inherits the shortcomings of &lt;em>asdf&lt;/em> and also has poor support for the Win platform.&lt;/p>
+&lt;ul>
+&lt;li>vfox&lt;/li>
+&lt;/ul>
+&lt;p> &lt;em>vfox&lt;/em> is developed in the go programming language. Compared with the other two tools, it is finally compiled into an executable file. Therefore, it is much faster and has a smaller size, and it also provides native support for the Win platform.&lt;/p>
+&lt;p> The only drawback is that most users of this type of tool may use Linux and Mac systems, and &lt;em>vfox&lt;/em> has fewer contributors and its functions need to be improved, but it should exceed the first two in the future.&lt;/p>
+&lt;h2 id="summary">Summary
+&lt;/h2>&lt;p> Comparing the characteristics of the three, I prefer to use &lt;em>vfox&lt;/em> to manage the development environment. Despite this, I still use language-specific version management tools such as &lt;em>miniconda&lt;/em> in daily life;&lt;/p>
+&lt;p> Even if you have learned a lot of programming languages, most people mainly use 3 or less programming languages in daily life. Solving the installation and use of three tools is more difficult than solving the bug of one tool. The former takes less time and does not require searching for solutions and then raising an issue.&lt;/p>
+&lt;p> In addition, I have recently found that the configuration of the environment is becoming simpler while tossing automation tools. &lt;em>Dev Container&lt;/em> is a blessing for software development. Perhaps in the future, developers of any platform will not have to pay attention to the installation and configuration of the environment. I look forward to the arrival of this day.&lt;/p>
+&lt;hr>
+&lt;p>&lt;font color=blue size=3>2024-06-119 First update&lt;/font>&lt;/p></description></item><item><title>Blog Migration</title><link>https://adja.com.cn/en/p/blog-migration/</link><pubDate>Mon, 17 Jun 2024 00:46:21 +0800</pubDate><guid>https://adja.com.cn/en/p/blog-migration/</guid><description>&lt;img src="https://adja.com.cn/p/blog-migration/blog-migration-1.jpg" alt="Featured image of post Blog Migration" />&lt;h1 id="blog-migration">Blog Migration
+&lt;/h1>&lt;p> It has gone about 5 months since I wrote blogs last time. During this time, I spent most of my time at work. Even if I&amp;rsquo;m free, I didn&amp;rsquo;t spend much time to make up for the lack of knowledge. It wasn&amp;rsquo;t until last month, around mid-April, that I gradually wanted to get rid of this state. So I stated from the areas that interests me. Next, let me review what happened in the past months.&lt;/p>
+&lt;h2 id="cause">Cause
+&lt;/h2>&lt;p> Since I graduated and worked nearly half a year ago, in addition to daily entertainment, I often browse &lt;code>GitHub&lt;/code>, go out for dinner with friends, or play &amp;lsquo;World of Warcraft&amp;rsquo; online with classmates, etc. But I always felt like something was missing. After they started working and going to school, they had less and less time for dinner and entertainment together.&lt;/p>
+&lt;p> Although I can study new things in daily work, I feel still lacking. Later I realized that It was probably because I didn&amp;rsquo;t take enough action and was consumed by the anxiety on the Internet. I gradually realized that if I continued like this, I would never live up to my expectations.&lt;/p>
+&lt;h2 id="migration">Migration
+&lt;/h2>&lt;p> I have been considering migrating my blog since the beginning of May. It&amp;rsquo;s necessary to consider the following aspects when migrating my blog:&lt;/p>
+&lt;ol>
+&lt;li>Lower learning cost&lt;/li>
+&lt;li>Reusable&lt;/li>
+&lt;li>Indirect or direct access to areas of interest&lt;/li>
+&lt;li>Framework stability&lt;/li>
+&lt;/ol>
+&lt;p> After comprehensive consideration, I finally chose the hugo framework. On the one hand, hugo is widely used. In addition, I may use Golang when exploring network knowledge in the future. It just so happened that hugo was developed using the Golang.&lt;/p>
+&lt;p> Next, I need to choose a nice theme. However, Hugo has less reference documents than Hexo. So at first, I considered &lt;a class="link" href="https://github.com/razonyang/hugo-theme-bootstrap.git" target="_blank" rel="noopener"
+>hugo-theme-bootstrap&lt;/a> Because its Chinese documents is well written and supports both blog and document layouts. However, there are not many participants, and the author may not maintain it for a long time, so I didn&amp;rsquo;t adopt it in the end. Later I adopted &lt;a class="link" href="https://github.com/CaiJimmy/hugo-theme-stack.git" target="_blank" rel="noopener"
+>hugo-theme-stack&lt;/a>, it has almost no third-party dependencies, and the Chinese document is relatively complete.&lt;/p>
+&lt;p> After improving the overall layout and some details, I spent half a day thinking about &lt;code>Github Actions&lt;/code>. I had used &lt;code>Jenkins&lt;/code> to build before, but this time I was struck on the authentication of the deployment public key. Finally I solved it.&lt;/p>
+&lt;h2 id="planning">Planning
+&lt;/h2>&lt;p> I should reflect on the fact that I didn&amp;rsquo;t stick to most of the plans I made in the past (such as improving English, learning FPGA and circuit knowledge, exploring computer networks, etc.);&lt;/p>
+&lt;p> Among them, I really couldn&amp;rsquo;t stick to improving English, so I simply learned English by supporting multilingual articles; As for computer networks, I often debug LWIP at work, and often toss around on cloud servers and local nas in my life. I may participate in related open source projects in the future; When it comes to hardware-related things, I feel a headache, but since I will use it in my future work, I plan to learn the development board I bought; In addition, I also need to understand the new rust language (communicate with colleagues), learn Linux development, learn 408&amp;hellip; It&amp;rsquo;s such a headache that there are too many things I want to do;&lt;/p>
+&lt;p> Combining interests and work, I need to improve my blog, explore computer networks, learn FPGA and circuits, and find time to understand the rust language.&lt;/p>
+&lt;hr>
+&lt;p>&lt;font color=blue size=3>2024-06-17 First update&lt;/font>&lt;/p></description></item></channel></rss>

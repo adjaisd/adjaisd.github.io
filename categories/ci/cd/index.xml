@@ -1,0 +1,529 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>CI/CD on Loong's Blog</title><link>https://adja.com.cn/categories/ci/cd/</link><description>Recent content in CI/CD on Loong's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Loong</copyright><lastBuildDate>Mon, 24 Jun 2024 12:28:44 +0800</lastBuildDate><atom:link href="https://adja.com.cn/categories/ci/cd/index.xml" rel="self" type="application/rss+xml"/><item><title>通过Jenkins自动构建前后端项目</title><link>https://adja.com.cn/p/automated-build-via-jenkins/</link><pubDate>Mon, 24 Jun 2024 12:28:44 +0800</pubDate><guid>https://adja.com.cn/p/automated-build-via-jenkins/</guid><description>&lt;h1 id="通过jenkins自动构建前后端项目">通过Jenkins自动构建前后端项目
+&lt;/h1>&lt;p> 续之前Jenkins配合docker构建并运行单独的测试镜像，这次的服务复杂了一些，docker-compose.yml的文件包含7个service，项目来源于此前的大创过程中写的软件.&lt;/p>
+&lt;h2 id="项目概览">项目概览
+&lt;/h2>&lt;p> 项目是前后端分离项目，后端是采用&lt;em>SpringBoot&lt;/em>的多模块项目，项目结构如下:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-text" data-lang="text">&lt;span class="line">&lt;span class="cl">+---backend # 后端
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">| +---src
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">| \---target
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">+---frontend # 前端
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">| +---dist # 前端生成文件
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">| \---src
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">+---others # 后端依赖的模块或拓展功能
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">| +---mqtt # mqtt的身份验证模块
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">| +---src
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">| \---target
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">+---data # 数据库建表及数据，配置
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">| +---conf # 配置
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">| +---init # 用于mysql镜像初始化数据，控制多个sql文件执行顺序
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">| \---sql # sql语句
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">+---conf # 配置
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">| +---emqx # mqtt相关配置
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">| \---nginx # nginx配置
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">+---dockerfile # 构建自定义镜像的文件
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">+---shell # 脚本
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">\---docker-compose.yml # 所有服务构建配置
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="问题">问题
+&lt;/h2>&lt;p> Jenkins是通过docker构建运行的，此次自动化构建采用Pipeline进行，接下来介绍中间遇到的各种问题，仅供参考;&lt;/p>
+&lt;h3 id="pipeline无法构建前端">Pipeline无法构建前端
+&lt;/h3>&lt;p> 通过日志发现是找不到npm指令，由于是采用的nvm对node进行管理，参考网上装nodejs插件文章也无法解决，一直报错 &lt;code>/usr/bin/env: node: No such file or directory&lt;/code>;&lt;/p>
+&lt;p> 最后将nvm安装目录及/etc/profile.d/nvm.sh挂载到Jenkins，在前端构建阶段通过source指令使nvm指令生效，然后切换到对应的nodejs版本，如此也没必要安装nodejs插件了，pipeline部分如下:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-text" data-lang="text">&lt;span class="line">&lt;span class="cl">stage(&amp;#39;build-frontend&amp;#39;) {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> steps {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> dir(&amp;#34;./frontend&amp;#34;) {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> sh &amp;#39;&amp;#39;&amp;#39;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> source /etc/profile.d/nvm.sh
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> nvm use 16.15.0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> npm cache clean –force
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> npm cache verify
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> if [ -f dist ]; then rm dist -rf; fi;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> pnpm config get registry
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> pnpm config set registry https://registry.npmmirror.com/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> pnpm install
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> pnpm run build:prod
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#39;&amp;#39;&amp;#39;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>&lt;font size=2 color=red>注意：类似找不到指令的报错都可以通过挂载它的环境变量配置，通过source使其生效&lt;/font>&lt;/p>
+&lt;h3 id="通过ssh远程操作">通过ssh远程操作
+&lt;/h3>&lt;p> 在全局凭据上配置好私钥后，在Pipeline最好通过插件(SSH Pipeline Steps)进行ssh，如果直接采用密码，日志上会回显，参考如下:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-text" data-lang="text">&lt;span class="line">&lt;span class="cl">steps {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> withCredentials(bindings: [ \
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> sshUserPrivateKey(credentialsId: &amp;#39;private-key&amp;#39;,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> keyFileVariable: &amp;#39;primaryKeyVar&amp;#39;,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> passphraseVariable: &amp;#39;pwdVar&amp;#39;,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> usernameVariable: &amp;#39;userVar&amp;#39;)]) {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> script {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> def remote = [:]
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> remote.name = &amp;#39;192.168.137.2&amp;#39;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> remote.host = &amp;#39;192.168.137.2&amp;#39;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> remote.user = userVar
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> remote.identityFile = primaryKeyVar
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> remote.allowAnyHosts = true
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> stage(&amp;#39;Remote SSH&amp;#39;) {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> sshCommand remote: remote, command: &amp;#34;mkdir -p ${REMOTE_WORKDIR}/frontend&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> // 前端打包文件
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> sshPut remote: remote, from: &amp;#34;./frontend/dist&amp;#34;, into: &amp;#34;${REMOTE_WORKDIR}/frontend&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> // 显示传输所有文件
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> sshCommand remote: remote, command: &amp;#34;ls -lrt ${REMOTE_WORKDIR}/**&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="控制服务启动顺序">控制服务启动顺序
+&lt;/h3>&lt;p> 在docker-compose.yml如果需要控制启动顺序，单靠depends_on是不足的，它仅仅控制启动顺序，但不保证服务启动成功才启动下一个;&lt;/p>
+&lt;p> 参考文章说，通过挂载wait-for-it.sh，容器启动通过执行该脚本判断依赖服务是否启动，指导启动成功才运行本服务，也可参考&lt;a class="link" href="https://www.cnblogs.com/wang_yb/p/9400291.html" target="_blank" rel="noopener"
+>这篇文章&lt;/a>;&lt;/p>
+&lt;p> 然而如果镜像已经设定了entrypoint，那么还需要了解该镜像的entrypoint做了什么，只需要将wait-for-it.sh脚本添加到该镜像的entrypoint指令之前;&lt;/p>
+&lt;p> 其中wait-for-it.sh参考https:
+//github.com/vishnubob/wait-for-it，我将该文件改名为entrypoint.sh放入shell目录中，挂载到容器，设定CMD或者entrypoint即可，参考如下:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-text" data-lang="text">&lt;span class="line">&lt;span class="cl">service:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> backend: # 后端主模块
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> build:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> context: .
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> dockerfile: dockerfile/backend-Dockerfile
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> image: backend_app
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> container_name: prod-backend-app
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ports:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> - &amp;#34;13245:13245&amp;#34; # 端口映射
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> environment:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> TZ: Asia/Shanghai # 时区
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> PORT: 13245 # 容器运行端口
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> PROFILE: prod # 运行环境，默认
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> volumes:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> - ./shell/entrypoint.sh:/entrypoint.sh
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> depends_on:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> - emq
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> - influx
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p> 名为backend的service的&lt;em>Dockerfile&lt;/em>文件改名为backend-Dockerfile放入dockerfile路径中，由于后端依赖于mysql、redis，所以内容如下:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-dockerfile" data-lang="dockerfile">&lt;span class="line">&lt;span class="cl">&lt;span class="k">FROM&lt;/span>&lt;span class="s"> openjdk:8-jdk&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">ADD&lt;/span> backend/target/*.jar /app.jar&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">CMD&lt;/span> bash /entrypoint.sh mysqldb:3306 -t &lt;span class="m">30&lt;/span> -- &lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;mysql started&amp;#34;&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> bash /entrypoint.sh redisdb:6379 -t &lt;span class="m">20&lt;/span> -- &lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;redisdb started&amp;#34;&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> java -jar -Dfile.encoding&lt;span class="o">=&lt;/span>utf-8 -Dserver.port&lt;span class="o">=&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">PORT&lt;/span>&lt;span class="si">}&lt;/span> -Dspring.profiles.active&lt;span class="o">=&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">PROFILE&lt;/span>&lt;span class="si">}&lt;/span> /app.jar&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="消息队列emqx配置">消息队列emqx配置
+&lt;/h3>&lt;p> 我采用的emqx版本为4.4.2，参考了官网通过环境变量的方式配置，其中emq_web_hook插件有效但emq_http_auth插件始终不生效;&lt;/p>
+&lt;p> 参考了&lt;em>Emqx&lt;/em>的官方github上的issue也没解决，最后还得靠挂载emqx的配置才解决;&lt;/p>
+&lt;p> 然后，还有个问题待解决，由于emqx用了http认证插件，我单独将认证的auth模块拿出来作为一个service，这时应该是auth启动完才启动emqx，但后端service在启动之前是不会连emq，emq也就不会用到auth模块的认证接口，便没有自定义构建emq镜像，但该问题还得解决;&lt;/p>
+&lt;p> 参考我写的emq服务:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="nt">service&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">emq&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">user&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">root&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">restart&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">always&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">container_name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">prod-emqx&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">image&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">emqx/emqx:4.4.2&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">ports&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="s2">&amp;#34;18083:18083&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="s2">&amp;#34;1883:1883&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="s2">&amp;#34;8083:8083&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="s2">&amp;#34;8084:8084&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="s2">&amp;#34;8883:8883&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">volumes&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="l">/etc/localtime:/etc/localtime&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="l">/root/docker/emqx/log:/opt/emqx/log&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="l">./conf/emqx/emqx_auth_http.conf:/opt/emqx/etc/plugins/emqx_auth_http.conf&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="l">./conf/emqx/emqx_web_hook.conf:/opt/emqx/etc/plugins/emqx_web_hook.conf&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="c"># TODO:存在bug，emq依赖于auth的http认证服务，取消以下两行注释会无法运行，发现emqx自带entrypoint和CMD&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="c"># - ./shell/entrypoint.sh:/entrypoint.sh&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="c">#entrypoint: bash /entrypoint.sh auth:13244 -t 50 -- echo &amp;#34;auth started&amp;#34; &amp;amp;&amp;amp; /opt/emqx/bin/emqx foreground;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">environment&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">EMQX_ALLOW_ANONYMOUS&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">false&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c"># allow_anonymous&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">EMQX_LOADED_PLUGINS&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;emqx_management,emqx_auth_http,emqx_dashboard,emqx_web_hook&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">EMQX_DASHBOARD__DEFAULT_USER__LOGIN&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">root&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">EMQX_DASHBOARD__DEFAULT_USER__PASSWORD&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">12345&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">networks&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">app_net&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">ipv4_address&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">172.31.0.10&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">depends_on&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="l">auth&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">links&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="l">auth&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="前端构建成功但无法访问或请求本地">前端构建成功但无法访问或请求本地
+&lt;/h3>&lt;p> 参考网上，大多采用nginx作为基础镜像构建新镜像，再配置nginx的转发规则;&lt;/p>
+&lt;p> 找到一篇不错的文章，它没有构建新镜像，而是通过挂载前端文件和配置文件实现，节约了构建新镜像所需的时间和空间，文章地址为:https://juejin.cn/post/6844903837774397447;&lt;/p>
+&lt;p> 自己配置的nginx.conf如下:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-text" data-lang="text">&lt;span class="line">&lt;span class="cl">server {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> listen 13246;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> server_name localhost;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> location / {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> root /usr/share/nginx/html;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> index index.html index.htm;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> #Location配置
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> location /api/ {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> rewrite /api/(.*) /$1 break;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> proxy_pass http://backend:13245;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p> 由于对nginx没有深入学过，遇到各种问题，经过反复尝试后，最终达到了预期.&lt;/p>
+&lt;h2 id="补充些依赖配置">补充些依赖配置
+&lt;/h2>&lt;p> 项目基于&lt;em>Vue3&lt;/em>和&lt;em>SpringBoot&lt;/em>，采用&lt;em>Jenkins&lt;/em>的容器进行自动化构建和部署，然而也不能什么软件都装在容器中，最好的办法就是宿主机装常用工具软件，再挂载到容器中;&lt;/p>
+&lt;ol>
+&lt;li>安装docker&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">curl -fsSL https://get.docker.com &lt;span class="p">|&lt;/span> bash -s docker --mirror Aliyun
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ol start="2">
+&lt;li>安装jdk8&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">rm /tmp/jdk*.tar.gz -f
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">wget https://repo.huaweicloud.com/java/jdk/8u202-b08/jdk-8u202-linux-x64.tar.gz -P /tmp
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ls -lht /tmp/ &lt;span class="p">|&lt;/span> grep jdk
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">mkdir -p /usr/local/java/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">tar -zxf /tmp/jdk-8u202-linux-x64.tar.gz -C /usr/local/java/ &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> ls /usr/local/java/ -l
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># 添加环境jdk1.8环境变量&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">cat &amp;gt; /etc/profile.d/java.sh &lt;span class="s">&amp;lt;&amp;lt;EOF
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">export JAVA_HOME=/usr/local/java/jdk1.8.0_202
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">export JRE_HOME=\${JAVA_HOME}/jre
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">export CLASSPATH=.:\${JAVA_HOME}/lib:\${JRE_HOME}/lib
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">export PATH=\${JAVA_HOME}/bin:\$PATH
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">EOF&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">source&lt;/span> /etc/profile.d/java.sh
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ln -s &lt;span class="si">${&lt;/span>&lt;span class="nv">JAVA_HOME&lt;/span>&lt;span class="si">}&lt;/span>/bin/java /usr/bin/java
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">java -version
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ol start="3">
+&lt;li>安装Maven&lt;/li>
+&lt;/ol>
+&lt;p> maven镜像有许多失效了，建议还是网上找找，下方的maven版本号改成对应的，脚本仅作参考;&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nv">maven_version&lt;/span>&lt;span class="o">=&lt;/span>3.9.0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">rm /tmp/*maven*.tar.gz -rf
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#wget https://dlcdn.apache.org/maven/maven-3/3.9.0/binaries/apache-maven-3.9.0-bin.tar.gz -P /tmp&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">wget https://mirrors.aliyun.com/apache/maven/maven-3/3.9.0/binaries/apache-maven-3.9.0-bin.tar.gz -P /tmp
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ls -lht /tmp/ &lt;span class="p">|&lt;/span> grep maven
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">mkdir -p /usr/local/maven/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">tar -zxf /tmp/apache-maven-*.tar.gz -C /usr/local/maven/ &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> ls /usr/local/maven/ -l
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># 添加Maven环境变量&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">cat &amp;gt; /etc/profile.d/maven.sh &lt;span class="s">&amp;lt;&amp;lt; EOF
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">export MAVEN_VERSION=&amp;#34;${maven_version}&amp;#34;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">export M2_HOME=/usr/local/maven/apache-maven-\${MAVEN_VERSION}
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">export MAVEN_HOME=/usr/local/maven/apache-maven-3.9.0
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">export PATH=\${MAVEN_HOME}/bin:\${PATH}
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">EOF&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">chmod +x /etc/profile.d/maven.sh
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">source&lt;/span> /etc/profile.d/maven.sh
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">mvn -version
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ol start="4">
+&lt;li>安装nvm&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nv">nvm_version&lt;/span>&lt;span class="o">=&lt;/span>0.39.3
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">rm /tmp/v&lt;span class="si">${&lt;/span>&lt;span class="nv">nvm_version&lt;/span>&lt;span class="si">}&lt;/span>.tar.gz -rf
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">wget https://github.com/nvm-sh/nvm/archive/refs/tags/v&lt;span class="si">${&lt;/span>&lt;span class="nv">nvm_version&lt;/span>&lt;span class="si">}&lt;/span>.tar.gz -P /tmp
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ls -lht /tmp/ &lt;span class="p">|&lt;/span> grep &lt;span class="s2">&amp;#34;v&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">nvm_version&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">.tar.gz&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">mkdir -p /usr/local/nvm/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">tar -zxf /tmp/v&lt;span class="si">${&lt;/span>&lt;span class="nv">nvm_version&lt;/span>&lt;span class="si">}&lt;/span>.tar.gz -C /usr/local/nvm/ &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> ls /usr/local/nvm/ -l
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># 添加nvm环境变量&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">cat &lt;span class="s">&amp;lt;&amp;lt; EOF &amp;gt; /etc/profile.d/nvm.sh
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">export NVM_VERSION=&amp;#34;${nvm_version}&amp;#34;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">export NVM_DIR=&amp;#34;/usr/local/nvm/nvm-\${NVM_VERSION}&amp;#34;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">[ -s &amp;#34;\$NVM_DIR/nvm.sh&amp;#34; ] &amp;amp;&amp;amp; \. &amp;#34;\$NVM_DIR/nvm.sh&amp;#34; # This loads nvm
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">[ -s &amp;#34;\$NVM_DIR/bash_completion&amp;#34; ] &amp;amp;&amp;amp; \. &amp;#34;\$NVM_DIR/bash_completion&amp;#34;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">EOF&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">chmod +x /etc/profile.d/nvm.sh
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">source&lt;/span> /etc/profile.d/nvm.sh
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">nvm version
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ol start="5">
+&lt;li>安装docker-compose&lt;/li>
+&lt;/ol>
+&lt;p> 建议docker-compose去github官网下，国内大多可下的版本太旧了;&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">curl -L https://github.com/docker/compose/releases/download/v2.16.0/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">chmod +x /usr/local/bin/docker-compose
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker-compose -v
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="环境变量去重">环境变量去重
+&lt;/h3>&lt;p> 有时安装不能一次性生效，可能执行多次source指令，此时可能环境变量存在重复字段，将以下脚本放入**/etc/profile**末尾;&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">PATH&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$(&lt;/span>&lt;span class="nb">echo&lt;/span> &lt;span class="nv">$PATH&lt;/span> &lt;span class="p">|&lt;/span> tr : &lt;span class="s2">&amp;#34;\n&amp;#34;&lt;/span>&lt;span class="p">|&lt;/span> sort &lt;span class="p">|&lt;/span> uniq &lt;span class="p">|&lt;/span> tr &lt;span class="s2">&amp;#34;\n&amp;#34;&lt;/span> :&lt;span class="k">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p> 或者如下:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nv">PATH&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$(&lt;/span>&lt;span class="nb">printf&lt;/span> &lt;span class="s2">&amp;#34;%s&amp;#34;&lt;/span> &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$PATH&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="p">|&lt;/span> awk -v &lt;span class="nv">RS&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;:&amp;#39;&lt;/span> &lt;span class="s1">&amp;#39;!a[$1]++ { if (NR &amp;gt; 1) printf RS; printf $1 }&amp;#39;&lt;/span>&lt;span class="k">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p> 以上二选一即可，再执行 &lt;code>source /etc/profile&lt;/code> 使其生效.&lt;/p>
+&lt;h2 id="总结">总结
+&lt;/h2>&lt;p> 通过将新学的Jenkins自动化技术应用于项目中，可以极大地节省时间，运维不必重复地手动部署，测试成了开发的一部分，只需写测试脚本，开发人员每次代码提交会自动执行测试脚本，再通过ssh部署至远程，由传统的一个一个阶段地开发，不能直接跳过某个阶段，到如今开发能够迅速测试并投入生产得到反馈，效率倍增，或许这就是CI/CD概念及工具流行的原因。&lt;/p>
+&lt;h2 id="参考">参考
+&lt;/h2>&lt;ol>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://github.com/vishnubob/wait-for-it" target="_blank" rel="noopener"
+>https://github.com/vishnubob/wait-for-it&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://www.cnblogs.com/wang_yb/p/9400291.html" target="_blank" rel="noopener"
+>https://www.cnblogs.com/wang_yb/p/9400291.html&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://juejin.cn/post/6844903837774397447" target="_blank" rel="noopener"
+>https://juejin.cn/post/6844903837774397447&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://juejin.cn/post/7095729903684829191" target="_blank" rel="noopener"
+>https://juejin.cn/post/7095729903684829191&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;hr>
+&lt;p>&lt;font size=3 color=blue>2023-02-16 更新&lt;/font>&lt;/p>
+&lt;p>&lt;font size=3 color=blue>2023-02-26 添加依赖的安装配置&lt;/font>&lt;/p></description></item></channel></rss>
