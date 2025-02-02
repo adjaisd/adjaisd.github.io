@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Journal on Loong's Blog</title><link>https://adja.com.cn/tags/journal/</link><description>Recent content in Journal on Loong's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Loong</copyright><lastBuildDate>Sun, 02 Feb 2025 12:38:52 +0800</lastBuildDate><atom:link href="https://adja.com.cn/tags/journal/index.xml" rel="self" type="application/rss+xml"/><item><title>对2024年的总结</title><link>https://adja.com.cn/p/summary-of-2024/</link><pubDate>Sun, 02 Feb 2025 12:38:52 +0800</pubDate><guid>https://adja.com.cn/p/summary-of-2024/</guid><description>&lt;img src="https://adja.com.cn/p/summary-of-2024/cover.jpg" alt="Featured image of post 对2024年的总结" />&lt;h1 id="对2024年的总结">对2024年的总结
+&lt;/h1>&lt;p>距离刚开始工作已经过去了一年多，这一年多的时间里，我经历了很多事情，也学到了很多东西。这篇文章就是对2024年的一个总结。&lt;/p>
+&lt;h2 id="工作上">工作上
+&lt;/h2>&lt;p>我的工作内容主要负责单片机的固件开发，经过一年的锻炼，可以初步胜任这个工作。在这一年里，我学到了很多东西，比如团队合作、开发工具使用技巧，还有单片机的常用外设的使用等。&lt;/p>
+&lt;p>期间也遇到了很多问题，但在领导和同事的帮助下，都得到了解决。每次遇到问题，我都会先自己思考，然后在掌握的基础上想着如何去改进，比如提高代码的可读性、复用性、使用的便利性等，在每个细节上，都尽量做到最好。&lt;/p>
+&lt;p>工作之余，还尝试着学习了一些新的技术，并努力将其应用到工作中，比如使用&lt;strong>Renode&lt;/strong>来提高固件开发的效率，尝试gitlab的CI/CD来编译固件等。尽管做了很多努力，但效果不是太好，主要由于缺少成员的参与，工作量太大，时间太紧等原因。&lt;/p>
+&lt;h2 id="生活上">生活上
+&lt;/h2>&lt;p>由于毕业就独自前往异地工作，所以生活上的一切都要自己来打理，这对我来说是一个挑战。&lt;/p>
+&lt;p>由于住的非常偏僻，再加上性格等原因，平时基本上宅在家中，空余时间看小说、打魔兽、折腾一些技术等。&lt;/p>
+&lt;p>上半年趁着不忙的时候，将博客由hexo迁移到hugo，这样可以更方便的写文章，也更容易维护。&lt;/p>
+&lt;p>此外，有空的话就和同学开黑，这样可以放松一下，也可以和同学们保持联系。&lt;/p>
+&lt;h2 id="2025年的展望">2025年的展望
+&lt;/h2>&lt;p>尽管在毕业即失业的2023年找到了工作，但考虑到未来毕业生仍然保持上升的趋势，未来的竞争会更加激烈，业余还需要不断保持对技术的敏感度，有机会认识更多人。&lt;/p>
+&lt;p>此外，在和朋友开黑的过程中，异地组网比较麻烦，接下来我会尝试参考一些开源项目，开发一个简单的组网工具。&lt;/p>
+&lt;hr>
+&lt;p>&lt;font size=3 color=blue>2023-02-02 更新&lt;/font>&lt;/p></description></item></channel></rss>
