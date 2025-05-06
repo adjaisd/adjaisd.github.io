@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Journal on Loong's Blog</title><link>https://adja.com.cn/en/tags/journal/</link><description>Recent content in Journal on Loong's Blog</description><generator>Hugo -- gohugo.io</generator><language>en</language><copyright>Loong</copyright><lastBuildDate>Sun, 20 Apr 2025 10:47:07 +0800</lastBuildDate><atom:link href="https://adja.com.cn/en/tags/journal/index.xml" rel="self" type="application/rss+xml"/><item><title>Long Term Planning</title><link>https://adja.com.cn/en/p/long-term-planning/</link><pubDate>Sun, 20 Apr 2025 09:34:35 +0800</pubDate><guid>https://adja.com.cn/en/p/long-term-planning/</guid><description>&lt;img src="https://adja.com.cn/p/long-term-planning/cover.jpg" alt="Featured image of post Long Term Planning" />&lt;h1 id="long-term-planning">Long Term Planning
+&lt;/h1>&lt;p>In the past, I was always anxious, thinking too much, and struggling too much, but I didn&amp;rsquo;t achieve enough outstanding results. Now I think that this
+anxiety may be caused by not having a clear goal and plan.&lt;/p>
+&lt;p>In the next period of time, I will try to use some efficiency tools and make long-term plans. In addition, I will pay attention to exercise, maintain
+a fresh appearance, go out more often to meet like-minded people, and hope to find a partner who can promote each other.&lt;/p>
+&lt;p>Next, I will update this plan regularly to see if I am moving towards my goal.&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th style="text-align: left">Time&lt;/th>
+&lt;th style="text-align: left">Planning&lt;/th>
+&lt;th>Completion&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td style="text-align: left">2024.9&lt;/td>
+&lt;td style="text-align: left">Git basics and teamwork&lt;/td>
+&lt;td>√&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">2024.11~2025.2&lt;/td>
+&lt;td style="text-align: left">Rust basics&lt;/td>
+&lt;td>√&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">2025.3~2025.4&lt;/td>
+&lt;td style="text-align: left">Dart basics&lt;/td>
+&lt;td>√&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">2025.4~2025.8&lt;/td>
+&lt;td style="text-align: left">Learn flutter&lt;/td>
+&lt;td>10%&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">2025.4~2025.11&lt;/td>
+&lt;td style="text-align: left">Learn godot&lt;/td>
+&lt;td>0%&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">2025.4~2025.6&lt;/td>
+&lt;td style="text-align: left">Improve appearance&lt;/td>
+&lt;td>10%&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">2025.6~2025.12&lt;/td>
+&lt;td style="text-align: left">Find a partner&lt;/td>
+&lt;td>0%&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>&lt;font size=3 color=blue>Updated on 2025-04-20&lt;/font>&lt;/p></description></item><item><title>Summary of 2024</title><link>https://adja.com.cn/en/p/summary-of-2024/</link><pubDate>Sun, 02 Feb 2025 12:38:52 +0800</pubDate><guid>https://adja.com.cn/en/p/summary-of-2024/</guid><description>&lt;img src="https://adja.com.cn/p/summary-of-2024/cover.jpg" alt="Featured image of post Summary of 2024" />&lt;h1 id="summary-of-2024">Summary of 2024
+&lt;/h1>&lt;p>It has been more than a year since I started working. During this time, I have experienced a lot and learned a lot. This article is a summary of 2024.&lt;/p>
+&lt;h2 id="work">Work
+&lt;/h2>&lt;p>My work mainly involves firmware development for microcontrollers. After a year of training, I can basically handle this job. In this year, I have learned a lot, such as teamwork, development tool usage skills, and the use of common peripherals of microcontrollers.&lt;/p>
+&lt;p>During this period, I also encountered many problems, but with the help of leaders and colleagues, they were all solved. Every time I encounter a problem, I will first think about it myself, and then think about how to improve it on the basis of mastery, such as improving the readability, reusability, and convenience of the code. In every detail, I try to do my best.&lt;/p>
+&lt;p>In my spare time, I also tried to learn some new technologies and tried to apply them to work, such as using &lt;strong>Renode&lt;/strong> to improve the efficiency of firmware development, trying gitlab&amp;rsquo;s CI/CD to compile firmware, etc. Although I have made a lot of efforts, the effect is not very good, mainly due to the lack of participation of members, too much work, too little time, etc.&lt;/p>
+&lt;h2 id="life">Life
+&lt;/h2>&lt;p>Because I went to work in a different place alone after graduation, everything in life has to be taken care of by myself, which is a challenge for me.&lt;/p>
+&lt;p>Because I live in a very remote place, and because of my personality and other reasons, I basically stay at home, read novels, play Warcraft, and tinker with some technology in my spare time.&lt;/p>
+&lt;p>In the first half of the year, when I was not busy, I migrated my blog from hexo to hugo, which makes it more convenient to write articles and easier to maintain.&lt;/p>
+&lt;p>In addition, if I have time, I will play games with my classmates, which can relax and keep in touch with my classmates.&lt;/p>
+&lt;h2 id="outlook-for-2025">Outlook for 2025
+&lt;/h2>&lt;p>Although I found a job in 2023, which was a year of graduation and unemployment, considering that the number of graduates is still increasing in the future, the future competition will be more intense. In my spare time, I need to continue to maintain sensitivity to technology and have the opportunity to meet more people.&lt;/p>
+&lt;p>In addition, it is troublesome to set up a network in different places when playing games with friends. Next, I will try to refer to some open-source projects and develop a simple networking tool.&lt;/p>
+&lt;hr>
+&lt;p>&lt;font size=3 color=blue>2023-02-02 Updated&lt;/font>&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div></description></item></channel></rss>

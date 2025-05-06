@@ -1,0 +1,872 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>网络 on Loong's Blog</title><link>https://adja.com.cn/categories/%E7%BD%91%E7%BB%9C/</link><description>Recent content in 网络 on Loong's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Loong</copyright><lastBuildDate>Sat, 22 Feb 2025 19:39:11 +0800</lastBuildDate><atom:link href="https://adja.com.cn/categories/%E7%BD%91%E7%BB%9C/index.xml" rel="self" type="application/rss+xml"/><item><title>异地组网联机游戏</title><link>https://adja.com.cn/p/remote-networking/</link><pubDate>Sat, 22 Feb 2025 19:21:36 +0800</pubDate><guid>https://adja.com.cn/p/remote-networking/</guid><description>&lt;img src="https://adja.com.cn/p/remote-networking/cover.jpg" alt="Featured image of post 异地组网联机游戏" />&lt;h1 id="异地组网联机游戏">异地组网联机游戏
+&lt;/h1>&lt;p>毕业后，同学们都奔赴各地忙着升学和事业，放假时偶尔会开黑打一两局魔兽，但由于身处不同省份，局域网游戏联机有点麻烦。&lt;/p>
+&lt;p>期间尝试过蹭免费组网工具、自建中转服务器、贝锐蒲公英组网，通过对比，希望大家能找到适合自己的组网方式。&lt;/p>
+&lt;h2 id="easyn2n或n2n">EasyN2N或N2N
+&lt;/h2>&lt;p>由于最开始用的EasyN2N，体验还不错，从相关社区中还能学习到一些网络知识。&lt;/p>
+&lt;p>但是，由于EasyN2N的中转服务器是免费的，所以在大家都在用的时候，会出现中转服务器负载过高，导致延迟过高，甚至无法连接的情况，在毕业回老家后，老家那边的网络较差，经常玩到一半掉线。&lt;/p>
+&lt;p>此外，EasyN2N经常被杀毒软件误删，也可能导致中途掉线，所以建议推荐通过命令行的方式来使用，而不要使用它自带的可视化工具。&lt;/p>
+&lt;p>相关的使用可参考&lt;a class="link" href="https://bugxia.com/n2n_launcher_param" target="_blank" rel="noopener"
+>该文章&lt;/a>&lt;/p>
+&lt;h2 id="贝锐蒲公英">贝锐蒲公英
+&lt;/h2>&lt;p>贝锐蒲公英是一个收费的组网工具，3人以内免费，如果是超过3人的组网，需要购买套餐。&lt;/p>
+&lt;p>免费版的贝锐蒲公英不能设置虚拟局域网客户端的IP，有些游戏比如魔兽就需要抓包分析下，可以发现B客户端无法收到A客户端广播的udp报文，所以得要通过网络调试助手来辅助创建房间，下面是具体的操作步骤：&lt;/p>
+&lt;p>假设存在A、B两台电脑，A电脑的IP地址为&lt;code>172.16.3.130&lt;/code>，B电脑的IP地址为&lt;code>172.16.3.150&lt;/code>，子网掩码都为&lt;code>255.255.252.0&lt;/code>。&lt;/p>
+&lt;ol>
+&lt;li>假如B电脑作为房主创建房间，A电脑作为客户端加入房间&lt;/li>
+&lt;/ol>
+&lt;p>通过Wireshark抓包可以发现，B电脑创建房间后会一直向udp的6112端口广播&lt;code>f732100001000000010000000c000000&lt;/code>，由于时间有限就不分析报文含义了。&lt;/p>
+&lt;p>当A电脑扫描存在的房间时，A电脑会向udp的6112端口广播&lt;code>f72f1000505833571a00000000000000&lt;/code>，由于A和B不在同一个网段，所以B电脑无法收到A电脑的广播，A便无法知道是否存在房间。&lt;/p>
+&lt;p>接着，我们通过网络调试助手在A电脑上向B电脑发送用于扫描房间的udp广播包，假设收到报文msg(包含了玩家人数、地图信息等)。&lt;/p>
+&lt;p>然后，在B电脑上将msg的内容发送给A电脑，A电脑就可以加入房间了。&lt;/p>
+&lt;h2 id="总结">总结
+&lt;/h2>&lt;p>如果需要组网的客户端较少，N2N和贝锐蒲公英都是较低成本的组网方式。&lt;/p>
+&lt;p>如果有更进一步的需求，比如房间人数较多，或者需要更稳定的网络，如果玩家主要集中在几个地区，可以考虑自建中转服务器，如果玩家分布较广，可以考虑购买贝锐蒲公英套餐。&lt;/p>
+&lt;h2 id="参考">参考
+&lt;/h2>&lt;ol>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://bugxia.com/n2n_launcher_param" target="_blank" rel="noopener"
+>https://bugxia.com/n2n_launcher_param&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://www.cnblogs.com/flying_bat/archive/2008/06/24/1228627.html" target="_blank" rel="noopener"
+>https://www.cnblogs.com/flying_bat/archive/2008/06/24/1228627.html&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;hr>
+&lt;p>&lt;font size=3 color=blue>2025-02-22 更新&lt;/font>&lt;/p></description></item><item><title>使用DDNS访问内网设备</title><link>https://adja.com.cn/p/use-ddns-to-access-intranet-devices/</link><pubDate>Sat, 06 Jul 2024 16:08:49 +0800</pubDate><guid>https://adja.com.cn/p/use-ddns-to-access-intranet-devices/</guid><description>&lt;img src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/cover.jpg" alt="Featured image of post 使用DDNS访问内网设备" />&lt;h1 id="使用ddns访问内网设备">使用DDNS访问内网设备
+&lt;/h1>&lt;p> 有时出门需要访问家中的nas，由于国内的公网ipv4越来越难申请，且群晖官方的quickConnect服务速度也很慢，在参考相关教程后，决定通过DDNS将域名解析到公网ipv6，然后直接通过域名访问内网设备；&lt;/p>
+&lt;p> 在先前光猫破解获取超级用户修改桥接的实验基础上，我将路由器连接光猫，由路由器来拨号并开启ipv6，在分配到公网的ipv6后，便开始DDNS配置过程.&lt;/p>
+&lt;h2 id="通过群晖的dns服务">通过群晖的DNS服务
+&lt;/h2>&lt;p> 从&amp;quot;控制面板-&amp;gt;外部访问-&amp;gt;DDNS&amp;quot;点击新增，选择服务供应商为Synology，下面自定义配置；
+&lt;font color=red>注意，ipv6开头要为240开头的(电信为240e；移动为2409；联通为2408)，fe80开头的一般为内网ipv6&lt;/font>&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/1.png"
+width="1131"
+height="769"
+srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/1_hu_791072600dc1a28d.png 480w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/1_hu_d20dab7bd7422516.png 1024w"
+loading="lazy"
+alt="1"
+class="gallery-image"
+data-flex-grow="147"
+data-flex-basis="352px"
+>&lt;/p>
+&lt;p> 需要https访问的话，勾选&amp;quot;从Let&amp;rsquo;s Encrypt获取证书&amp;quot;，点击确定.&lt;/p>
+&lt;h2 id="使用其他供应商的dns服务">使用其他供应商的DNS服务
+&lt;/h2>&lt;p> 以下仅以腾讯云的DNS服务为例，需要预先在腾讯云官网申请一个域名;&lt;/p>
+&lt;h3 id="使用ddns-go镜像">使用&lt;em>ddns-go&lt;/em>镜像
+&lt;/h3>&lt;p> 进行动态域名解析，需要自己的nas设备定时的查询本机的ip地址，然后调用更新域名解析字段的接口，从而实现ddns；&lt;/p>
+&lt;p> 所以不能需要换个方法，网上有很多方法，这里我提供一个采用docker进行DDNS更新的方法；
+ 在套件中心种搜索docker，安装docker，步骤略；&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/3.png"
+width="1371"
+height="661"
+srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/3_hu_3d4bd212a1d39bc2.png 480w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/3_hu_557c3ea7c6613a97.png 1024w"
+loading="lazy"
+alt="3"
+class="gallery-image"
+data-flex-grow="207"
+data-flex-basis="497px"
+>&lt;/p>
+&lt;p> 打开docker，选择&amp;quot;注册表&amp;quot;，搜索ddns，安装第一个&amp;quot;ddns-go&amp;quot;&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/4.png"
+width="1475"
+height="841"
+srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/4_hu_c4798d82dd974946.png 480w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/4_hu_663562ac22997ff0.png 1024w"
+loading="lazy"
+alt="4"
+class="gallery-image"
+data-flex-grow="175"
+data-flex-basis="420px"
+>&lt;/p>
+&lt;p> 安装完成后打开映像，选择ddns-go，点击启动；&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/5.png"
+width="1467"
+height="520"
+srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/5_hu_b89a443ed6cc7a4a.png 480w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/5_hu_7779ac6e9d5fc9dc.png 1024w"
+loading="lazy"
+alt="5"
+class="gallery-image"
+data-flex-grow="282"
+data-flex-basis="677px"
+>&lt;/p>
+&lt;p> 点击高级设置-&amp;gt;存储空间-&amp;gt;添加文件夹；&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/6.png"
+width="1229"
+height="843"
+srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/6_hu_59474d9c95f3bbed.png 480w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/6_hu_ff103df09dfe4be2.png 1024w"
+loading="lazy"
+alt="6"
+class="gallery-image"
+data-flex-grow="145"
+data-flex-basis="349px"
+>&lt;/p>
+&lt;p> 修改装载路径，我的配置如下：&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/7.png"
+width="1174"
+height="744"
+srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/7_hu_3d209a1690770e0d.png 480w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/7_hu_30a5e390e7b316a1.png 1024w"
+loading="lazy"
+alt="7"
+class="gallery-image"
+data-flex-grow="157"
+data-flex-basis="378px"
+>&lt;/p>
+&lt;p> 点击网络-&amp;gt;勾上host网络-&amp;gt;应用；&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/8.png"
+width="966"
+height="822"
+srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/8_hu_6afe4e6b2cf55073.png 480w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/8_hu_40c2faf981cade2d.png 1024w"
+loading="lazy"
+alt="8"
+class="gallery-image"
+data-flex-grow="117"
+data-flex-basis="282px"
+>&lt;/p>
+&lt;p> 点击下一步，点击完成.&lt;/p>
+&lt;h3 id="配置ddns">配置DDNS
+&lt;/h3>&lt;p> 打开&lt;code>http://[域名对应的nas的ip]:9876/&lt;/code>&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/9.png"
+width="1061"
+height="490"
+srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/9_hu_757d8d28f3be637a.png 480w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/9_hu_e4d56b0ca80e396b.png 1024w"
+loading="lazy"
+alt="9"
+class="gallery-image"
+data-flex-grow="216"
+data-flex-basis="519px"
+>&lt;/p>
+&lt;p> 配置DNS服务商，选择腾讯云，输入ID与Token，&lt;font color=red>注意，这里的ID与Token对应&amp;quot;DNSPod Token&amp;quot;，不是&amp;quot;腾讯云API密钥&amp;quot;&lt;/font>，链接是https:
+//console.dnspod.cn/account/token/token&lt;/p>
+&lt;p> 只启用ipv6，我的配置如下：&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/10.png"
+width="1041"
+height="579"
+srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/10_hu_fd17a94b8ff738a2.png 480w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/10_hu_32c08252c116d7d7.png 1024w"
+loading="lazy"
+alt="10"
+class="gallery-image"
+data-flex-grow="179"
+data-flex-basis="431px"
+>&lt;/p>
+&lt;p> 在点击&amp;quot;Save&amp;quot;之前，需要配置下域名解析，添加AAAA类型(表示ipv6地址)记录，随便填下，它会自动更新，我的配置如下：&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/11.png"
+width="1629"
+height="356"
+srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/11_hu_b61b25f03e392220.png 480w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/11_hu_ba3d0e55e5479ace.png 1024w"
+loading="lazy"
+alt="11"
+class="gallery-image"
+data-flex-grow="457"
+data-flex-basis="1098px"
+>&lt;/p>
+&lt;p> 配置完成后点击保存，右边会出现最新的历史记录；&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/12.png"
+width="538"
+height="344"
+srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/12_hu_b1df0995618dc228.png 480w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/12_hu_f81cd796f84c613e.png 1024w"
+loading="lazy"
+alt="12"
+class="gallery-image"
+data-flex-grow="156"
+data-flex-basis="375px"
+>&lt;/p>
+&lt;p> 应该出现&amp;quot;更新域名解析 xxxxxx 成功&amp;quot;或“更新域名解析 xxxxx 没有变化”&lt;/p>
+&lt;p> 通过域名+端口来进行测试.&lt;/p>
+&lt;h2 id="补充">补充
+&lt;/h2>&lt;p> 在2022年的暑假，搭建完成后我请同学帮测试了江苏不同地级市的速度，速度还是挺快的;&lt;/p>
+&lt;p> 后来毕业后去了其他省，在找到第一份工作后重新想起nas然后试着重新搭建，但发现同样的方法完全行不通，主要因为不同省份网络基础设施的完善度差别很大;&lt;/p>
+&lt;p> 如果在ipv6都未推广开的省份，还是建议少折腾，此外因为过去几年&lt;em>PCDN&lt;/em>的泛滥，运营商会根据带宽的上行速度查看用户有没有搭建&lt;em>PCDN&lt;/em>，如果DDNS被恶意使用，可能导致宽带被封.&lt;/p>
+&lt;hr>
+&lt;p>&lt;font size=3 color=blue>2022-06-19 记录&lt;/font>&lt;/p>
+&lt;p>&lt;font size=3 color=blue>2023-07-07 更新&lt;/font>&lt;/p></description></item><item><title>黑群晖使用体验</title><link>https://adja.com.cn/p/synology-user-experience/</link><pubDate>Wed, 28 Jun 2023 10:21:51 +0800</pubDate><guid>https://adja.com.cn/p/synology-user-experience/</guid><description>&lt;img src="https://adja.com.cn/p/synology-user-experience/cover.jpg" alt="Featured image of post 黑群晖使用体验" />&lt;h1 id="黑群晖使用体验">黑群晖使用体验
+&lt;/h1>&lt;p> 刚毕业想到去年在淘宝买的&lt;code>蜗牛星际NAS存储&lt;/code>，直到有较充裕的时间开始折腾下;&lt;/p>
+&lt;p> 说明下我的NAS为四盘位的蜗牛星际，待安装的系统为7.1.0-42661，可参考&lt;a class="link" href="http://k.8x6x.com/thread-72641-1-1.html" target="_blank" rel="noopener"
+>该文章&lt;/a>，由于该教程过于简陋，所以下面介绍我的安装过程，顺便补充系统使用上的问题.&lt;/p>
+&lt;h2 id="制作u盘引导">制作U盘引导
+&lt;/h2>&lt;p> 引导一定要根据系统型号与版本进行选择，一般商家会提供U盘引导，并提供了特定pat文件;后续如果升级系统，可参考该引导配置制作新的U盘引导，最好用新的U盘制作U引导，下面介绍U盘引导的制作.&lt;/p>
+&lt;ol>
+&lt;li>准备工作&lt;/li>
+&lt;/ol>
+&lt;p> 首先需要下载必要工具，链接：https://pan.baidu.com/s/1o8v7xdCPXgh3zIocm-iPcA
+ 提取码：adja&lt;/p>
+&lt;p> 先烧录7.1的镜像，再修改U盘的grub.cfg文件，待修改参数包括pid、vid、sn、mac1、mac2、netif_num、DiskIdxMap、SataPortMap和SasIdxMap;&lt;/p>
+&lt;ol start="2">
+&lt;li>获取pid、vid&lt;/li>
+&lt;/ol>
+&lt;p> pid和vid参数可在插入U盘后，通过&lt;code>ChipEasyv1.6(pid vid读取工具）.exe&lt;/code>获取;&lt;/p>
+&lt;ol start="3">
+&lt;li>获取sn、mac、netif_num&lt;/li>
+&lt;/ol>
+&lt;p> sn和mac(指mac1、mac2)可保持不变，也可以采用去某宝买全洗白的sn码;&lt;/p>
+&lt;p> netif_num表示网卡数量，有1个网卡则值为1，值为网卡数;&lt;/p>
+&lt;ol start="4">
+&lt;li>获取&lt;em>DiskIdxMap&lt;/em>、&lt;em>SataPortMap&lt;/em>和&lt;em>SasIdxMap&lt;/em>&lt;/li>
+&lt;/ol>
+&lt;p> DiskIdxMap、SataPortMap和SasIdxMap可参考&lt;a class="link" href="https://www.openos.org/threads/diskidxmap-sataportmap-sasidxmap.3675/" target="_blank" rel="noopener"
+>该文章&lt;/a>，具体取值可问卖家客服或者通过tinycore工具(镜像为网盘的&lt;code>tinycore-redpill.v0.9.4.9.img&lt;/code>文件，需烧录到U盘插入NAS)，tinycore工具使用可参考&lt;a class="link" href="https://blog.csdn.net/qq_35379989/article/details/129287254" target="_blank" rel="noopener"
+>该文章&lt;/a>，由于没有显示屏只有物理机无法看到NAS重启的引导界面，并且nas不好拆机，所以DiskIdxMap等直接采用卖家提供引导U盘的参数;&lt;/p>
+&lt;p> &lt;em>SataPortMap&lt;/em>: 描述各控制器的接口数，比如&lt;code>SataPortMap=22&lt;/code>，表示第1个控制器有2个接口、第2个控制有2个接口，&lt;code>SataPortMap=345&lt;/code>，表示第1个控制器有3个接口、第2个控制有4个接口、第3个控制有5个接口;&lt;/p>
+&lt;p> &lt;em>DiskIdxMap&lt;/em>: 描述磁盘的顺序，用2位16进制数表示1个控制器，比如&lt;code>SataPortMap=22 DiskIdxMap=0002&lt;/code>，表示第1个控制器从第0号(00)磁盘开始，第2个控制器从第2号(02)磁盘开始，又比如&lt;code>SataPortMap=345 DiskIdxMap=070c00&lt;/code>，表示第1个控制器从第7号(07)磁盘开始，第2个控制器从第12号(0c)磁盘开始，第3个控制器从第0号磁盘(00)开始，假设各控制器头顺序为&lt;code>BCA&lt;/code>，如果&lt;code>DiskIdxMap&lt;/code>取值为&lt;code>00070c&lt;/code>，则顺序为&lt;code>ABC&lt;/code>;&lt;/p>
+&lt;p> &lt;em>SasIdxMap&lt;/em>: 不清楚具体功能，文章说按照正确的顺序，默认加上;&lt;/p>
+&lt;ol start="5">
+&lt;li>烧录镜像与修改&lt;em>grub.cfg&lt;/em>&lt;/li>
+&lt;/ol>
+&lt;p> &lt;code>Diskgenius（改pid vid sn mac删除硬盘）.exe&lt;/code>用于修改img镜像文件，但不建议修改，由于只要修改grub.cfg文件，可先烧录img镜像到U盘，然后在U盘中修改;&lt;/p>
+&lt;p> 上面提到的烧录工具为&lt;code>Win32DiskImager(写盘工具）.exe&lt;/code>，选择镜像和盘符，然后点击写入直到进度条满.&lt;/p>
+&lt;p> 最后给出我的grub.cfg文件:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;span class="lnt">37
+&lt;/span>&lt;span class="lnt">38
+&lt;/span>&lt;span class="lnt">39
+&lt;/span>&lt;span class="lnt">40
+&lt;/span>&lt;span class="lnt">41
+&lt;/span>&lt;span class="lnt">42
+&lt;/span>&lt;span class="lnt">43
+&lt;/span>&lt;span class="lnt">44
+&lt;/span>&lt;span class="lnt">45
+&lt;/span>&lt;span class="lnt">46
+&lt;/span>&lt;span class="lnt">47
+&lt;/span>&lt;span class="lnt">48
+&lt;/span>&lt;span class="lnt">49
+&lt;/span>&lt;span class="lnt">50
+&lt;/span>&lt;span class="lnt">51
+&lt;/span>&lt;span class="lnt">52
+&lt;/span>&lt;span class="lnt">53
+&lt;/span>&lt;span class="lnt">54
+&lt;/span>&lt;span class="lnt">55
+&lt;/span>&lt;span class="lnt">56
+&lt;/span>&lt;span class="lnt">57
+&lt;/span>&lt;span class="lnt">58
+&lt;/span>&lt;span class="lnt">59
+&lt;/span>&lt;span class="lnt">60
+&lt;/span>&lt;span class="lnt">61
+&lt;/span>&lt;span class="lnt">62
+&lt;/span>&lt;span class="lnt">63
+&lt;/span>&lt;span class="lnt">64
+&lt;/span>&lt;span class="lnt">65
+&lt;/span>&lt;span class="lnt">66
+&lt;/span>&lt;span class="lnt">67
+&lt;/span>&lt;span class="lnt">68
+&lt;/span>&lt;span class="lnt">69
+&lt;/span>&lt;span class="lnt">70
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-text" data-lang="text">&lt;span class="line">&lt;span class="cl">terminal_output console
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">if serial --unit=0 --speed=115200; then
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> terminal_input --append serial_com0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> terminal_output --append serial_com0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">fi
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">set default=&amp;#34;0&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">set timeout=&amp;#34;5&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">set timeout_style=&amp;#34;menu&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">if [ -s $prefix/grubenv ]; then
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> load_env --file $prefix/grubenv --skip-sig
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> set has_env=&amp;#34;1&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> if [ -n &amp;#34;${saved_entry}&amp;#34; ]; then
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> set default=&amp;#34;${saved_entry}&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> fi
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">else
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> set has_env=&amp;#34;0&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> echo &amp;#34;WARN: failed to load env. Default choice will NOT be saved!&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">fi
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">function savedefault {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> saved_entry=&amp;#34;${chosen}&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> save_env --file $prefix/grubenv saved_entry
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">insmod usb_keyboard
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">insmod part_msdos
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">insmod ext2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">insmod fat
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">insmod linux
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">insmod gzio
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">set gfxmode=auto
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">insmod vbe
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">insmod vga
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># UEFI
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">insmod efi_gop
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">insmod efi_uga
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">insmod font
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">if loadfont ${prefix}/unicode.pf2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">then
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> insmod gfxterm
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> set gfxmode=auto
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> set gfxpayload=keep
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> terminal_output gfxterm
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">fi
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">menuentry &amp;#39;RedPill DS918+ v7.1.0-42661 (USB, Verbose)&amp;#39; {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> savedefault
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> set root=(hd0,msdos1)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> echo Loading Linux...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> linux /zImage HddHotplug=0 withefi console=ttyS0,115200n8 netif_num=2 syno_hdd_detect=0 syno_port_thaw=1 vender_format_version=2 sn=xxx mac1=xxx mac2=xxx earlyprintk syno_hdd_powerup_seq=1 pid=0x5678 log_buf_len=32M syno_hw_version=DS918+ vid=0xffff earlycon=uart8250,io,0x3f8,115200n8 elevator=elevator root=/dev/md0 loglevel=15 DiskIdxMap=0002 SataPortMap=22 SasIdxMap=0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> echo Loading initramfs...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> initrd /rd.gz /custom.gz
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> echo Starting kernel with USB boot
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">menuentry &amp;#39;RedPill DS918+ v7.1.0-42661 (SATA, Verbose)&amp;#39; {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> savedefault
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> set root=(hd0,msdos1)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> echo Loading Linux...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> linux /zImage HddHotplug=0 withefi console=ttyS0,115200n8 synoboot_satadom=2 DiskIdxMap=00 netif_num=1 syno_hdd_detect=0 syno_port_thaw=1 SasIdxMap=0 vender_format_version=2 earlyprintk mac1=xxx syno_hdd_powerup_seq=1 pid=0x5678 log_buf_len=32M syno_hw_version=DS918+ vid=0xffff earlycon=uart8250,io,0x3f8,115200n8 sn=xxx elevator=elevator root=/dev/md0 loglevel=15 SataPortMap=1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> echo Loading initramfs...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> initrd /rd.gz /custom.gz
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> echo Starting kernel with SATA boot
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> echo WARNING: SATA boot support on this platform is experimental!
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="系统安装">系统安装
+&lt;/h3>&lt;p> 在安装之前，需要运行&lt;code>synology-assistant-7.win系统版.exe&lt;/code>安装程序，在网盘已提供，用于扫描局域网中存在的NAS;&lt;/p>
+&lt;p> 在制作完成U盘引导后，插入到NAS中，然后启动NAS，运行&lt;code>Synology Assistant&lt;/code>，安装过程略;&lt;/p>
+&lt;p>&lt;font size=3 color=red>注意&lt;/font>&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>对于黑群晖，在安装过程中最好断网，即便是全洗白的(有时成功、但也有失败)，最后导致系统被锁，无限还原，在出现10分钟倒计时开始就断开与互联网的连接;&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>对于初学者，提前准备1个硬盘盒(3.5寸)、多个引导U盘，当系统无限还原，那么就格式化磁盘吧，过程略;&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>系统如果需要升级，需做好备份，然后找到对应的img镜像和pat文件，再尝试新U盘制作引导，由于没亲历过(只重装系统)，可参考&lt;a class="link" href="https://post.smzdm.com/p/a0q4zgx9/p4/?sort_tab=hot/#comments" target="_blank" rel="noopener"
+>该文章&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;h2 id="系统使用">系统使用
+&lt;/h2>&lt;p> 在装完系统后，可以体验群晖简单实用的功能了，但其中有些注意点，可参考&lt;a class="link" href="https://www.ainas.cc:88/?page_id=8" target="_blank" rel="noopener"
+>该系列文章&lt;/a>:&lt;/p>
+&lt;h3 id="登录synology账户">登录Synology账户
+&lt;/h3>&lt;p> 由于许多功能依赖于群晖账户，比如QuickConnect、ActiveInsight、DDNS等，此外还有其他的一些功能;&lt;/p>
+&lt;p> 群晖账户尽量在全球站注册，可参考&lt;a class="link" href="https://www.ainas.cc:88/?p=572" target="_blank" rel="noopener"
+>该文章&lt;/a>，具体原因也在其中说明;&lt;/p>
+&lt;p> 注册完账户后，可在群晖控制面板中登录群晖账户，然后可体验部分功能，QuickConnect需绑定电话(但不建议绑定，会导致群晖变黑)，DDNS可直接采用官方提供的域名(证书支持泛域名，较简单，但时常会失败);&lt;/p>
+&lt;h3 id="ddns与证书续期">DDNS与证书续期
+&lt;/h3>&lt;p> DDNS可查看先前我记录的&lt;code>DDNS踩坑经历&lt;/code>文章，DDNS服务提供商建议采用Cloudflare，将域名的DNS服务器设为Cloudflare(CF)的，主要是为了方便之后通过acme.sh自动申请证书，经过测试采用dns_dp即腾讯的域名解析，申请不知为何原因失败，到了第二天换成dns_cf一次便成功，下面介绍整个过程;&lt;/p>
+&lt;ol>
+&lt;li>DDNS配置&lt;/li>
+&lt;/ol>
+&lt;p> 前提条件，具备公网IPv4或IPv6，家庭的话IPv6应该都有，没的话需咨询宽带提供商，如果因为光猫配置问题，可致电询问光猫超级用户账号密码(用于将路由桥接修改为路由模式)，或者参考网上教程去破解(需注意型号问题);&lt;/p>
+&lt;p> 对于DDNS，首先需购买域名，然后将其DNS服务器设置为CF的，接着在系统中可以通过docker或套件中心来安装&lt;code>DDNS-GO&lt;/code>;&lt;/p>
+&lt;p> 然后在CF中添加该域名，并在&lt;a class="link" href="https://dash.cloudflare.com/profile" target="_blank" rel="noopener"
+>My Profile&lt;/a>中的&lt;code>API Tokens&lt;/code>分别添加&lt;code>API Token&lt;/code>(用于DDNS-GO服务)和&lt;code>Global API Key&lt;/code>(用于自动申请证书)&lt;/p>
+&lt;p> 其中，&lt;code>API Token&lt;/code>中选择&lt;code>Create Token&lt;/code>，模板选择&lt;code>Edit zone DNS&lt;/code>，在&lt;code>Zone Resources&lt;/code>中选择包含的可作用域名;&lt;code>Global API Key&lt;/code>可直接查看，略;&lt;/p>
+&lt;ol start="2">
+&lt;li>证书申请&lt;/li>
+&lt;/ol>
+&lt;p> 需要注意几个问题，证书是否需要泛域名，证书是否频繁更新，根据需求选择采用ZeroSSL还是Letsencrypt证书提供商;&lt;/p>
+&lt;p> 关于泛域名，如果没有相关需求，建议采用ZeroSSL，优势是不限制申请次数;&lt;/p>
+&lt;p> 群晖支持采用Letsencrypt申请泛域名证书，但只为群晖提供的域名后缀提供服务，因此若不采用群晖的DDNS，且考虑到便利性，那么需要借助类似&lt;code>acme.sh&lt;/code>的工具来自动申请证书，可参考&lt;a class="link" href="https://post.smzdm.com/p/a6d5dl6e/" target="_blank" rel="noopener"
+>该文章&lt;/a>，具体过程如下:&lt;/p>
+&lt;p> 首先，需要申请证书，这里&lt;code>acme.sh&lt;/code>采用dns_cf的方式，需要借助上文提到的&lt;code>Global API Key&lt;/code>的&lt;code>Global API Key&lt;/code>和该账户的邮箱，然后在ssh终端执行以下指令:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># 你的域名&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">DOMAIN&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;xxx.xxx&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># DNS供应商 可选 dns_dp(腾讯云) dns_ali(阿里云) dns_cf 其他可查https://github.com/acmesh-official/acme.sh/wiki/dnsapi&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">DNS&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;dns_cf&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#证书供应商&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">CERT_SERVER&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;letsencrypt&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">CF_Key&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;xxx&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">CF_Email&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;xxx&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker run --rm &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> -v &lt;span class="s2">&amp;#34;/volume1/docker/acme:/acme.sh&amp;#34;&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> -e &lt;span class="s2">&amp;#34;CF_Key=&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">CF_Key&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> -e &lt;span class="s2">&amp;#34;CF_Email=&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">CF_Email&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> neilpang/acme.sh &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> acme.sh --dns &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">DNS&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> --server &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">CERT_SERVER&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> --issue -d &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">DOMAIN&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> -d &lt;span class="s2">&amp;#34;*.&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">DOMAIN&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p> 可能由于网络或脚本版本问题，Letsencrypt证书不一定一次成功，需注意申请次数不能短时间太多，当出现Success，至此已经申请到带泛域名的证书，然后需要将证书通过acme.sh提供的群晖部署方式部署，脚本如下:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#群晖账号密码&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">SYNO_Username&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;xxx&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">SYNO_Password&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;xxx&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#如果开启了双重验证请在浏览器登录时选中保存此设备，然后从COOKIE中获取did cookie&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">SYNO_TOTP_SECRET&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#以下群晖配置非必要不要更改&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">SYNO_Hostname&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;localhost&amp;#34;&lt;/span> &lt;span class="c1"># Specify if not using on localhost&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">SYNO_Scheme&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;http&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">SYNO_Port&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;5000&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># 经测试发现localhost不行，而通过网卡的IPv4可以&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">ipv4&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="k">$(&lt;/span>ifconfig eth0 &lt;span class="p">|&lt;/span> grep -E &lt;span class="s1">&amp;#39;inet addr&amp;#39;&lt;/span> &lt;span class="p">|&lt;/span> cut -d: -f2 &lt;span class="p">|&lt;/span> awk &lt;span class="s1">&amp;#39;{print $1}&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">)&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">SYNO_Hostname&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">ipv4&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="c1"># Specify if not using on localhost&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#要添加的证书的名字，空字符串（&amp;#34;&amp;#34;）的话就是替代默认证书，一般建议使用空字符串，除非你有多个证书&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">SYNO_Certificate&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;xxx&amp;#39;&lt;/span> &lt;span class="c1"># 建议和域名保持一致&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># 以下为acme.sh通过dsm_deploy部署到系统的必要参数&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">c&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;SYNO_Username=&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">SYNO_Username&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">d&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;SYNO_Password=&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">SYNO_Password&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">e&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;SYNO_TOTP_SECRET=&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">SYNO_TOTP_SECRET&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">f&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;SYNO_Hostname=&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">SYNO_Hostname&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">g&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;SYNO_Scheme=&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">SYNO_Scheme&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">h&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;SYNO_Port=&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">SYNO_Port&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">i&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;SYNO_Certificate=&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">SYNO_Certificate&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">j&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;SYNO_DID=&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">SYNO_TOTP_SECRET&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker run --rm &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> -v &lt;span class="s2">&amp;#34;/volume1/docker/acme:/acme.sh&amp;#34;&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> -e &lt;span class="si">${&lt;/span>&lt;span class="nv">c&lt;/span>&lt;span class="si">}&lt;/span> -e &lt;span class="si">${&lt;/span>&lt;span class="nv">d&lt;/span>&lt;span class="si">}&lt;/span> -e &lt;span class="si">${&lt;/span>&lt;span class="nv">e&lt;/span>&lt;span class="si">}&lt;/span> -e &lt;span class="si">${&lt;/span>&lt;span class="nv">f&lt;/span>&lt;span class="si">}&lt;/span> -e &lt;span class="si">${&lt;/span>&lt;span class="nv">g&lt;/span>&lt;span class="si">}&lt;/span> -e &lt;span class="si">${&lt;/span>&lt;span class="nv">h&lt;/span>&lt;span class="si">}&lt;/span> -e &lt;span class="si">${&lt;/span>&lt;span class="nv">i&lt;/span>&lt;span class="si">}&lt;/span> -e &lt;span class="si">${&lt;/span>&lt;span class="nv">j&lt;/span>&lt;span class="si">}&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> neilpang/acme.sh &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> acme.sh --dns &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">DNS&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> --issue -d &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">DOMAIN&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> -d &lt;span class="s2">&amp;#34;*.&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">DOMAIN&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> --deploy --deploy-hook synology_dsm
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p> 至此，通过acme.sh的docker容器申请证书与部署到群晖已完成，脚本参考&lt;a class="link" href="https://github.com/GuaiMiu/Synology-Auto-SSL/blob/main/acme.sh" target="_blank" rel="noopener"
+>该仓库&lt;/a>，修改后的脚本如下:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;span class="lnt">37
+&lt;/span>&lt;span class="lnt">38
+&lt;/span>&lt;span class="lnt">39
+&lt;/span>&lt;span class="lnt">40
+&lt;/span>&lt;span class="lnt">41
+&lt;/span>&lt;span class="lnt">42
+&lt;/span>&lt;span class="lnt">43
+&lt;/span>&lt;span class="lnt">44
+&lt;/span>&lt;span class="lnt">45
+&lt;/span>&lt;span class="lnt">46
+&lt;/span>&lt;span class="lnt">47
+&lt;/span>&lt;span class="lnt">48
+&lt;/span>&lt;span class="lnt">49
+&lt;/span>&lt;span class="lnt">50
+&lt;/span>&lt;span class="lnt">51
+&lt;/span>&lt;span class="lnt">52
+&lt;/span>&lt;span class="lnt">53
+&lt;/span>&lt;span class="lnt">54
+&lt;/span>&lt;span class="lnt">55
+&lt;/span>&lt;span class="lnt">56
+&lt;/span>&lt;span class="lnt">57
+&lt;/span>&lt;span class="lnt">58
+&lt;/span>&lt;span class="lnt">59
+&lt;/span>&lt;span class="lnt">60
+&lt;/span>&lt;span class="lnt">61
+&lt;/span>&lt;span class="lnt">62
+&lt;/span>&lt;span class="lnt">63
+&lt;/span>&lt;span class="lnt">64
+&lt;/span>&lt;span class="lnt">65
+&lt;/span>&lt;span class="lnt">66
+&lt;/span>&lt;span class="lnt">67
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#!/bin/bash
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">&lt;/span>&lt;span class="c1"># 你的域名&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">DOMAIN&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;xxx&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#证书供应商&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">CERT_SERVER&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;letsencrypt&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#DNS供应商 可选 dns_dp(腾讯云) dns_ali(阿里云) dns_cf 其他可查https://github.com/acmesh-official/acme.sh/wiki/dnsapi&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">DNS&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;dns_cf&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#群晖账号密码&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">SYNO_Username&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;xxx&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">SYNO_Password&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;xxx&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#如果开启了双重验证请在浏览器登录时选中保存此设备，然后从COOKIE中获取did cookie&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">SYNO_TOTP_SECRET&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#以下群晖配置非必要不要更改&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">SYNO_Hostname&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;localhost&amp;#34;&lt;/span> &lt;span class="c1"># Specify if not using on localhost&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">SYNO_Scheme&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;http&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">SYNO_Port&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;5000&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">ipv4&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="k">$(&lt;/span>ifconfig eth0 &lt;span class="p">|&lt;/span> grep -E &lt;span class="s1">&amp;#39;inet addr&amp;#39;&lt;/span> &lt;span class="p">|&lt;/span> cut -d: -f2 &lt;span class="p">|&lt;/span> awk &lt;span class="s1">&amp;#39;{print $1}&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">)&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">SYNO_Hostname&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">ipv4&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="c1"># Specify if not using on localhost&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#要添加的证书的名字，空字符串（&amp;#34;&amp;#34;）的话就是替代默认证书，一般建议使用空字符串，除非你有多个证书&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">SYNO_Certificate&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;xxx&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#以下三选一&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#DNSPOD.CN 腾讯云&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">DP_Id&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">DP_Key&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#阿里云&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">Ali_Key&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">Ali_Secret&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#CF&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">CF_Key&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;xxx&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">CF_Email&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;xxx&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">case&lt;/span> &lt;span class="nv">$DNS&lt;/span> in
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;dns_dp&amp;#34;&lt;/span>&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nv">a&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;DP_Id=&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">DP_Id&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="o">&amp;amp;&amp;amp;&lt;/span>&lt;span class="nv">b&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;DP_Key=&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">DP_Key&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">;;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;dns_ali&amp;#34;&lt;/span>&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nv">a&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;Ali_Key=&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">Ali_Key&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="o">&amp;amp;&amp;amp;&lt;/span>&lt;span class="nv">b&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;Ali_Secret=&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">Ali_Secret&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">;;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;dns_cf&amp;#34;&lt;/span>&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nv">a&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;CF_Key=&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">CF_Key&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="o">&amp;amp;&amp;amp;&lt;/span>&lt;span class="nv">b&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;CF_Email=&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">CF_Email&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">;;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">esac&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">c&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;SYNO_Username=&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">SYNO_Username&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">d&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;SYNO_Password=&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">SYNO_Password&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">e&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;SYNO_TOTP_SECRET=&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">SYNO_TOTP_SECRET&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">f&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;SYNO_Hostname=&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">SYNO_Hostname&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">g&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;SYNO_Scheme=&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">SYNO_Scheme&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">h&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;SYNO_Port=&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">SYNO_Port&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">i&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;SYNO_Certificate=&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">SYNO_Certificate&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">j&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;SYNO_DID=&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">SYNO_TOTP_SECRET&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># 申请证书&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker run --rm &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> -v &lt;span class="s2">&amp;#34;/volume1/docker/acme:/acme.sh&amp;#34;&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> -e &lt;span class="si">${&lt;/span>&lt;span class="nv">a&lt;/span>&lt;span class="si">}&lt;/span> -e &lt;span class="si">${&lt;/span>&lt;span class="nv">b&lt;/span>&lt;span class="si">}&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> neilpang/acme.sh &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> acme.sh --dns &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">DNS&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> --server &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">CERT_SERVER&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> --renew -d &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">DOMAIN&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> -d &lt;span class="s2">&amp;#34;*.&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">DOMAIN&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># --issue -d &amp;#34;${DOMAIN}&amp;#34; -d &amp;#34;*.${DOMAIN}&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># 部署证书到群晖&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker run --rm &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> -v &lt;span class="s2">&amp;#34;/volume1/docker/acme:/acme.sh&amp;#34;&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> -e &lt;span class="si">${&lt;/span>&lt;span class="nv">c&lt;/span>&lt;span class="si">}&lt;/span> -e &lt;span class="si">${&lt;/span>&lt;span class="nv">d&lt;/span>&lt;span class="si">}&lt;/span> -e &lt;span class="si">${&lt;/span>&lt;span class="nv">e&lt;/span>&lt;span class="si">}&lt;/span> -e &lt;span class="si">${&lt;/span>&lt;span class="nv">f&lt;/span>&lt;span class="si">}&lt;/span> -e &lt;span class="si">${&lt;/span>&lt;span class="nv">g&lt;/span>&lt;span class="si">}&lt;/span> -e &lt;span class="si">${&lt;/span>&lt;span class="nv">h&lt;/span>&lt;span class="si">}&lt;/span> -e &lt;span class="si">${&lt;/span>&lt;span class="nv">i&lt;/span>&lt;span class="si">}&lt;/span> -e &lt;span class="si">${&lt;/span>&lt;span class="nv">j&lt;/span>&lt;span class="si">}&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> neilpang/acme.sh &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> acme.sh --dns &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">DNS&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> --issue -d &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">DOMAIN&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> -d &lt;span class="s2">&amp;#34;*.&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">DOMAIN&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> --deploy --deploy-hook synology_dsm
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p> 如果想要定时更新证书，可在控制面板中的&lt;code>任务计划&lt;/code>添加任务，由于有些指令与目录访问需要高权限，比如docker指令和某些路径，以root身份执行，每月执行一次;&lt;/p>
+&lt;p> 但仍存在些小问题，比如两步验证，开启了两步验证，但没有配置&lt;code>SYNO_TOTP_SECRET&lt;/code>参数，执行脚本仍可以成功;采用腾讯云的api-id和api-key方式申请Letsencrypt证书始终不成功，在相关Issue中说明需更新acme.sh或换网络等，具体没尝试过.&lt;/p>
+&lt;h3 id="sso单点登录">SSO单点登录
+&lt;/h3>&lt;p> 琢磨良久，没成功，暂时略，后续补充.&lt;/p>
+&lt;h2 id="参考">参考
+&lt;/h2>&lt;ol>
+&lt;li>
+&lt;p>&lt;a class="link" href="http://k.8x6x.com/thread-72641-1-1.html" target="_blank" rel="noopener"
+>http://k.8x6x.com/thread-72641-1-1.html&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://www.openos.org/threads/diskidxmap-sataportmap-sasidxmap.3675/" target="_blank" rel="noopener"
+>https://www.openos.org/threads/diskidxmap-sataportmap-sasidxmap.3675/&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://blog.csdn.net/qq_35379989/article/details/129287254" target="_blank" rel="noopener"
+>https://blog.csdn.net/qq_35379989/article/details/129287254&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://post.smzdm.com/p/a0q4zgx9/p4/?sort_tab=hot/#comments" target="_blank" rel="noopener"
+>https://post.smzdm.com/p/a0q4zgx9/p4/?sort_tab=hot/#comments&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://www.ainas.cc:88/?page_id=8" target="_blank" rel="noopener"
+>https://www.ainas.cc:88/?page_id=8&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://www.ainas.cc:88/?p=572" target="_blank" rel="noopener"
+>https://www.ainas.cc:88/?p=572&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://post.smzdm.com/p/a6d5dl6e/" target="_blank" rel="noopener"
+>https://post.smzdm.com/p/a6d5dl6e/&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;hr>
+&lt;p>&lt;font color=blue size=3>2023-06-28 首次更新&lt;/font>&lt;/p></description></item><item><title>破解光猫超级用户密码</title><link>https://adja.com.cn/p/crack-the-optical-modem-superuser-password/</link><pubDate>Sat, 18 Jun 2022 15:43:59 +0800</pubDate><guid>https://adja.com.cn/p/crack-the-optical-modem-superuser-password/</guid><description>&lt;img src="https://adja.com.cn/p/crack-the-optical-modem-superuser-password/cover.jpg" alt="Featured image of post 破解光猫超级用户密码" />&lt;h1 id="破解光猫超级用户密码">破解光猫超级用户密码
+&lt;/h1>&lt;p> 首先我强调光猫型号为&lt;em>HS8545M5&lt;/em>，软件版本为&lt;em>V5R020C00S200&lt;/em>；&lt;/p>
+&lt;p> 由于需要光猫出场时默认为路由模式，我需要将其修改为桥接模式，而光猫背面的user用户没有权限修改，因此需要获取超级用户权限。&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/crack-the-optical-modem-superuser-password/1.png"
+width="1443"
+height="1145"
+srcset="https://adja.com.cn/p/crack-the-optical-modem-superuser-password/1_hu_234096031e10f356.png 480w, https://adja.com.cn/p/crack-the-optical-modem-superuser-password/1_hu_270eb182af362da1.png 1024w"
+loading="lazy"
+alt="1"
+class="gallery-image"
+data-flex-grow="126"
+data-flex-basis="302px"
+>&lt;/p>
+&lt;h2 id="光猫telnet使能">光猫telnet使能
+&lt;/h2>&lt;p> 光猫没有开启telnet服务，需要工具进行破解，破解工具的下载链接在最后；&lt;/p>
+&lt;p> 先下载破解工具，接着拔掉光纤，重启光猫，通过宽带线把电脑与光猫连接，打开ONT维修使能工具；&lt;/p>
+&lt;p> 选择维修使能，点击刷新，然后启动;
+ 当“当前成功总数”变为1后，点击停止，结果类似下面截图;&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/crack-the-optical-modem-superuser-password/2.png"
+width="1426"
+height="884"
+srcset="https://adja.com.cn/p/crack-the-optical-modem-superuser-password/2_hu_b2b5546be2b679c2.png 480w, https://adja.com.cn/p/crack-the-optical-modem-superuser-password/2_hu_4875deb63ed630ed.png 1024w"
+loading="lazy"
+alt="2"
+class="gallery-image"
+data-flex-grow="161"
+data-flex-basis="387px"
+>&lt;/p>
+&lt;p> 打开命令行，测试telnet能否连接成功，当出现找不到命令时，开启windows的telnet服务;&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">telnet 192.168.1.1
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p> 然后输入用户名root;密码尝试下&lt;code>Hw8@cMcc&lt;/code>或者&lt;code>adminHW&lt;/code>,成功的话结果如下：&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/crack-the-optical-modem-superuser-password/3.png"
+width="697"
+height="534"
+srcset="https://adja.com.cn/p/crack-the-optical-modem-superuser-password/3_hu_16e82029052f3dae.png 480w, https://adja.com.cn/p/crack-the-optical-modem-superuser-password/3_hu_46d7a0623455de58.png 1024w"
+loading="lazy"
+alt="3"
+class="gallery-image"
+data-flex-grow="130"
+data-flex-basis="313px"
+>&lt;/p>
+&lt;h2 id="获取用户名及密码密文">获取用户名及密码密文
+&lt;/h2>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;span class="lnt">37
+&lt;/span>&lt;span class="lnt">38
+&lt;/span>&lt;span class="lnt">39
+&lt;/span>&lt;span class="lnt">40
+&lt;/span>&lt;span class="lnt">41
+&lt;/span>&lt;span class="lnt">42
+&lt;/span>&lt;span class="lnt">43
+&lt;/span>&lt;span class="lnt">44
+&lt;/span>&lt;span class="lnt">45
+&lt;/span>&lt;span class="lnt">46
+&lt;/span>&lt;span class="lnt">47
+&lt;/span>&lt;span class="lnt">48
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">WAP&amp;gt;su
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">success!
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">SU_WAP&amp;gt;shell
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">BusyBox v1.30.1 &lt;span class="o">()&lt;/span> built-in shell &lt;span class="o">(&lt;/span>ash&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Enter &lt;span class="s1">&amp;#39;help&amp;#39;&lt;/span> &lt;span class="k">for&lt;/span> a list of built-in commands.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">profile close core dump
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">WAP&lt;span class="o">(&lt;/span>Dopra Linux&lt;span class="o">)&lt;/span> &lt;span class="c1"># ls&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bin dev init linuxrc root sys var
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">boot etc lib mnt sbin tmp
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bundle html libexec proc share usr
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">WAP&lt;span class="o">(&lt;/span>Dopra Linux&lt;span class="o">)&lt;/span> &lt;span class="c1"># cd /mnt/jffs2/&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">WAP&lt;span class="o">(&lt;/span>Dopra Linux&lt;span class="o">)&lt;/span> &lt;span class="c1"># ls&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">CfgFile_Backup dypack_debug mount_ok
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">CfgwithoutlineD factory_file mount_osgi_ok
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">DHCPlasterrwan1 fsok nffruntimes
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">DHCPlasterrwan5 ftvoipcfgstate oldcrc
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">FTCRC hard_version onlinecounter
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">InformFlag hw_boardinfo ontstatusfile
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">TelnetEnable hw_boardinfo.bak optic_init_par.bin
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Updateflag_bak hw_bootcfg.xml ppplasterr258
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">UpnpExpandFirstInit hw_ctree.xml ppplasterr259
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">V5_TypeWord_FLAG hw_ctree_bak.xml reboot_bind_tag
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">app hw_default_ctree.xml reboot_info
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">asan_test hw_default_ctree2.xml recovername
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">backup_ok hw_hardinfo_feature request_ddr
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">board_type hwflashlog.bin request_ddr_inner
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bob_type hwkeyinfogetlog.bin resetkey
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ceaseadv.conf hwnfflog.bin restore
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">certs hwontdebuglogctrl.bin result_ddr
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">customize hwontdebuglogdata.bin scflie_0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">customize.txt hwontlog.bin scflie_1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">customizepara.txt keyreleasecount.txt smooth_finish
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">cwmp_rebootsave kmc_need_backup typeword
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">dhcp6c kmc_store_A upgrade_info.xml_back
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">dhcp_data_a kmc_store_B xmlcfgerrorcode
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">dhcp_lastip lastsysinfo.tar.gz
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">dhcpc main_version
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">WAP&lt;span class="o">(&lt;/span>Dopra Linux&lt;span class="o">)&lt;/span> &lt;span class="c1"># cp /mnt/jffs2/hw_ctree.xml /mnt/jffs2/mycfg.xml.gz&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">WAP&lt;span class="o">(&lt;/span>Dopra Linux&lt;span class="o">)&lt;/span> &lt;span class="c1"># aescrypt2 1 mycfg.xml.gz tem&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">WAP&lt;span class="o">(&lt;/span>Dopra Linux&lt;span class="o">)&lt;/span> &lt;span class="c1"># gzip -d mycfg.xml.gz&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">WAP&lt;span class="o">(&lt;/span>Dopra Linux&lt;span class="o">)&lt;/span> &lt;span class="c1"># grep WebUserInfoInstance mycfg.xml&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&amp;lt;X_HW_WebUserInfoInstance &lt;span class="nv">InstanceID&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;1&amp;#34;&lt;/span> &lt;span class="nv">ModifyPasswordFlag&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;0&amp;#34;&lt;/span> &lt;span class="nv">UserName&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;user&amp;#34;&lt;/span> &lt;span class="nv">Password&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$2&lt;/span>&lt;span class="s2">sN}QKqrgY(,w8^GHpW7)&lt;/span>$&lt;span class="s2">|L3MQ)tWIkZv5Na2Z1E&lt;/span>$&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="nv">UserLevel&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;1&amp;#34;&lt;/span> &lt;span class="nv">Enable&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;1&amp;#34;&lt;/span> &lt;span class="nv">Alias&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;cpe-1&amp;#34;&lt;/span>/&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&amp;lt;X_HW_WebUserInfoInstance &lt;span class="nv">InstanceID&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;2&amp;#34;&lt;/span> &lt;span class="nv">ModifyPasswordFlag&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;1&amp;#34;&lt;/span> &lt;span class="nv">UserName&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;CMCCAdmin&amp;#34;&lt;/span> &lt;span class="nv">Password&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$2&lt;/span>&lt;span class="s2">I3^R(k3[.)B9I4E8:S!DF!Q&lt;/span>&lt;span class="nv">$ULd6S&lt;/span>&lt;span class="s2">(U7RRH^2]2-=Nxs&amp;amp;amp;S`J6))+2&lt;/span>&lt;span class="nv">$S8&lt;/span>&lt;span class="s2">&amp;amp;quot;&amp;amp;apos;j&amp;amp;amp;&lt;/span>$&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="nv">UserLevel&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;0&amp;#34;&lt;/span> &lt;span class="nv">Enable&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;1&amp;#34;&lt;/span> &lt;span class="nv">Alias&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;cpe-2&amp;#34;&lt;/span> &lt;span class="nv">PassMode&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;0&amp;#34;&lt;/span>/&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">WAP&lt;span class="o">(&lt;/span>Dopra Linux&lt;span class="o">)&lt;/span> &lt;span class="c1">#&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">success!
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">SU_WAP&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p> 找到关键字user与password部分;&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/crack-the-optical-modem-superuser-password/4.png"
+width="1469"
+height="274"
+srcset="https://adja.com.cn/p/crack-the-optical-modem-superuser-password/4_hu_7e0550aec8bc70e0.png 480w, https://adja.com.cn/p/crack-the-optical-modem-superuser-password/4_hu_2da8507774944242.png 1024w"
+loading="lazy"
+alt="4"
+class="gallery-image"
+data-flex-grow="536"
+data-flex-basis="1286px"
+>&lt;/p>
+&lt;p> 上图中&lt;code>CMCCAdmin&lt;/code>用户密码密文为：&lt;code>$2I3^R(k3[.)B9I4E8:S!DF!Q$ULd6S(U7RRH^2]2-=Nxs&amp;amp;amp;S`J6))+2$S8&amp;amp;quot;&amp;amp;apos;j&amp;amp;amp;$&lt;/code>&lt;/p>
+&lt;p> 打开华为二次密码破解工具S1S2语音全鉴密.zip中的huawei.exe，在密文解密中输入，尝试3种解密，得出密码为CMCCAdminFf2IrXFt&lt;/p>
+&lt;img src=5.png width=300 display=inline-block alt=""/>
+&lt;h2 id="使用超级用户登录光猫">使用超级用户登录光猫
+&lt;/h2>&lt;p> 用户名&lt;code>CMCCAdmin&lt;/code>，密码&lt;code>CMCCAdminFf2IrXFt&lt;/code>，发现可以修改连接模式了;&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/crack-the-optical-modem-superuser-password/6.png"
+width="1434"
+height="990"
+srcset="https://adja.com.cn/p/crack-the-optical-modem-superuser-password/6_hu_f6702d7242bac4d3.png 480w, https://adja.com.cn/p/crack-the-optical-modem-superuser-password/6_hu_f49bde6b577b6c1b.png 1024w"
+loading="lazy"
+alt="5"
+class="gallery-image"
+data-flex-grow="144"
+data-flex-basis="347px"
+>&lt;/p>
+&lt;p> 文件链接：https://pan.baidu.com/s/101GrTj53T4RaIpc0h4KAoQ&lt;/p>
+&lt;p> 提取码：adja&lt;/p>
+&lt;h2 id="参考">参考
+&lt;/h2>&lt;ol>
+&lt;li>&lt;a class="link" href="https://www.eaglemoe.com/archives/216" target="_blank" rel="noopener"
+>https://www.eaglemoe.com/archives/216&lt;/a>&lt;/li>
+&lt;/ol>
+&lt;hr>
+&lt;p>&lt;font size=3 color=blue>2022-06-18 更新&lt;/font>&lt;/p></description></item></channel></rss>
