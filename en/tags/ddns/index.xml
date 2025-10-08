@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>DDNS on Loong's Blog</title><link>https://adja.com.cn/en/tags/ddns/</link><description>Recent content in DDNS on Loong's Blog</description><generator>Hugo -- gohugo.io</generator><language>en</language><copyright>Loong</copyright><lastBuildDate>Sun, 08 Dec 2024 15:41:04 +0800</lastBuildDate><atom:link href="https://adja.com.cn/en/tags/ddns/index.xml" rel="self" type="application/rss+xml"/><item><title>Use DDNS To Access Intranet Devices</title><link>https://adja.com.cn/en/p/use-ddns-to-access-intranet-devices/</link><pubDate>Sat, 06 Jul 2024 16:08:49 +0800</pubDate><guid>https://adja.com.cn/en/p/use-ddns-to-access-intranet-devices/</guid><description>&lt;img src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/cover.jpg" alt="Featured image of post Use DDNS To Access Intranet Devices" />&lt;h1 id="use-ddns-to-access-intranet-devices">Use DDNS To Access Intranet Devices
+&lt;/h1>&lt;p> Sometimes I need to access my home NAS when I go out.
+Since it is increasingly challenging to apply for a public IPv4 in China, and the official QuickConnect service of Synology is also very slow.
+After referring to relevant tutorials,
+I decided to resolve the domain name to public IPv6 through DDNS and access the intranet devices directly through the domain name.&lt;/p>
+&lt;p> Based on the previous experiment of cracking the optical modem to get the superuser privileges to modify the routing mode,
+I connected the router to the optical modem.
+Then let the router dial and turn on IPv6, and after assigning the public network IPv6, I started the DDNS configuration process.&lt;/p>
+&lt;h2 id="through-synologys-dns-service">Through Synology&amp;rsquo;s DNS service
+&lt;/h2>&lt;p> Open the Control Panel, click External Access, select DDNS, then click Add, and select Synology as the service provider.
+Then customize the configuration below.&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/1.png"
+width="1131"
+height="769"
+srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/1_hu_791072600dc1a28d.png 480w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/1_hu_d20dab7bd7422516.png 1024w"
+loading="lazy"
+alt="1"
+class="gallery-image"
+data-flex-grow="147"
+data-flex-basis="352px"
+>&lt;/p>
+&lt;p> If you need https access, check &amp;ldquo;Get a certificate from Let&amp;rsquo;s Encrypt&amp;rdquo; and click OK.&lt;/p>
+&lt;h2 id="using-a-dns-service-from-another-provider">Using a DNS service from another provider
+&lt;/h2>&lt;p> The following only takes Tencent Cloud&amp;rsquo;s DNS service as an example. You need to apply for a domain name on Tencent Cloud&amp;rsquo;s official website in
+advance.&lt;/p>
+&lt;h3 id="using-the-ddns-go-image">Using the &lt;em>ddns-go&lt;/em> image
+&lt;/h3>&lt;p> To perform dynamic domain name resolution, you need your own NAS device to query the local IP address regularly, and then call the interface to
+update the domain name resolution field to implement DDNS.&lt;/p>
+&lt;p> So you can&amp;rsquo;t change the method. There are many methods on the Internet. Here I provide a method to use Docker to update DDNS.&lt;/p>
+&lt;p> Search for Docker in the package center and install Docker. The steps are omitted.&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/3.png"
+width="1371"
+height="661"
+srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/3_hu_3d4bd212a1d39bc2.png 480w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/3_hu_557c3ea7c6613a97.png 1024w"
+loading="lazy"
+alt="3"
+class="gallery-image"
+data-flex-grow="207"
+data-flex-basis="497px"
+>&lt;/p>
+&lt;p> Open Docker, select &amp;ldquo;Registry&amp;rdquo;, search for ddns, and install the first &amp;ldquo;ddns-go&amp;rdquo;&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/4.png"
+width="1475"
+height="841"
+srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/4_hu_c4798d82dd974946.png 480w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/4_hu_663562ac22997ff0.png 1024w"
+loading="lazy"
+alt="4"
+class="gallery-image"
+data-flex-grow="175"
+data-flex-basis="420px"
+>&lt;/p>
+&lt;p> After the installation is complete, open the image, select ddns-go, and click Start.&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/5.png"
+width="1467"
+height="520"
+srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/5_hu_b89a443ed6cc7a4a.png 480w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/5_hu_7779ac6e9d5fc9dc.png 1024w"
+loading="lazy"
+alt="5"
+class="gallery-image"
+data-flex-grow="282"
+data-flex-basis="677px"
+>&lt;/p>
+&lt;p> Click Advanced Settings-&amp;gt;Storage-&amp;gt;Add Folder.&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/6.png"
+width="1229"
+height="843"
+srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/6_hu_59474d9c95f3bbed.png 480w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/6_hu_ff103df09dfe4be2.png 1024w"
+loading="lazy"
+alt="6"
+class="gallery-image"
+data-flex-grow="145"
+data-flex-basis="349px"
+>&lt;/p>
+&lt;p> Modify the mount path, my configuration is as follows:&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/7.png"
+width="1174"
+height="744"
+srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/7_hu_3d209a1690770e0d.png 480w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/7_hu_30a5e390e7b316a1.png 1024w"
+loading="lazy"
+alt="7"
+class="gallery-image"
+data-flex-grow="157"
+data-flex-basis="378px"
+>&lt;/p>
+&lt;p> Click Network-&amp;gt;Check Host Network-&amp;gt;Apply.&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/8.png"
+width="966"
+height="822"
+srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/8_hu_6afe4e6b2cf55073.png 480w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/8_hu_40c2faf981cade2d.png 1024w"
+loading="lazy"
+alt="8"
+class="gallery-image"
+data-flex-grow="117"
+data-flex-basis="282px"
+>&lt;/p>
+&lt;p> Click Next, click Finish.&lt;/p>
+&lt;h3 id="configuring-ddns">Configuring DDNS
+&lt;/h3>&lt;p> Open &lt;code>http://[nas ip corresponding to the domain name]:9876/&lt;/code>&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/9.png"
+width="1061"
+height="490"
+srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/9_hu_757d8d28f3be637a.png 480w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/9_hu_e4d56b0ca80e396b.png 1024w"
+loading="lazy"
+alt="9"
+class="gallery-image"
+data-flex-grow="216"
+data-flex-basis="519px"
+>&lt;/p>
+&lt;p> Configure DNS service provider, select Tencent Cloud, enter ID and Token, &lt;font color=red>Note that the ID and Token here correspond to &amp;ldquo;DNSPod
+Token&amp;rdquo;, not &amp;ldquo;Tencent Cloud API Key&amp;rdquo;&lt;/font>, the link is https:
+//console.dnspod.cn/account/token/token&lt;/p>
+&lt;p> Only enable ipv6, my configuration is as follows:&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/10.png"
+width="1041"
+height="579"
+srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/10_hu_fd17a94b8ff738a2.png 480w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/10_hu_32c08252c116d7d7.png 1024w"
+loading="lazy"
+alt="10"
+class="gallery-image"
+data-flex-grow="179"
+data-flex-basis="431px"
+>&lt;/p>
+&lt;p> Before clicking &amp;ldquo;Save&amp;rdquo;, you need to configure the domain name resolution and add an AAAA type (indicating an IPv6 address) record.
+Fill it out and it will automatically update. My configuration is as follows:&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/11.png"
+width="1629"
+height="356"
+srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/11_hu_b61b25f03e392220.png 480w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/11_hu_ba3d0e55e5479ace.png 1024w"
+loading="lazy"
+alt="11"
+class="gallery-image"
+data-flex-grow="457"
+data-flex-basis="1098px"
+>&lt;/p>
+&lt;p> After the configuration is completed, click Save, and the latest history records will appear on the right.&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/12.png"
+width="538"
+height="344"
+srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/12_hu_b1df0995618dc228.png 480w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/12_hu_f81cd796f84c613e.png 1024w"
+loading="lazy"
+alt="12"
+class="gallery-image"
+data-flex-grow="156"
+data-flex-basis="375px"
+>&lt;/p>
+&lt;p> Finally, you can test it through domain name + port.&lt;/p>
+&lt;h2 id="additional">Additional
+&lt;/h2>&lt;p> In the summer of 2022, after the installation was completed, I asked my classmates to help test the speed of different prefecture-level cities
+in Jiangsu. The speed was still quite fast.&lt;/p>
+&lt;p> After graduation, I went to other provinces.
+After finding my first job.
+I thought about NAS again and tried to continue using it,
+but found that the same method did not work at all, mainly because the network infrastructure varies greatly between provinces.&lt;/p>
+&lt;p> If you are in a province where IPv6 has not been promoted, it is recommended to Avoid tossing. In addition, due to the proliferation of &lt;em>PCDN&lt;/em>
+in the past few years, operators will check whether users have built &lt;em>PCDN&lt;/em> based on the upstream speed of bandwidth. If DDNS is used maliciously, it
+may cause broadband to be blocked.&lt;/p>
+&lt;hr>
+&lt;p>&lt;font size=3 color=blue>2022-06-19 Record&lt;/font>&lt;/p>
+&lt;p>&lt;font size=3 color=blue>2023-07-07 Update&lt;/font>&lt;/p></description></item></channel></rss>

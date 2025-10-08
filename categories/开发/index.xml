@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>开发 on Loong's Blog</title><link>https://adja.com.cn/categories/%E5%BC%80%E5%8F%91/</link><description>Recent content in 开发 on Loong's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Loong</copyright><lastBuildDate>Sun, 08 Dec 2024 15:41:04 +0800</lastBuildDate><atom:link href="https://adja.com.cn/categories/%E5%BC%80%E5%8F%91/index.xml" rel="self" type="application/rss+xml"/><item><title>开发环境管理工具</title><link>https://adja.com.cn/p/dev-environment-management-tools/</link><pubDate>Wed, 19 Jun 2024 07:34:46 +0800</pubDate><guid>https://adja.com.cn/p/dev-environment-management-tools/</guid><description>&lt;img src="https://adja.com.cn/p/dev-environment-management-tools/cover.jpg" alt="Featured image of post 开发环境管理工具" />&lt;h1 id="开发环境管理工具">开发环境管理工具
+&lt;/h1>&lt;p> 开发时，时常用到多开发环境，大家可能用到过类似&lt;em>miniconda&lt;/em>、&lt;em>nvm&lt;/em>和&lt;em>gvm&lt;/em>的工具，它们分别用于管理&lt;em>python&lt;/em>、&lt;em>nodejs&lt;/em>及&lt;em>go&lt;/em>的版本; 此外还有如&lt;em>maven&lt;/em>的包管理工具;&lt;/p>
+&lt;p> 如果用到新的编程语言或包管理工具，安装对应的版本管理工具都比较麻烦，接下来介绍3款开发环境管理工具&lt;em>asdf&lt;/em>、&lt;em>mise&lt;/em>和&lt;em>vfox&lt;/em>.&lt;/p>
+&lt;h2 id="asdfmise和vfox的对比">asdf、mise和vfox的对比
+&lt;/h2>&lt;p> 三者都是用于管理开发环境的工具，都提供统一的命令行指令，可通过安装插件来拓展其功能.&lt;/p>
+&lt;ul>
+&lt;li>asdf&lt;/li>
+&lt;/ul>
+&lt;p> 其中asdf诞生的时间更早，插件生态更加完善，它主要采用shell脚本开发，能非常好地适配于Linux及Mac，当谈到对Windows的支持时，有人向官方提出了类似的issue，但后续未提供支持Win的版本;&lt;/p>
+&lt;p> 当然，如果非要在Win平台使用asdf，可在wsl中安装使用，但考虑到wsl的速度远不如原生的exe格式程序，再加上shell本身为解释执行的，速度就更慢了; 因此，除了Win平台，其他平台都推荐使用asdf.&lt;/p>
+&lt;ul>
+&lt;li>mise&lt;/li>
+&lt;/ul>
+&lt;p> 该工具原名&lt;em>rtx&lt;/em>，由于原名很容易与Nvidia的显卡名混淆，后更名为&lt;em>mise&lt;/em>，它采用rust编程语言开发;&lt;/p>
+&lt;p> 由于后端采用&lt;em>asdf&lt;/em>，它也继承了&lt;em>asdf&lt;/em>的缺点，同样对Win平台支持比较差.&lt;/p>
+&lt;ul>
+&lt;li>vfox&lt;/li>
+&lt;/ul>
+&lt;p> &lt;em>vfox&lt;/em>采用go编程语言开发，相对于另外2款工具，它最后编译成可执行文件，因此，速度快了很多，体积也较小，对Win平台也提供了原生支持.&lt;/p>
+&lt;p> 美中不足的是，可能这类工具的使用者大多采用Linux与Mac系统，&lt;em>vfox&lt;/em>的贡献者较少，功能有待完善，但后续应该会超过前两者.&lt;/p>
+&lt;h2 id="总结">总结
+&lt;/h2>&lt;p> 比较三者的特点，我更偏向于使用&lt;em>vfox&lt;/em>管理开发环境，尽管如此，日常仍会使用语言专用的版本管理工具比如&lt;em>miniconda&lt;/em>;&lt;/p>
+&lt;p> 即便学了很多编程语言，但日常大多人主要使用3门及一下的编程语言; 解决3款工具的安装及使用相对于解决1款工具bug的难度，前者花费的时间更少，不至于寻遍方法而只能提issue;&lt;/p>
+&lt;p> 此外，最近我在折腾自动化工具的过程中，发现环境的配置愈发简单，&lt;em>Dev Container&lt;/em>对软件开发算是福音，或许未来任何平台的开发者都不必关注环境的安装配置，期待这一天的到来.&lt;/p>
+&lt;hr>
+&lt;p>&lt;font color=blue size=3>2024-06-19 更新&lt;/font>&lt;/p></description></item></channel></rss>

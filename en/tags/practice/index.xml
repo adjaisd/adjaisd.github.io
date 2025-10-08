@@ -1,0 +1,713 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Practice on Loong's Blog</title><link>https://adja.com.cn/en/tags/practice/</link><description>Recent content in Practice on Loong's Blog</description><generator>Hugo -- gohugo.io</generator><language>en</language><copyright>Loong</copyright><lastBuildDate>Sun, 08 Dec 2024 15:41:04 +0800</lastBuildDate><atom:link href="https://adja.com.cn/en/tags/practice/index.xml" rel="self" type="application/rss+xml"/><item><title>Automated Build Via Jenkins</title><link>https://adja.com.cn/en/p/automated-build-via-jenkins/</link><pubDate>Thu, 16 Feb 2023 15:10:34 +0800</pubDate><guid>https://adja.com.cn/en/p/automated-build-via-jenkins/</guid><description>&lt;img src="https://adja.com.cn/p/automated-build-via-jenkins/cover.jpg" alt="Featured image of post Automated Build Via Jenkins" />&lt;h1 id="automated-build-via-jenkins">Automated Build Via Jenkins
+&lt;/h1>&lt;p> Continuing on from the previous experiment, we will implement a one-click deployment project through &lt;em>Jenkins&lt;/em>.&lt;/p>
+&lt;h2 id="project-overview">Project Overview
+&lt;/h2>&lt;p> The project is a frontend and backend separation project. The backend is a multimodule project using &lt;em>SpringBoot&lt;/em>, and its structure is as
+follows:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-text" data-lang="text">&lt;span class="line">&lt;span class="cl">+---backend # Backend
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">| +---src
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">| \---target
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">+---frontend # Frontend
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">| +---dist
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">| \---src
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">+---others # Other Backend Modules
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">| +---mqtt
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">| +---src
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">| \---target
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">+---data # Database Config
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">| +---conf
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">| +---init
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">| \---sql
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">+---conf # Config
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">| +---emqx
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">| \---nginx
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">+---dockerfile
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">+---shell # Scripts To Help Build Images
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">\---docker-compose.yml
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="problems">Problems
+&lt;/h2>&lt;p> For convenience, the automated build process is done in a Jenkins container.
+With Docker, we don&amp;rsquo;t have to spend a lot of time configuring the environment.
+Next, let me introduce the problems encountered.&lt;/p>
+&lt;h3 id="commends-not-found">Commends not found
+&lt;/h3>&lt;p> Through the logs, I observed that the npm command could not be found.
+Because I manged the &lt;em>Node&lt;/em> environment through nvm and didn&amp;rsquo;t configure the &lt;em>PATH&lt;/em> variable, npm command always failed to execute.&lt;/p>
+&lt;p> Finally I mounted the nvm installation directory and configuration to the &lt;em>Jenkins&lt;/em> container.
+When the container is started, first make the configuration file in the &lt;code>/etc/profile.d&lt;/code> directory take effect, and then switch the node environment.
+The Pipeline I wrote is as follows.&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-text" data-lang="text">&lt;span class="line">&lt;span class="cl">stage(&amp;#39;build-frontend&amp;#39;) {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> steps {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> dir(&amp;#34;./frontend&amp;#34;) {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> sh &amp;#39;&amp;#39;&amp;#39;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> source /etc/profile.d/nvm.sh
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> nvm use 16.15.0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> npm cache clean –force
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> npm cache verify
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> if [ -f dist ]; then rm dist -rf; fi;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> pnpm config get registry
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> pnpm config set registry https://registry.npmmirror.com/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> pnpm install
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> pnpm run build:prod
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#39;&amp;#39;&amp;#39;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>&lt;font size=2 color=red>Note:
+Errors such as commands not found can be solved by mounting its installation directory and making the configuration effective.&lt;/font>&lt;/p>
+&lt;h3 id="how-to-deploy-remotely-via-ssh">How to deploy remotely via ssh
+&lt;/h3>&lt;p> After configuring the private key on the global credentials, it is best to deploy remotely in Pipeline through a plugin (SSH Pipeline Steps).
+You can refer to my configuration.&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-text" data-lang="text">&lt;span class="line">&lt;span class="cl">steps {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> withCredentials(bindings: [ \
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> sshUserPrivateKey(credentialsId: &amp;#39;private-key&amp;#39;,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> keyFileVariable: &amp;#39;primaryKeyVar&amp;#39;,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> passphraseVariable: &amp;#39;pwdVar&amp;#39;,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> usernameVariable: &amp;#39;userVar&amp;#39;)]) {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> script {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> def remote = [:]
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> remote.name = &amp;#39;192.168.137.2&amp;#39;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> remote.host = &amp;#39;192.168.137.2&amp;#39;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> remote.user = userVar
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> remote.identityFile = primaryKeyVar
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> remote.allowAnyHosts = true
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> stage(&amp;#39;Remote SSH&amp;#39;) {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> sshCommand remote: remote, command: &amp;#34;mkdir -p ${REMOTE_WORKDIR}/frontend&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> // Frontend Packaging File
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> sshPut remote: remote, from: &amp;#34;./frontend/dist&amp;#34;, into: &amp;#34;${REMOTE_WORKDIR}/frontend&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> // Show All Files Transferred
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> sshCommand remote: remote, command: &amp;#34;ls -lrt ${REMOTE_WORKDIR}/**&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="how-to-control-the-startup-order-of-services">How to control the startup order of services
+&lt;/h3>&lt;p> When writing &lt;em>docker-compose.yml&lt;/em>, if you need to control the startup order, the &lt;em>depends_on&lt;/em> field alone is not enough.
+It only controls the startup order, but doesn&amp;rsquo;t guarantee that the next service will be started only after the service is successfully started.&lt;/p>
+&lt;p> I referred to many articles and found a solution.
+By mounting &lt;em>wait-for-it.sh&lt;/em>, write a script to replace the container&amp;rsquo;s entrypoint.
+If you have any question, you can also refer to [this article]
+(&lt;a class="link" href="https://www.cnblogs.com/wang_yb/p/9400291.html%29" target="_blank" rel="noopener"
+>https://www.cnblogs.com/wang_yb/p/9400291.html)&lt;/a>.&lt;/p>
+&lt;p> I downloaded the script called *wait-for-it from [https:
+//github.com/vishnubob/wait-for-it](https:
+//github.com/vishnubob/wait-for-it).
+I renamed it &lt;em>entrypoint.sh&lt;/em> and put it in the &lt;em>shell&lt;/em> directory.
+Below is part of the docker-compose configuration.&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="nt">service&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">backend&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">build&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">context&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">.&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">dockerfile&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">dockerfile/backend-Dockerfile&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">image&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">backend_app&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">container_name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">prod-backend-app&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">ports&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="s2">&amp;#34;13245:13245&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">environment&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">TZ&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Asia/Shanghai&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">PORT&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">13245&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">PROFILE&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">prod&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">volumes&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="l">./shell/entrypoint.sh:/entrypoint.sh&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">depends_on&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="l">emq&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="l">influx&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p> The Dockerfile of the service called &lt;em>backend&lt;/em> is renamed &lt;em>backend-Dockerfile&lt;/em> and is placed in the &lt;em>dockerfile&lt;/em> directory.
+Since the backend service relies on the mysql and redis services, the content of its Dockerfile is as follows:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-dockerfile" data-lang="dockerfile">&lt;span class="line">&lt;span class="cl">&lt;span class="k">FROM&lt;/span>&lt;span class="s"> openjdk:8-jdk&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">ADD&lt;/span> backend/target/*.jar /app.jar&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">CMD&lt;/span> bash /entrypoint.sh mysqldb:3306 -t &lt;span class="m">30&lt;/span> -- &lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;mysql started&amp;#34;&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> bash /entrypoint.sh redisdb:6379 -t &lt;span class="m">20&lt;/span> -- &lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;redisdb started&amp;#34;&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> java -jar -Dfile.encoding&lt;span class="o">=&lt;/span>utf-8 -Dserver.port&lt;span class="o">=&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">PORT&lt;/span>&lt;span class="si">}&lt;/span> -Dspring.profiles.active&lt;span class="o">=&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">PROFILE&lt;/span>&lt;span class="si">}&lt;/span> /app.jar&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="how-to-configure-emqx">How to configure Emqx
+&lt;/h3>&lt;p> First of all, the version of &lt;em>Emqx&lt;/em> is &lt;em>4.4.2&lt;/em>.&lt;/p>
+&lt;p> I referred to the official document and configured the container through environment variables.
+The &lt;em>emq_web_hook&lt;/em> plugins is effective but the &lt;em>emq_http_auth&lt;/em> plugin is always ineffective.
+I tried various methods but failed.
+At last, solved it by mounting its configuration file.&lt;/p>
+&lt;p> You can refer to my docker-compose configuration:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="nt">service&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">emq&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">user&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">root&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">restart&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">always&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">container_name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">prod-emqx&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">image&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">emqx/emqx:4.4.2&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">ports&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="s2">&amp;#34;18083:18083&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="s2">&amp;#34;1883:1883&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="s2">&amp;#34;8083:8083&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="s2">&amp;#34;8084:8084&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="s2">&amp;#34;8883:8883&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">volumes&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="l">/etc/localtime:/etc/localtime&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="l">/root/docker/emqx/log:/opt/emqx/log&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="l">./conf/emqx/emqx_auth_http.conf:/opt/emqx/etc/plugins/emqx_auth_http.conf&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="l">./conf/emqx/emqx_web_hook.conf:/opt/emqx/etc/plugins/emqx_web_hook.conf&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">environment&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">EMQX_ALLOW_ANONYMOUS&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">false&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c"># allow_anonymous&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">EMQX_LOADED_PLUGINS&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;emqx_management,emqx_auth_http,emqx_dashboard,emqx_web_hook&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">EMQX_DASHBOARD__DEFAULT_USER__LOGIN&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">root&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">EMQX_DASHBOARD__DEFAULT_USER__PASSWORD&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">12345&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">networks&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">app_net&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">ipv4_address&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">172.31.0.10&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">depends_on&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="l">auth&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">links&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="l">auth&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="the-frontend-cant-access-the-backend-containers-interface">The frontend can&amp;rsquo;t access the backend container&amp;rsquo;s interface
+&lt;/h3>&lt;p> Many articles introduce the use of nginx as the base image to build the front-end image.&lt;/p>
+&lt;p> I referred &lt;a class="link" href="https://juejin.cn/post/6844903837774397447" target="_blank" rel="noopener"
+>this article&lt;/a> and wrote the nginx configuration file, the example is as follows:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-text" data-lang="text">&lt;span class="line">&lt;span class="cl">server {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> listen 13246;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> server_name localhost;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> location / {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> root /usr/share/nginx/html;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> index index.html index.htm;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> #Location配置
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> location /api/ {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> rewrite /api/(.*) /$1 break;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> proxy_pass http://backend:13245;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p> Since I had not learned nginx in depth, I encountered various problems. After repeated attempts, I finally achieved my expectations.&lt;/p>
+&lt;h2 id="additional-notes">Additional Notes
+&lt;/h2>&lt;p> The project is based on &lt;em>Vue3&lt;/em> and &lt;em>SpringBoot&lt;/em>, and uses &lt;em>Jenkins&lt;/em> container for automated construction and deployment.
+For convenience and space saving, the best way is to install common tool software on the host machine and then mount it into the container.&lt;/p>
+&lt;p> Next I will add some installation dependencies&lt;/p>
+&lt;ol>
+&lt;li>Install Docker&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">curl -fsSL https://get.docker.com &lt;span class="p">|&lt;/span> bash -s docker --mirror Aliyun
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ol start="2">
+&lt;li>Install jdk8&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">rm /tmp/jdk*.tar.gz -f
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">wget https://repo.huaweicloud.com/java/jdk/8u202-b08/jdk-8u202-linux-x64.tar.gz -P /tmp
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ls -lht /tmp/ &lt;span class="p">|&lt;/span> grep jdk
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">mkdir -p /usr/local/java/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">tar -zxf /tmp/jdk-8u202-linux-x64.tar.gz -C /usr/local/java/ &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> ls /usr/local/java/ -l
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Add environment jdk1.8 environment variables&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">cat &amp;gt; /etc/profile.d/java.sh &lt;span class="s">&amp;lt;&amp;lt;EOF
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">export JAVA_HOME=/usr/local/java/jdk1.8.0_202
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">export JRE_HOME=\${JAVA_HOME}/jre
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">export CLASSPATH=.:\${JAVA_HOME}/lib:\${JRE_HOME}/lib
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">export PATH=\${JAVA_HOME}/bin:\$PATH
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">EOF&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">source&lt;/span> /etc/profile.d/java.sh
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ln -s &lt;span class="si">${&lt;/span>&lt;span class="nv">JAVA_HOME&lt;/span>&lt;span class="si">}&lt;/span>/bin/java /usr/bin/java
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">java -version
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ol start="3">
+&lt;li>Install Maven&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nv">maven_version&lt;/span>&lt;span class="o">=&lt;/span>3.9.0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">rm /tmp/*maven*.tar.gz -rf
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#wget https://dlcdn.apache.org/maven/maven-3/3.9.0/binaries/apache-maven-3.9.0-bin.tar.gz -P /tmp&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">wget https://mirrors.aliyun.com/apache/maven/maven-3/3.9.0/binaries/apache-maven-3.9.0-bin.tar.gz -P /tmp
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ls -lht /tmp/ &lt;span class="p">|&lt;/span> grep maven
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">mkdir -p /usr/local/maven/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">tar -zxf /tmp/apache-maven-*.tar.gz -C /usr/local/maven/ &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> ls /usr/local/maven/ -l
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Add Maven environment variables&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">cat &amp;gt; /etc/profile.d/maven.sh &lt;span class="s">&amp;lt;&amp;lt; EOF
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">export MAVEN_VERSION=&amp;#34;${maven_version}&amp;#34;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">export M2_HOME=/usr/local/maven/apache-maven-\${MAVEN_VERSION}
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">export MAVEN_HOME=/usr/local/maven/apache-maven-3.9.0
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">export PATH=\${MAVEN_HOME}/bin:\${PATH}
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">EOF&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">chmod +x /etc/profile.d/maven.sh
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">source&lt;/span> /etc/profile.d/maven.sh
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">mvn -version
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ol start="4">
+&lt;li>Install nvm&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nv">nvm_version&lt;/span>&lt;span class="o">=&lt;/span>0.39.3
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">rm /tmp/v&lt;span class="si">${&lt;/span>&lt;span class="nv">nvm_version&lt;/span>&lt;span class="si">}&lt;/span>.tar.gz -rf
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">wget https://github.com/nvm-sh/nvm/archive/refs/tags/v&lt;span class="si">${&lt;/span>&lt;span class="nv">nvm_version&lt;/span>&lt;span class="si">}&lt;/span>.tar.gz -P /tmp
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ls -lht /tmp/ &lt;span class="p">|&lt;/span> grep &lt;span class="s2">&amp;#34;v&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">nvm_version&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">.tar.gz&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">mkdir -p /usr/local/nvm/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">tar -zxf /tmp/v&lt;span class="si">${&lt;/span>&lt;span class="nv">nvm_version&lt;/span>&lt;span class="si">}&lt;/span>.tar.gz -C /usr/local/nvm/ &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> ls /usr/local/nvm/ -l
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Add nvm environment variables&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">cat &lt;span class="s">&amp;lt;&amp;lt; EOF &amp;gt; /etc/profile.d/nvm.sh
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">export NVM_VERSION=&amp;#34;${nvm_version}&amp;#34;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">export NVM_DIR=&amp;#34;/usr/local/nvm/nvm-\${NVM_VERSION}&amp;#34;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">[ -s &amp;#34;\$NVM_DIR/nvm.sh&amp;#34; ] &amp;amp;&amp;amp; \. &amp;#34;\$NVM_DIR/nvm.sh&amp;#34; # This loads nvm
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">[ -s &amp;#34;\$NVM_DIR/bash_completion&amp;#34; ] &amp;amp;&amp;amp; \. &amp;#34;\$NVM_DIR/bash_completion&amp;#34;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">EOF&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">chmod +x /etc/profile.d/nvm.sh
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">source&lt;/span> /etc/profile.d/nvm.sh
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">nvm version
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ol start="5">
+&lt;li>Install docker-compose&lt;/li>
+&lt;/ol>
+&lt;p> It is recommended to download docker-compose from github official website, some mirror website packages are too old.&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">curl -L https://github.com/docker/compose/releases/download/v2.16.0/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">chmod +x /usr/local/bin/docker-compose
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker-compose -v
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="summary">Summary
+&lt;/h2>&lt;p> By applying the newly learned Jenkins automation technology to the project, time can be greatly saved.
+Operation and maintenance do not have to repeatedly deploy manually, and testing becomes a part of development.
+Only test scripts need to be written.
+Each time the developer submits code, the test scripts will be automatically executed and then deployed to the remote via ssh. From the traditional
+stage-by-stage development, where a stage cannot be skipped directly, development can now be quickly tested and put into production to get feedback,
+doubling efficiency. Perhaps this is why the CI/CD concept and tools are popular.&lt;/p>
+&lt;h2 id="references">References
+&lt;/h2>&lt;ol>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://github.com/vishnubob/wait-for-it" target="_blank" rel="noopener"
+>https://github.com/vishnubob/wait-for-it&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://www.cnblogs.com/wang_yb/p/9400291.html" target="_blank" rel="noopener"
+>https://www.cnblogs.com/wang_yb/p/9400291.html&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://juejin.cn/post/6844903837774397447" target="_blank" rel="noopener"
+>https://juejin.cn/post/6844903837774397447&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://juejin.cn/post/7095729903684829191" target="_blank" rel="noopener"
+>https://juejin.cn/post/7095729903684829191&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;hr>
+&lt;p>&lt;font size=3 color=blue>2023-02-16 First Update&lt;/font>&lt;/p>
+&lt;p>&lt;font size=3 color=blue>2023-02-26 Add Dependent Installation configuration&lt;/font>&lt;/p>
+&lt;p>&lt;font size=3 color=blue>2024-07-06 Support English&lt;/font>&lt;/p></description></item><item><title>Crack The Optical Modem Superuser Password</title><link>https://adja.com.cn/en/p/crack-the-optical-modem-superuser-password/</link><pubDate>Sat, 18 Jun 2022 15:43:59 +0800</pubDate><guid>https://adja.com.cn/en/p/crack-the-optical-modem-superuser-password/</guid><description>&lt;img src="https://adja.com.cn/p/crack-the-optical-modem-superuser-password/cover.jpg" alt="Featured image of post Crack The Optical Modem Superuser Password" />&lt;h1 id="crack-the-optical-modem-superuser-password">Crack The Optical Modem Superuser Password
+&lt;/h1>&lt;p> First of all, I want to emphasize that the optical modem model is &lt;em>HS8545M5&lt;/em>, and the software version is &lt;em>V5R020C00S200&lt;/em>.&lt;/p>
+&lt;p> Since the optical modem needs to be in routing mode by default when it is shipped, I need to change it to bridge mode.
+However, the user on the back of the optical modem does not have the permission to modify it, so I need to get superuser permissions.&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/crack-the-optical-modem-superuser-password/1.png"
+width="1443"
+height="1145"
+srcset="https://adja.com.cn/p/crack-the-optical-modem-superuser-password/1_hu_234096031e10f356.png 480w, https://adja.com.cn/p/crack-the-optical-modem-superuser-password/1_hu_270eb182af362da1.png 1024w"
+loading="lazy"
+alt="1"
+class="gallery-image"
+data-flex-grow="126"
+data-flex-basis="302px"
+>&lt;/p>
+&lt;h2 id="enable-telnet-on-the-optical-modem">Enable Telnet on the optical modem
+&lt;/h2>&lt;p> The telnet service is not enabled on the optical modem, so we need a tool to crack it. The download link of the cracking tool is at the end.&lt;/p>
+&lt;p> First download the cracking tool, then unplug the optical fiber, restart the optical modem, connect the computer to the optical modem via the broadband cable, and open the ONT maintenance enabling tool.&lt;/p>
+&lt;p> Select maintenance enabling, click refresh, and then start.&lt;/p>
+&lt;p> When the &amp;ldquo;current total number of successes&amp;rdquo; becomes 1, click stop, and the result is similar to the screenshot below.&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/crack-the-optical-modem-superuser-password/2.png"
+width="1426"
+height="884"
+srcset="https://adja.com.cn/p/crack-the-optical-modem-superuser-password/2_hu_b2b5546be2b679c2.png 480w, https://adja.com.cn/p/crack-the-optical-modem-superuser-password/2_hu_4875deb63ed630ed.png 1024w"
+loading="lazy"
+alt="2"
+class="gallery-image"
+data-flex-grow="161"
+data-flex-basis="387px"
+>&lt;/p>
+&lt;p> Open the command line and test whether telnet can connect successfully. If the command cannot be found, start the telnet service of Windows.&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">telnet 192.168.1.1
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p> Then enter the username root; try the password &lt;code>Hw8@cMcc&lt;/code> or &lt;code>adminHW&lt;/code>. If successful, the result is as follows:&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/crack-the-optical-modem-superuser-password/3.png"
+width="697"
+height="534"
+srcset="https://adja.com.cn/p/crack-the-optical-modem-superuser-password/3_hu_16e82029052f3dae.png 480w, https://adja.com.cn/p/crack-the-optical-modem-superuser-password/3_hu_46d7a0623455de58.png 1024w"
+loading="lazy"
+alt="3"
+class="gallery-image"
+data-flex-grow="130"
+data-flex-basis="313px"
+>&lt;/p>
+&lt;h2 id="get-the-username-and-password-ciphertext">Get the username and password ciphertext
+&lt;/h2>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;span class="lnt">37
+&lt;/span>&lt;span class="lnt">38
+&lt;/span>&lt;span class="lnt">39
+&lt;/span>&lt;span class="lnt">40
+&lt;/span>&lt;span class="lnt">41
+&lt;/span>&lt;span class="lnt">42
+&lt;/span>&lt;span class="lnt">43
+&lt;/span>&lt;span class="lnt">44
+&lt;/span>&lt;span class="lnt">45
+&lt;/span>&lt;span class="lnt">46
+&lt;/span>&lt;span class="lnt">47
+&lt;/span>&lt;span class="lnt">48
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">WAP&amp;gt;su
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">success!
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">SU_WAP&amp;gt;shell
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">BusyBox v1.30.1 &lt;span class="o">()&lt;/span> built-in shell &lt;span class="o">(&lt;/span>ash&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Enter &lt;span class="s1">&amp;#39;help&amp;#39;&lt;/span> &lt;span class="k">for&lt;/span> a list of built-in commands.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">profile close core dump
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">WAP&lt;span class="o">(&lt;/span>Dopra Linux&lt;span class="o">)&lt;/span> &lt;span class="c1"># ls&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bin dev init linuxrc root sys var
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">boot etc lib mnt sbin tmp
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bundle html libexec proc share usr
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">WAP&lt;span class="o">(&lt;/span>Dopra Linux&lt;span class="o">)&lt;/span> &lt;span class="c1"># cd /mnt/jffs2/&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">WAP&lt;span class="o">(&lt;/span>Dopra Linux&lt;span class="o">)&lt;/span> &lt;span class="c1"># ls&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">CfgFile_Backup dypack_debug mount_ok
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">CfgwithoutlineD factory_file mount_osgi_ok
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">DHCPlasterrwan1 fsok nffruntimes
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">DHCPlasterrwan5 ftvoipcfgstate oldcrc
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">FTCRC hard_version onlinecounter
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">InformFlag hw_boardinfo ontstatusfile
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">TelnetEnable hw_boardinfo.bak optic_init_par.bin
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Updateflag_bak hw_bootcfg.xml ppplasterr258
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">UpnpExpandFirstInit hw_ctree.xml ppplasterr259
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">V5_TypeWord_FLAG hw_ctree_bak.xml reboot_bind_tag
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">app hw_default_ctree.xml reboot_info
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">asan_test hw_default_ctree2.xml recovername
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">backup_ok hw_hardinfo_feature request_ddr
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">board_type hwflashlog.bin request_ddr_inner
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bob_type hwkeyinfogetlog.bin resetkey
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ceaseadv.conf hwnfflog.bin restore
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">certs hwontdebuglogctrl.bin result_ddr
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">customize hwontdebuglogdata.bin scflie_0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">customize.txt hwontlog.bin scflie_1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">customizepara.txt keyreleasecount.txt smooth_finish
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">cwmp_rebootsave kmc_need_backup typeword
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">dhcp6c kmc_store_A upgrade_info.xml_back
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">dhcp_data_a kmc_store_B xmlcfgerrorcode
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">dhcp_lastip lastsysinfo.tar.gz
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">dhcpc main_version
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">WAP&lt;span class="o">(&lt;/span>Dopra Linux&lt;span class="o">)&lt;/span> &lt;span class="c1"># cp /mnt/jffs2/hw_ctree.xml /mnt/jffs2/mycfg.xml.gz&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">WAP&lt;span class="o">(&lt;/span>Dopra Linux&lt;span class="o">)&lt;/span> &lt;span class="c1"># aescrypt2 1 mycfg.xml.gz tem&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">WAP&lt;span class="o">(&lt;/span>Dopra Linux&lt;span class="o">)&lt;/span> &lt;span class="c1"># gzip -d mycfg.xml.gz&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">WAP&lt;span class="o">(&lt;/span>Dopra Linux&lt;span class="o">)&lt;/span> &lt;span class="c1"># grep WebUserInfoInstance mycfg.xml&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&amp;lt;X_HW_WebUserInfoInstance &lt;span class="nv">InstanceID&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;1&amp;#34;&lt;/span> &lt;span class="nv">ModifyPasswordFlag&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;0&amp;#34;&lt;/span> &lt;span class="nv">UserName&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;user&amp;#34;&lt;/span> &lt;span class="nv">Password&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$2&lt;/span>&lt;span class="s2">sN}QKqrgY(,w8^GHpW7)&lt;/span>$&lt;span class="s2">|L3MQ)tWIkZv5Na2Z1E&lt;/span>$&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="nv">UserLevel&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;1&amp;#34;&lt;/span> &lt;span class="nv">Enable&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;1&amp;#34;&lt;/span> &lt;span class="nv">Alias&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;cpe-1&amp;#34;&lt;/span>/&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&amp;lt;X_HW_WebUserInfoInstance &lt;span class="nv">InstanceID&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;2&amp;#34;&lt;/span> &lt;span class="nv">ModifyPasswordFlag&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;1&amp;#34;&lt;/span> &lt;span class="nv">UserName&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;CMCCAdmin&amp;#34;&lt;/span> &lt;span class="nv">Password&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$2&lt;/span>&lt;span class="s2">I3^R(k3[.)B9I4E8:S!DF!Q&lt;/span>&lt;span class="nv">$ULd6S&lt;/span>&lt;span class="s2">(U7RRH^2]2-=Nxs&amp;amp;amp;S`J6))+2&lt;/span>&lt;span class="nv">$S8&lt;/span>&lt;span class="s2">&amp;amp;quot;&amp;amp;apos;j&amp;amp;amp;&lt;/span>$&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="nv">UserLevel&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;0&amp;#34;&lt;/span> &lt;span class="nv">Enable&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;1&amp;#34;&lt;/span> &lt;span class="nv">Alias&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;cpe-2&amp;#34;&lt;/span> &lt;span class="nv">PassMode&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;0&amp;#34;&lt;/span>/&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">WAP&lt;span class="o">(&lt;/span>Dopra Linux&lt;span class="o">)&lt;/span> &lt;span class="c1">#&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">success!
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">SU_WAP&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p> Find the keyword user and password fields.&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/crack-the-optical-modem-superuser-password/4.png"
+width="1469"
+height="274"
+srcset="https://adja.com.cn/p/crack-the-optical-modem-superuser-password/4_hu_7e0550aec8bc70e0.png 480w, https://adja.com.cn/p/crack-the-optical-modem-superuser-password/4_hu_2da8507774944242.png 1024w"
+loading="lazy"
+alt="4"
+class="gallery-image"
+data-flex-grow="536"
+data-flex-basis="1286px"
+>&lt;/p>
+&lt;p> The ciphertext of the &lt;code>CMCCAdmin&lt;/code> user password in the above figure is &lt;code>$2I3^R(k3[.)B9I4E8:S!DF!Q$ULd6S(U7RRH^2]2-=Nxs&amp;amp;amp;S`J6))+2$S8&amp;amp;quot;&amp;amp;apos;j&amp;amp;amp;$&lt;/code>&lt;/p>
+&lt;p> Open the file huawei.exe in the Huawei secondary password cracking tool S1S2 Voice Full Authentication.zip, enter the password in the ciphertext decryption, try 3 decryption methods, and get the password as &lt;code>CMCCAdminFf2IrXFt&lt;/code>&lt;/p>
+&lt;img src=5.png width=300 display=inline-block alt="" />
+&lt;h2 id="log-in-to-the-optical-modem-as-a-superuser">Log in to the optical modem as a superuser
+&lt;/h2>&lt;p> Username &lt;code>CMCCAdmin&lt;/code>, password &lt;code>CMCCAdminFf2IrXFt&lt;/code>, found that the connection mode can be modified.&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/crack-the-optical-modem-superuser-password/6.png"
+width="1434"
+height="990"
+srcset="https://adja.com.cn/p/crack-the-optical-modem-superuser-password/6_hu_f6702d7242bac4d3.png 480w, https://adja.com.cn/p/crack-the-optical-modem-superuser-password/6_hu_f49bde6b577b6c1b.png 1024w"
+loading="lazy"
+alt="5"
+class="gallery-image"
+data-flex-grow="144"
+data-flex-basis="347px"
+>&lt;/p>
+&lt;p> Downlink link：https://pan.baidu.com/s/101GrTj53T4RaIpc0h4KAoQ&lt;/p>
+&lt;p> Extraction code：adja&lt;/p>
+&lt;h2 id="reference">reference
+&lt;/h2>&lt;ol>
+&lt;li>&lt;a class="link" href="https://www.eaglemoe.com/archives/216" target="_blank" rel="noopener"
+>https://www.eaglemoe.com/archives/216&lt;/a>&lt;/li>
+&lt;/ol>
+&lt;hr>
+&lt;p>&lt;font size=3 color=blue>2022-06-18 Updated&lt;/font>&lt;/p></description></item></channel></rss>
