@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Network on Loong's Blog</title><link>https://adja.com.cn/en/tags/network/</link><description>Recent content in Network on Loong's Blog</description><generator>Hugo -- gohugo.io</generator><language>en</language><copyright>Loong</copyright><lastBuildDate>Sun, 08 Dec 2024 15:41:04 +0800</lastBuildDate><atom:link href="https://adja.com.cn/en/tags/network/index.xml" rel="self" type="application/rss+xml"/><item><title>Use DDNS To Access Intranet Devices</title><link>https://adja.com.cn/en/p/use-ddns-to-access-intranet-devices/</link><pubDate>Sat, 06 Jul 2024 16:08:49 +0800</pubDate><guid>https://adja.com.cn/en/p/use-ddns-to-access-intranet-devices/</guid><description>&lt;img src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/cover.jpg" alt="Featured image of post Use DDNS To Access Intranet Devices" />&lt;h1 id="use-ddns-to-access-intranet-devices">Use DDNS To Access Intranet Devices
+&lt;/h1>&lt;p> Sometimes I need to access my home NAS when I go out.
+Since it is increasingly challenging to apply for a public IPv4 in China, and the official QuickConnect service of Synology is also very slow.
+After referring to relevant tutorials,
+I decided to resolve the domain name to public IPv6 through DDNS and access the intranet devices directly through the domain name.&lt;/p>
+&lt;p> Based on the previous experiment of cracking the optical modem to get the superuser privileges to modify the routing mode,
+I connected the router to the optical modem.
+Then let the router dial and turn on IPv6, and after assigning the public network IPv6, I started the DDNS configuration process.&lt;/p>
+&lt;h2 id="through-synologys-dns-service">Through Synology&amp;rsquo;s DNS service
+&lt;/h2>&lt;p> Open the Control Panel, click External Access, select DDNS, then click Add, and select Synology as the service provider.
+Then customize the configuration below.&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/1.png"
+width="1131"
+height="769"
+srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/1_hu_791072600dc1a28d.png 480w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/1_hu_d20dab7bd7422516.png 1024w"
+loading="lazy"
+alt="1"
+class="gallery-image"
+data-flex-grow="147"
+data-flex-basis="352px"
+>&lt;/p>
+&lt;p> If you need https access, check &amp;ldquo;Get a certificate from Let&amp;rsquo;s Encrypt&amp;rdquo; and click OK.&lt;/p>
+&lt;h2 id="using-a-dns-service-from-another-provider">Using a DNS service from another provider
+&lt;/h2>&lt;p> The following only takes Tencent Cloud&amp;rsquo;s DNS service as an example. You need to apply for a domain name on Tencent Cloud&amp;rsquo;s official website in
+advance.&lt;/p>
+&lt;h3 id="using-the-ddns-go-image">Using the &lt;em>ddns-go&lt;/em> image
+&lt;/h3>&lt;p> To perform dynamic domain name resolution, you need your own NAS device to query the local IP address regularly, and then call the interface to
+update the domain name resolution field to implement DDNS.&lt;/p>
+&lt;p> So you can&amp;rsquo;t change the method. There are many methods on the Internet. Here I provide a method to use Docker to update DDNS.&lt;/p>
+&lt;p> Search for Docker in the package center and install Docker. The steps are omitted.&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/3.png"
+width="1371"
+height="661"
+srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/3_hu_3d4bd212a1d39bc2.png 480w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/3_hu_557c3ea7c6613a97.png 1024w"
+loading="lazy"
+alt="3"
+class="gallery-image"
+data-flex-grow="207"
+data-flex-basis="497px"
+>&lt;/p>
+&lt;p> Open Docker, select &amp;ldquo;Registry&amp;rdquo;, search for ddns, and install the first &amp;ldquo;ddns-go&amp;rdquo;&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/4.png"
+width="1475"
+height="841"
+srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/4_hu_c4798d82dd974946.png 480w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/4_hu_663562ac22997ff0.png 1024w"
+loading="lazy"
+alt="4"
+class="gallery-image"
+data-flex-grow="175"
+data-flex-basis="420px"
+>&lt;/p>
+&lt;p> After the installation is complete, open the image, select ddns-go, and click Start.&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/5.png"
+width="1467"
+height="520"
+srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/5_hu_b89a443ed6cc7a4a.png 480w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/5_hu_7779ac6e9d5fc9dc.png 1024w"
+loading="lazy"
+alt="5"
+class="gallery-image"
+data-flex-grow="282"
+data-flex-basis="677px"
+>&lt;/p>
+&lt;p> Click Advanced Settings-&amp;gt;Storage-&amp;gt;Add Folder.&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/6.png"
+width="1229"
+height="843"
+srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/6_hu_59474d9c95f3bbed.png 480w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/6_hu_ff103df09dfe4be2.png 1024w"
+loading="lazy"
+alt="6"
+class="gallery-image"
+data-flex-grow="145"
+data-flex-basis="349px"
+>&lt;/p>
+&lt;p> Modify the mount path, my configuration is as follows:&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/7.png"
+width="1174"
+height="744"
+srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/7_hu_3d209a1690770e0d.png 480w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/7_hu_30a5e390e7b316a1.png 1024w"
+loading="lazy"
+alt="7"
+class="gallery-image"
+data-flex-grow="157"
+data-flex-basis="378px"
+>&lt;/p>
+&lt;p> Click Network-&amp;gt;Check Host Network-&amp;gt;Apply.&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/8.png"
+width="966"
+height="822"
+srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/8_hu_6afe4e6b2cf55073.png 480w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/8_hu_40c2faf981cade2d.png 1024w"
+loading="lazy"
+alt="8"
+class="gallery-image"
+data-flex-grow="117"
+data-flex-basis="282px"
+>&lt;/p>
+&lt;p> Click Next, click Finish.&lt;/p>
+&lt;h3 id="configuring-ddns">Configuring DDNS
+&lt;/h3>&lt;p> Open &lt;code>http://[nas ip corresponding to the domain name]:9876/&lt;/code>&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/9.png"
+width="1061"
+height="490"
+srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/9_hu_757d8d28f3be637a.png 480w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/9_hu_e4d56b0ca80e396b.png 1024w"
+loading="lazy"
+alt="9"
+class="gallery-image"
+data-flex-grow="216"
+data-flex-basis="519px"
+>&lt;/p>
+&lt;p> Configure DNS service provider, select Tencent Cloud, enter ID and Token, &lt;font color=red>Note that the ID and Token here correspond to &amp;ldquo;DNSPod
+Token&amp;rdquo;, not &amp;ldquo;Tencent Cloud API Key&amp;rdquo;&lt;/font>, the link is https:
+//console.dnspod.cn/account/token/token&lt;/p>
+&lt;p> Only enable ipv6, my configuration is as follows:&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/10.png"
+width="1041"
+height="579"
+srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/10_hu_fd17a94b8ff738a2.png 480w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/10_hu_32c08252c116d7d7.png 1024w"
+loading="lazy"
+alt="10"
+class="gallery-image"
+data-flex-grow="179"
+data-flex-basis="431px"
+>&lt;/p>
+&lt;p> Before clicking &amp;ldquo;Save&amp;rdquo;, you need to configure the domain name resolution and add an AAAA type (indicating an IPv6 address) record.
+Fill it out and it will automatically update. My configuration is as follows:&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/11.png"
+width="1629"
+height="356"
+srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/11_hu_b61b25f03e392220.png 480w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/11_hu_ba3d0e55e5479ace.png 1024w"
+loading="lazy"
+alt="11"
+class="gallery-image"
+data-flex-grow="457"
+data-flex-basis="1098px"
+>&lt;/p>
+&lt;p> After the configuration is completed, click Save, and the latest history records will appear on the right.&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/12.png"
+width="538"
+height="344"
+srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/12_hu_b1df0995618dc228.png 480w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/12_hu_f81cd796f84c613e.png 1024w"
+loading="lazy"
+alt="12"
+class="gallery-image"
+data-flex-grow="156"
+data-flex-basis="375px"
+>&lt;/p>
+&lt;p> Finally, you can test it through domain name + port.&lt;/p>
+&lt;h2 id="additional">Additional
+&lt;/h2>&lt;p> In the summer of 2022, after the installation was completed, I asked my classmates to help test the speed of different prefecture-level cities
+in Jiangsu. The speed was still quite fast.&lt;/p>
+&lt;p> After graduation, I went to other provinces.
+After finding my first job.
+I thought about NAS again and tried to continue using it,
+but found that the same method did not work at all, mainly because the network infrastructure varies greatly between provinces.&lt;/p>
+&lt;p> If you are in a province where IPv6 has not been promoted, it is recommended to Avoid tossing. In addition, due to the proliferation of &lt;em>PCDN&lt;/em>
+in the past few years, operators will check whether users have built &lt;em>PCDN&lt;/em> based on the upstream speed of bandwidth. If DDNS is used maliciously, it
+may cause broadband to be blocked.&lt;/p>
+&lt;hr>
+&lt;p>&lt;font size=3 color=blue>2022-06-19 Record&lt;/font>&lt;/p>
+&lt;p>&lt;font size=3 color=blue>2023-07-07 Update&lt;/font>&lt;/p></description></item><item><title>Crack The Optical Modem Superuser Password</title><link>https://adja.com.cn/en/p/crack-the-optical-modem-superuser-password/</link><pubDate>Sat, 18 Jun 2022 15:43:59 +0800</pubDate><guid>https://adja.com.cn/en/p/crack-the-optical-modem-superuser-password/</guid><description>&lt;img src="https://adja.com.cn/p/crack-the-optical-modem-superuser-password/cover.jpg" alt="Featured image of post Crack The Optical Modem Superuser Password" />&lt;h1 id="crack-the-optical-modem-superuser-password">Crack The Optical Modem Superuser Password
+&lt;/h1>&lt;p> First of all, I want to emphasize that the optical modem model is &lt;em>HS8545M5&lt;/em>, and the software version is &lt;em>V5R020C00S200&lt;/em>.&lt;/p>
+&lt;p> Since the optical modem needs to be in routing mode by default when it is shipped, I need to change it to bridge mode.
+However, the user on the back of the optical modem does not have the permission to modify it, so I need to get superuser permissions.&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/crack-the-optical-modem-superuser-password/1.png"
+width="1443"
+height="1145"
+srcset="https://adja.com.cn/p/crack-the-optical-modem-superuser-password/1_hu_234096031e10f356.png 480w, https://adja.com.cn/p/crack-the-optical-modem-superuser-password/1_hu_270eb182af362da1.png 1024w"
+loading="lazy"
+alt="1"
+class="gallery-image"
+data-flex-grow="126"
+data-flex-basis="302px"
+>&lt;/p>
+&lt;h2 id="enable-telnet-on-the-optical-modem">Enable Telnet on the optical modem
+&lt;/h2>&lt;p> The telnet service is not enabled on the optical modem, so we need a tool to crack it. The download link of the cracking tool is at the end.&lt;/p>
+&lt;p> First download the cracking tool, then unplug the optical fiber, restart the optical modem, connect the computer to the optical modem via the broadband cable, and open the ONT maintenance enabling tool.&lt;/p>
+&lt;p> Select maintenance enabling, click refresh, and then start.&lt;/p>
+&lt;p> When the &amp;ldquo;current total number of successes&amp;rdquo; becomes 1, click stop, and the result is similar to the screenshot below.&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/crack-the-optical-modem-superuser-password/2.png"
+width="1426"
+height="884"
+srcset="https://adja.com.cn/p/crack-the-optical-modem-superuser-password/2_hu_b2b5546be2b679c2.png 480w, https://adja.com.cn/p/crack-the-optical-modem-superuser-password/2_hu_4875deb63ed630ed.png 1024w"
+loading="lazy"
+alt="2"
+class="gallery-image"
+data-flex-grow="161"
+data-flex-basis="387px"
+>&lt;/p>
+&lt;p> Open the command line and test whether telnet can connect successfully. If the command cannot be found, start the telnet service of Windows.&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">telnet 192.168.1.1
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p> Then enter the username root; try the password &lt;code>Hw8@cMcc&lt;/code> or &lt;code>adminHW&lt;/code>. If successful, the result is as follows:&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/crack-the-optical-modem-superuser-password/3.png"
+width="697"
+height="534"
+srcset="https://adja.com.cn/p/crack-the-optical-modem-superuser-password/3_hu_16e82029052f3dae.png 480w, https://adja.com.cn/p/crack-the-optical-modem-superuser-password/3_hu_46d7a0623455de58.png 1024w"
+loading="lazy"
+alt="3"
+class="gallery-image"
+data-flex-grow="130"
+data-flex-basis="313px"
+>&lt;/p>
+&lt;h2 id="get-the-username-and-password-ciphertext">Get the username and password ciphertext
+&lt;/h2>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;span class="lnt">37
+&lt;/span>&lt;span class="lnt">38
+&lt;/span>&lt;span class="lnt">39
+&lt;/span>&lt;span class="lnt">40
+&lt;/span>&lt;span class="lnt">41
+&lt;/span>&lt;span class="lnt">42
+&lt;/span>&lt;span class="lnt">43
+&lt;/span>&lt;span class="lnt">44
+&lt;/span>&lt;span class="lnt">45
+&lt;/span>&lt;span class="lnt">46
+&lt;/span>&lt;span class="lnt">47
+&lt;/span>&lt;span class="lnt">48
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">WAP&amp;gt;su
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">success!
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">SU_WAP&amp;gt;shell
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">BusyBox v1.30.1 &lt;span class="o">()&lt;/span> built-in shell &lt;span class="o">(&lt;/span>ash&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Enter &lt;span class="s1">&amp;#39;help&amp;#39;&lt;/span> &lt;span class="k">for&lt;/span> a list of built-in commands.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">profile close core dump
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">WAP&lt;span class="o">(&lt;/span>Dopra Linux&lt;span class="o">)&lt;/span> &lt;span class="c1"># ls&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bin dev init linuxrc root sys var
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">boot etc lib mnt sbin tmp
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bundle html libexec proc share usr
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">WAP&lt;span class="o">(&lt;/span>Dopra Linux&lt;span class="o">)&lt;/span> &lt;span class="c1"># cd /mnt/jffs2/&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">WAP&lt;span class="o">(&lt;/span>Dopra Linux&lt;span class="o">)&lt;/span> &lt;span class="c1"># ls&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">CfgFile_Backup dypack_debug mount_ok
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">CfgwithoutlineD factory_file mount_osgi_ok
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">DHCPlasterrwan1 fsok nffruntimes
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">DHCPlasterrwan5 ftvoipcfgstate oldcrc
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">FTCRC hard_version onlinecounter
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">InformFlag hw_boardinfo ontstatusfile
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">TelnetEnable hw_boardinfo.bak optic_init_par.bin
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Updateflag_bak hw_bootcfg.xml ppplasterr258
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">UpnpExpandFirstInit hw_ctree.xml ppplasterr259
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">V5_TypeWord_FLAG hw_ctree_bak.xml reboot_bind_tag
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">app hw_default_ctree.xml reboot_info
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">asan_test hw_default_ctree2.xml recovername
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">backup_ok hw_hardinfo_feature request_ddr
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">board_type hwflashlog.bin request_ddr_inner
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bob_type hwkeyinfogetlog.bin resetkey
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ceaseadv.conf hwnfflog.bin restore
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">certs hwontdebuglogctrl.bin result_ddr
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">customize hwontdebuglogdata.bin scflie_0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">customize.txt hwontlog.bin scflie_1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">customizepara.txt keyreleasecount.txt smooth_finish
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">cwmp_rebootsave kmc_need_backup typeword
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">dhcp6c kmc_store_A upgrade_info.xml_back
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">dhcp_data_a kmc_store_B xmlcfgerrorcode
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">dhcp_lastip lastsysinfo.tar.gz
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">dhcpc main_version
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">WAP&lt;span class="o">(&lt;/span>Dopra Linux&lt;span class="o">)&lt;/span> &lt;span class="c1"># cp /mnt/jffs2/hw_ctree.xml /mnt/jffs2/mycfg.xml.gz&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">WAP&lt;span class="o">(&lt;/span>Dopra Linux&lt;span class="o">)&lt;/span> &lt;span class="c1"># aescrypt2 1 mycfg.xml.gz tem&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">WAP&lt;span class="o">(&lt;/span>Dopra Linux&lt;span class="o">)&lt;/span> &lt;span class="c1"># gzip -d mycfg.xml.gz&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">WAP&lt;span class="o">(&lt;/span>Dopra Linux&lt;span class="o">)&lt;/span> &lt;span class="c1"># grep WebUserInfoInstance mycfg.xml&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&amp;lt;X_HW_WebUserInfoInstance &lt;span class="nv">InstanceID&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;1&amp;#34;&lt;/span> &lt;span class="nv">ModifyPasswordFlag&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;0&amp;#34;&lt;/span> &lt;span class="nv">UserName&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;user&amp;#34;&lt;/span> &lt;span class="nv">Password&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$2&lt;/span>&lt;span class="s2">sN}QKqrgY(,w8^GHpW7)&lt;/span>$&lt;span class="s2">|L3MQ)tWIkZv5Na2Z1E&lt;/span>$&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="nv">UserLevel&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;1&amp;#34;&lt;/span> &lt;span class="nv">Enable&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;1&amp;#34;&lt;/span> &lt;span class="nv">Alias&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;cpe-1&amp;#34;&lt;/span>/&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&amp;lt;X_HW_WebUserInfoInstance &lt;span class="nv">InstanceID&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;2&amp;#34;&lt;/span> &lt;span class="nv">ModifyPasswordFlag&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;1&amp;#34;&lt;/span> &lt;span class="nv">UserName&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;CMCCAdmin&amp;#34;&lt;/span> &lt;span class="nv">Password&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$2&lt;/span>&lt;span class="s2">I3^R(k3[.)B9I4E8:S!DF!Q&lt;/span>&lt;span class="nv">$ULd6S&lt;/span>&lt;span class="s2">(U7RRH^2]2-=Nxs&amp;amp;amp;S`J6))+2&lt;/span>&lt;span class="nv">$S8&lt;/span>&lt;span class="s2">&amp;amp;quot;&amp;amp;apos;j&amp;amp;amp;&lt;/span>$&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="nv">UserLevel&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;0&amp;#34;&lt;/span> &lt;span class="nv">Enable&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;1&amp;#34;&lt;/span> &lt;span class="nv">Alias&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;cpe-2&amp;#34;&lt;/span> &lt;span class="nv">PassMode&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;0&amp;#34;&lt;/span>/&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">WAP&lt;span class="o">(&lt;/span>Dopra Linux&lt;span class="o">)&lt;/span> &lt;span class="c1">#&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">success!
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">SU_WAP&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p> Find the keyword user and password fields.&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/crack-the-optical-modem-superuser-password/4.png"
+width="1469"
+height="274"
+srcset="https://adja.com.cn/p/crack-the-optical-modem-superuser-password/4_hu_7e0550aec8bc70e0.png 480w, https://adja.com.cn/p/crack-the-optical-modem-superuser-password/4_hu_2da8507774944242.png 1024w"
+loading="lazy"
+alt="4"
+class="gallery-image"
+data-flex-grow="536"
+data-flex-basis="1286px"
+>&lt;/p>
+&lt;p> The ciphertext of the &lt;code>CMCCAdmin&lt;/code> user password in the above figure is &lt;code>$2I3^R(k3[.)B9I4E8:S!DF!Q$ULd6S(U7RRH^2]2-=Nxs&amp;amp;amp;S`J6))+2$S8&amp;amp;quot;&amp;amp;apos;j&amp;amp;amp;$&lt;/code>&lt;/p>
+&lt;p> Open the file huawei.exe in the Huawei secondary password cracking tool S1S2 Voice Full Authentication.zip, enter the password in the ciphertext decryption, try 3 decryption methods, and get the password as &lt;code>CMCCAdminFf2IrXFt&lt;/code>&lt;/p>
+&lt;img src=5.png width=300 display=inline-block alt="" />
+&lt;h2 id="log-in-to-the-optical-modem-as-a-superuser">Log in to the optical modem as a superuser
+&lt;/h2>&lt;p> Username &lt;code>CMCCAdmin&lt;/code>, password &lt;code>CMCCAdminFf2IrXFt&lt;/code>, found that the connection mode can be modified.&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/crack-the-optical-modem-superuser-password/6.png"
+width="1434"
+height="990"
+srcset="https://adja.com.cn/p/crack-the-optical-modem-superuser-password/6_hu_f6702d7242bac4d3.png 480w, https://adja.com.cn/p/crack-the-optical-modem-superuser-password/6_hu_f49bde6b577b6c1b.png 1024w"
+loading="lazy"
+alt="5"
+class="gallery-image"
+data-flex-grow="144"
+data-flex-basis="347px"
+>&lt;/p>
+&lt;p> Downlink link：https://pan.baidu.com/s/101GrTj53T4RaIpc0h4KAoQ&lt;/p>
+&lt;p> Extraction code：adja&lt;/p>
+&lt;h2 id="reference">reference
+&lt;/h2>&lt;ol>
+&lt;li>&lt;a class="link" href="https://www.eaglemoe.com/archives/216" target="_blank" rel="noopener"
+>https://www.eaglemoe.com/archives/216&lt;/a>&lt;/li>
+&lt;/ol>
+&lt;hr>
+&lt;p>&lt;font size=3 color=blue>2022-06-18 Updated&lt;/font>&lt;/p></description></item></channel></rss>

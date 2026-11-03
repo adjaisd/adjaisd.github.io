@@ -1,0 +1,1334 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>工具 on Loong's Blog</title><link>https://adja.com.cn/tags/%E5%B7%A5%E5%85%B7/</link><description>Recent content in 工具 on Loong's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Loong</copyright><lastBuildDate>Sat, 22 Feb 2025 19:39:11 +0800</lastBuildDate><atom:link href="https://adja.com.cn/tags/%E5%B7%A5%E5%85%B7/index.xml" rel="self" type="application/rss+xml"/><item><title>异地组网联机游戏</title><link>https://adja.com.cn/p/remote-networking/</link><pubDate>Sat, 22 Feb 2025 19:21:36 +0800</pubDate><guid>https://adja.com.cn/p/remote-networking/</guid><description>&lt;img src="https://adja.com.cn/p/remote-networking/cover.jpg" alt="Featured image of post 异地组网联机游戏" />&lt;h1 id="异地组网联机游戏">异地组网联机游戏
+&lt;/h1>&lt;p>毕业后，同学们都奔赴各地忙着升学和事业，放假时偶尔会开黑打一两局魔兽，但由于身处不同省份，局域网游戏联机有点麻烦。&lt;/p>
+&lt;p>期间尝试过蹭免费组网工具、自建中转服务器、贝锐蒲公英组网，通过对比，希望大家能找到适合自己的组网方式。&lt;/p>
+&lt;h2 id="easyn2n或n2n">EasyN2N或N2N
+&lt;/h2>&lt;p>由于最开始用的EasyN2N，体验还不错，从相关社区中还能学习到一些网络知识。&lt;/p>
+&lt;p>但是，由于EasyN2N的中转服务器是免费的，所以在大家都在用的时候，会出现中转服务器负载过高，导致延迟过高，甚至无法连接的情况，在毕业回老家后，老家那边的网络较差，经常玩到一半掉线。&lt;/p>
+&lt;p>此外，EasyN2N经常被杀毒软件误删，也可能导致中途掉线，所以建议推荐通过命令行的方式来使用，而不要使用它自带的可视化工具。&lt;/p>
+&lt;p>相关的使用可参考&lt;a class="link" href="https://bugxia.com/n2n_launcher_param" target="_blank" rel="noopener"
+>该文章&lt;/a>&lt;/p>
+&lt;h2 id="贝锐蒲公英">贝锐蒲公英
+&lt;/h2>&lt;p>贝锐蒲公英是一个收费的组网工具，3人以内免费，如果是超过3人的组网，需要购买套餐。&lt;/p>
+&lt;p>免费版的贝锐蒲公英不能设置虚拟局域网客户端的IP，有些游戏比如魔兽就需要抓包分析下，可以发现B客户端无法收到A客户端广播的udp报文，所以得要通过网络调试助手来辅助创建房间，下面是具体的操作步骤：&lt;/p>
+&lt;p>假设存在A、B两台电脑，A电脑的IP地址为&lt;code>172.16.3.130&lt;/code>，B电脑的IP地址为&lt;code>172.16.3.150&lt;/code>，子网掩码都为&lt;code>255.255.252.0&lt;/code>。&lt;/p>
+&lt;ol>
+&lt;li>假如B电脑作为房主创建房间，A电脑作为客户端加入房间&lt;/li>
+&lt;/ol>
+&lt;p>通过Wireshark抓包可以发现，B电脑创建房间后会一直向udp的6112端口广播&lt;code>f732100001000000010000000c000000&lt;/code>，由于时间有限就不分析报文含义了。&lt;/p>
+&lt;p>当A电脑扫描存在的房间时，A电脑会向udp的6112端口广播&lt;code>f72f1000505833571a00000000000000&lt;/code>，由于A和B不在同一个网段，所以B电脑无法收到A电脑的广播，A便无法知道是否存在房间。&lt;/p>
+&lt;p>接着，我们通过网络调试助手在A电脑上向B电脑发送用于扫描房间的udp广播包，假设收到报文msg(包含了玩家人数、地图信息等)。&lt;/p>
+&lt;p>然后，在B电脑上将msg的内容发送给A电脑，A电脑就可以加入房间了。&lt;/p>
+&lt;h2 id="总结">总结
+&lt;/h2>&lt;p>如果需要组网的客户端较少，N2N和贝锐蒲公英都是较低成本的组网方式。&lt;/p>
+&lt;p>如果有更进一步的需求，比如房间人数较多，或者需要更稳定的网络，如果玩家主要集中在几个地区，可以考虑自建中转服务器，如果玩家分布较广，可以考虑购买贝锐蒲公英套餐。&lt;/p>
+&lt;h2 id="参考">参考
+&lt;/h2>&lt;ol>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://bugxia.com/n2n_launcher_param" target="_blank" rel="noopener"
+>https://bugxia.com/n2n_launcher_param&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://www.cnblogs.com/flying_bat/archive/2008/06/24/1228627.html" target="_blank" rel="noopener"
+>https://www.cnblogs.com/flying_bat/archive/2008/06/24/1228627.html&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;hr>
+&lt;p>&lt;font size=3 color=blue>2025-02-22 更新&lt;/font>&lt;/p></description></item><item><title>使用Git进行团队合作</title><link>https://adja.com.cn/p/teamwork-using-git/</link><pubDate>Sun, 06 Oct 2024 11:34:59 +0800</pubDate><guid>https://adja.com.cn/p/teamwork-using-git/</guid><description>&lt;img src="https://adja.com.cn/p/teamwork-using-git/cover.jpg" alt="Featured image of post 使用Git进行团队合作" />&lt;h1 id="使用git进行团队合作">使用Git进行团队合作
+&lt;/h1>&lt;p>自上次迁移博客便好久没有更新了，这次更新的内容是关于如何使用Git进行团队合作。这篇文章主要介绍团队合作的工作流程。&lt;/p>
+&lt;h2 id="基础教程">基础教程
+&lt;/h2>&lt;p>这篇文章假设你已经对Git有一定的了解，如果你对Git还不太熟悉，建议你先阅读一些关于Git的基础教程，比如&lt;a class="link" href="https://www.liaoxuefeng.com/wiki/896043488029600" target="_blank" rel="noopener"
+>廖雪峰的Git教程&lt;/a>。&lt;/p>
+&lt;p>此外，还推荐参考以下教程：&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>&lt;strong>Git&lt;/strong>官方文档：&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://git-scm.com/docs" target="_blank" rel="noopener"
+>Git官方文档&lt;/a>适合初学者和高级用户。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Pro Git&lt;/strong>书籍&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://git-scm.com/book/zh/v2" target="_blank" rel="noopener"
+>Pro Git&lt;/a>是一本免费的电子书，涵盖了 Git 的基础知识和高级用法，非常适合团队合作。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;p>如果你已经对Git有了一定的了解，那么我们就可以开始介绍如何使用Git进行团队合作。&lt;/p>
+&lt;h2 id="团队合作的工作流程">团队合作的工作流程
+&lt;/h2>&lt;p>在GitLab中，仓库成员有5种角色：&lt;/p>
+&lt;ol>
+&lt;li>&lt;strong>Guest(访客)&lt;/strong>：只能查看仓库内容，不能进行写操作；&lt;/li>
+&lt;li>&lt;strong>Reporter(报告者)&lt;/strong>：可以查看和克隆仓库，但不能进行写操作；&lt;/li>
+&lt;li>&lt;strong>Developer(开发者)&lt;/strong>：可以进行写操作，但不能管理项目设置；&lt;/li>
+&lt;li>&lt;strong>Maintainer(维护者)&lt;/strong>：可以管理项目设置和成员；&lt;/li>
+&lt;li>&lt;strong>Owner(所有者)&lt;/strong>：拥有所有权限，包括删除项目。&lt;/li>
+&lt;/ol>
+&lt;p>假设有一个项目，团队成员包括项目经理(1人)、开发者(3人，其中1人中途加入)、测试者(1人)等共5人;&lt;/p>
+&lt;p>这5人的角色及职责如下：&lt;/p>
+&lt;ol>
+&lt;li>&lt;strong>项目经理&lt;/strong>：Owner&lt;/li>
+&lt;li>&lt;strong>开发者1&lt;/strong>：Maintainer(负责开发、审核代码)&lt;/li>
+&lt;li>&lt;strong>开发者2&lt;/strong>：Developer&lt;/li>
+&lt;li>&lt;strong>开发者3&lt;/strong>：Developer(中途加入)&lt;/li>
+&lt;li>&lt;strong>测试者&lt;/strong>：Reporter&lt;/li>
+&lt;/ol>
+&lt;p>在开发者3加入之前，项目开发都为团队内部合作开发，代码都应该提交到一个仓库。&lt;/p>
+&lt;p>在开发者3加入之后，项目涉及到跨团队开发，开发者3应该fork仓库，如果使用&lt;em>GitLab&lt;/em>，则通过&lt;em>Merge Request&lt;/em>(简称MR)的方式来将代码合并到上游仓库(上游仓库为被fork的仓库)；&lt;/p>
+&lt;p>下面按照&lt;strong>GitLab Flow&lt;/strong>工作流说明。&lt;/p>
+&lt;ol>
+&lt;li>项目经理创建仓库，提交需求文档，并添加团队成员为Developer&lt;/li>
+&lt;/ol>
+&lt;p>初次提交如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git init .
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">touch README.md &lt;span class="c1">#该文章简要介绍下项目背景及作用&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git add README.md &lt;span class="c1">#添加README.md到暂存区&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git commit -m &lt;span class="s2">&amp;#34;first commit&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git remote add origin https://&amp;lt;host&amp;gt;:&amp;lt;port&amp;gt;/path/to/xxx.git &lt;span class="c1">#添加远程库，这里修改成自己的远程库&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git push -u origin master
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>接着提交需求文档：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">mkdir docs &lt;span class="c1">#创建docs目录，在该目录下添加需求文档&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">touch docs/requirements.md &lt;span class="c1">#采用markdown格式记录需求文档&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>打开&lt;code>docs/requirements.md&lt;/code>文件，完成编写需求文档后操作如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git add docs/requirements.md &lt;span class="c1">#将需求文档添加到暂存区&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git commit -m &lt;span class="s2">&amp;#34;[docs] 添加需求文档&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git push origin master
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ol start="2">
+&lt;li>开发者1提交技术文档，开发者1创建dev分支&lt;/li>
+&lt;/ol>
+&lt;p>提交技术文档操作如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git remote add origin https://&amp;lt;host&amp;gt;:&amp;lt;port&amp;gt;/path/to/xxx.git &lt;span class="c1">#添加远程库，这里修改成自己的远程库&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git fetch origin -a &lt;span class="c1">#获取远程库所有分支&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">touch docs/technical.md &lt;span class="c1">#采用markdown格式记录技术文档&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>打开&lt;code>docs/technical.md&lt;/code>文件，完成编写技术文档后操作如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git add docs/technical.md &lt;span class="c1">#将技术文档添加到暂存区&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git commit -m &lt;span class="s2">&amp;#34;[docs]添加技术文档&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git push origin master
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git checkout -b dev &lt;span class="c1">#创建并切换到dev分支&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git push origin dev
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="团队内部合作">团队内部合作
+&lt;/h3>&lt;p>团队内部合作时，开发者1、开发者2、测试者都在同一个团队中，他们都是项目的成员，可以直接提交代码到同一个仓库；&lt;/p>
+&lt;p>接下来按照&lt;code>GitLab Flow&lt;/code>工作流程说明两种应用场景。&lt;/p>
+&lt;h4 id="开发新功能">开发新功能
+&lt;/h4>&lt;p>开发和测试新功能不能都在一个分支上修改，而应该创建新分支，命名为&lt;code>feat_xxx&lt;/code>表示开发xxx功能。&lt;/p>
+&lt;p>接下来介绍开发者1提Issue并在该Issue中创建2个新分支分别名为&lt;code>feat_xxx&lt;/code>和&lt;code>test_xxx&lt;/code>，用于开发者2提交功能代码到&lt;code>feat_xxx&lt;/code>分支和测试者提交用例代码到&lt;code>test_xxx&lt;/code>分支中。&lt;/p>
+&lt;p>其中，&lt;code>feat_xxx&lt;/code>分支是基于最新的&lt;code>dev&lt;/code>分支，&lt;code>test_xxx&lt;/code>分支是基于&lt;code>feat_xxx&lt;/code>分支，工作流如下：&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>开发者1按照dev分支的文档提Issue，开发者1在该Issue中基于&lt;code>dev&lt;/code>分支创建新分支&lt;code>feat_xxx&lt;/code>，并通知开发者2开发该功能&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>开发者2获取并checkout到&lt;code>feat_xxx&lt;/code>分支&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>不存在&lt;code>feat_xxx&lt;/code>分支则需要创建并切换到新分支，执行以下指令：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git fetch origin -a &lt;span class="c1">#获取远程库所有分支&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git checkout -b feat_xxx origin/feat_xxx &lt;span class="c1">#基于远程的feat_xxx分支在本地创建feat_xxx分支，并切换到该分支&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>已存在&lt;code>feat_xxx&lt;/code>分支则执行以下指令：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git checkout feat_xxx &lt;span class="c1">#不需要-base参数，因为已经存在本地feat_xxx分支&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git pull origin feat_xxx:feat_xxx &lt;span class="c1">#拉取远程feat_xxx分支到本地feat_xxx分支&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ol start="3">
+&lt;li>开发者2在&lt;code>feat_xxx&lt;/code>上进行开发，开发完成后并push到远程库&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git add &amp;lt;files&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git commit -m &lt;span class="s2">&amp;#34;[feat]添加xxx功能&amp;#34;&lt;/span> &lt;span class="c1">#&amp;#34;[feat]&amp;#34;表明这是新增功能&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git push origin feat_xxx
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>注意：修改feat_xxx如果是新增功能，则提交记录的注释应该添加前缀&amp;quot;[feat]&amp;quot;&lt;/p>
+&lt;ol start="4">
+&lt;li>开发者2此前没有提MR，则创建MR请求将&lt;code>feat_xxx&lt;/code>合并到&lt;code>dev&lt;/code>分支，需将Issue和该MR关联起来&lt;/li>
+&lt;/ol>
+&lt;p>其中在开发者2需要在完成新功能后，需在Issue中关联MR，通过&lt;code>!&amp;lt;MR_number&amp;gt;&lt;/code>的方式，假设该MR的序号为9，则应该在Issue中添加注释&lt;code>See merge request !9&lt;/code>；&lt;/p>
+&lt;p>同样在&lt;em>Merge Request&lt;/em>中添加注释表明这是对应哪个Issue，通过&lt;code>#&amp;lt;Issue_number&lt;/code>的方式，假设该MR对应的Issue为5，则添加注释&lt;code>See issue #5&lt;/code>。&lt;/p>
+&lt;ol start="5">
+&lt;li>开发者1审核代码，审核不通过则在MR中说明改进建议，并回到步骤(3)&lt;/li>
+&lt;/ol>
+&lt;p>这里提交记录的注释仍应该为&lt;code>[perf]改进xxx&lt;/code>，这里的&amp;quot;[perf]&amp;ldquo;为针对xxx做出的改进&lt;/p>
+&lt;ol start="6">
+&lt;li>开发者1审核通过则在该Issue中创建子项Issue，基于&lt;code>feat_xxx&lt;/code>分支创建&lt;code>test_xxx&lt;/code>分支，将该Issue分配给测试者&lt;/li>
+&lt;/ol>
+&lt;p>注意：这里开发者1审核通过不应该通过MR，需要等测试者提交测试用例后并测试通过，然后测试者需要提MR请求将&lt;code>test_xxx&lt;/code>分支合并到&lt;code>feat_xxx&lt;/code>分支，之后开发者1才能通过确认MR，&lt;code>feat_xxx&lt;/code>才被删除；&lt;/p>
+&lt;ol start="7">
+&lt;li>测试者拉取测试分支代码，编写测试用例并提交到&lt;code>test_xxx&lt;/code>分支&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#已存在test_xxx分支则执行以下指令&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git checkout test_xxx &lt;span class="c1">#第一次拉取时执行：git checkout -b test_xxx origin/test_xxx&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">touch test/test_xxx &lt;span class="c1">#编写测试脚本&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#编写脚本可以为其他语言编写的测试用例&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git add test/test_xxx
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git commit -m &lt;span class="s2">&amp;#34;[test]测试xxx功能&amp;#34;&lt;/span> &lt;span class="c1">#提交记录注释的&amp;#34;[test]&amp;#34;，表明它修改了测试代码&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git push origin test_xxx
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>无论测试用例是否正确，都应该提交测试用例程序，且提交记录前缀应该为&amp;rdquo;[test]&amp;quot;，表明这是测试用例。&lt;/p>
+&lt;ol start="8">
+&lt;li>
+&lt;p>测试者此前没有提出MR，则创建MR请求将&lt;code>test_xxx&lt;/code>合并到&lt;code>feat_xxx&lt;/code>分支中，需将Issue和对应的MR关联&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>开发者2审核测试者的MR，不通过则回到步骤(10)，否则交由开发者1审核，开发者1审核通过则允许合并&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>开发者1允许合并将会删除&lt;code>test_xxx&lt;/code>分支，然后该MR将被关闭，还需要开发者1标记测试Issue为已完成&lt;/p>
+&lt;ol start="10">
+&lt;li>开发者1、开发者2更新&lt;code>feat_xxx&lt;/code>，可以先本地测试，若存在问题，则回到步骤(3)&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git fetch origin feat_xxx
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git checkout feat_xxx &lt;span class="c1">#切换到要合并的本地分支&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git merge origin/feat_xxx &lt;span class="c1">#将远程库合并到当前分支&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ol start="11">
+&lt;li>测试用例都通过则由开发者1确认通过MR，将&lt;code>feat_xxx&lt;/code>合并到&lt;code>dev&lt;/code>分支中&lt;/li>
+&lt;/ol>
+&lt;p>添加新功能的时序图如下所示：&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/teamwork-using-git/1.png"
+width="1001"
+height="1001"
+srcset="https://adja.com.cn/p/teamwork-using-git/1_hu_f7177451ffb65463.png 480w, https://adja.com.cn/p/teamwork-using-git/1_hu_d65c1e730264123e.png 1024w"
+loading="lazy"
+alt="1"
+class="gallery-image"
+data-flex-grow="100"
+data-flex-basis="240px"
+>&lt;/p>
+&lt;p>也可以简单的按照如下图理解：&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/teamwork-using-git/2.png"
+width="393"
+height="189"
+srcset="https://adja.com.cn/p/teamwork-using-git/2_hu_5627da20f1a4a952.png 480w, https://adja.com.cn/p/teamwork-using-git/2_hu_b71a5a2081590b5e.png 1024w"
+loading="lazy"
+alt="2"
+class="gallery-image"
+data-flex-grow="207"
+data-flex-basis="499px"
+>&lt;/p>
+&lt;h4 id="处理集成时的问题">处理集成时的问题
+&lt;/h4>&lt;p>单独测试某功能时，该功能一切正常，但在集成时出现问题，便以下面这个示例介绍。&lt;/p>
+&lt;p>假设需求没有较大变化，原来已有功能feat_xxx1(不存在问题)，添加新功能feat_xxx2，单独测试feat_xxx2也不存在问题，但在集成测试后出现了问题，测试者需要先提出Issue，其他成员都应该积极讨论定位问题；&lt;/p>
+&lt;p>这里不用回到feat_xxx2的分支修复问题(可能feat_xxx1的问题在先前的集成测试中没暴露出来)，而是在集成后的&lt;code>dev&lt;/code>分支上创建新分支来修复集成问题，&lt;/p>
+&lt;p>具体工作流如下：&lt;/p>
+&lt;ol>
+&lt;li>测试者基于&lt;code>dev&lt;/code>分支进行测试，测出问题则提Issue，说明问题的现象和执行了什么操作&lt;/li>
+&lt;/ol>
+&lt;p>如果该问题是在某次测试用例中出现，则应该提交测试用例程序然后提交MR请求将&lt;code>test_dev&lt;/code>合并到&lt;code>dev&lt;/code>分支，然后在Issue中关联MR和对应Issue&lt;/p>
+&lt;p>如果其他成员讨论确认存在问题，则在开发者1、开发者2通过测试者的MR后，由开发者1确认合并，&lt;code>test_dev&lt;/code>分支将被删除&lt;/p>
+&lt;p>&lt;font size=3 color=red>注意：&lt;/font>&lt;/p>
+&lt;p>可能同时在开发feat_xxx3和feat_xxx4功能，每个功能单独测试都没问题，但在集成后出现问题，它们恰好没有冲突地被合并到&lt;code>dev&lt;/code>分支，测试者应当在本地新建两个新分支针对这两次集成，针对feat_xxx3合并到dev的提交，则创建&lt;code>test_dev&lt;/code>分支，针对feat_xxx4合并到dev的提交则创建&lt;code>test_dev1&lt;/code>分支，分支命名依次类推。&lt;/p>
+&lt;p>如果连续多次合并到&lt;code>dev&lt;/code>分支，包括添加新功能、修复旧功能的问题，则应该通过如下指令创建tag：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git checkout dev
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git tag release-x.x.x &lt;span class="c1">#切换到dev分支，将当前分支创建为一个发布版本&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git push origin release-x.x.x &lt;span class="c1">#将该版本推送到远程&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>一般情况，测试者是在&lt;code>release-x.x.x&lt;/code>的分支上测试代码，如果存在问题则在本地创建&lt;code>test-release-x.x.x&lt;/code>分支来测试，操作如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git fetch origin -a
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git checkout -b test-release-x.x.x origin/release-x.x.x &lt;span class="c1">#基于远程发布版本创建测试分支&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#测试，如果存在必现的问题则提交对应的测试用例，需要进行以下操作&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git commit -m &lt;span class="s2">&amp;#34;[test]测试发布版本x.x.x&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git push origin test-release-x.x.x
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ol start="2">
+&lt;li>
+&lt;p>在定位问题(假设问题出现在开发者2开发的feat_xxx2)后，则开发者1在Issue中基于存在问题的&lt;code>dev&lt;/code>分支创建&lt;code>fix_xxx2&lt;/code>分支，并将其指派给开发者2&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>开发者2需在&lt;code>fix_xxx2&lt;/code>上修改和提交代码&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>这里的提交记录注释为&lt;code>[fix]修复xxx问题&lt;/code>&lt;/p>
+&lt;ol start="4">
+&lt;li>
+&lt;p>开发者2进行和测试者同样的操作，若问题仍浮现则回到步骤(3)&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>开发者2提交MR请求将&lt;code>fix_xxx2&lt;/code>合并到&lt;code>dev&lt;/code>分支中，并将该MR和对应的修复Issue关联起来&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>测试者2拉取&lt;code>fix_xxx2&lt;/code>进行测试，没有问题后则通过，但不会合并到&lt;code>dev&lt;/code>分支&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>开发者1观察到bug修复，则最终通过合并，&lt;code>fix_xxx2&lt;/code>分支将被删除&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;h3 id="跨团队开发工作流">跨团队开发工作流
+&lt;/h3>&lt;p>在开发者3加入后，开发者3会因缺乏注意事项导致提交的代码影响到已有功能，因此开发者3应该fork上游仓库来开发，其他成员仍然按照原来的方式开发。&lt;/p>
+&lt;p>开发者3应该如下操作：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git clone https://&amp;lt;host&amp;gt;:&amp;lt;port&amp;gt;/path/to/repo-xxx.git &lt;span class="c1">#克隆fork的仓库到本地&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> repo-xxx
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git remote add upstream https://&amp;lt;host&amp;gt;:&amp;lt;port&amp;gt;/path/to/repo-xxx.git &lt;span class="c1">#添加被fork的仓库为上游仓库&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>假设项目紧急，本应该由开发者2实现的功能交由开发者3开发，则开发者1应当在上游仓库中提出Issue，基于&lt;code>dev&lt;/code>分支创建&lt;code>feat_xxx&lt;/code>分支，开发者3收到通知，则应该如下操作：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git fetch upstream feat_xxx &lt;span class="c1">#获取上游仓库的feat_xxx分支&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git checkout -b feat_xxx upstream/feat_xxx
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>此后的操作和团队内开发工作流类似。&lt;/p>
+&lt;p>&lt;font size=3 color=red>注意：&lt;/font>&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>开发者3如果需要提MR，则应当在自己fork的仓库创建MR；&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>开发者3如果接收到某个指派任务，则应当从上游仓库&lt;code>upstream&lt;/code>中拉取对应分支到本地，然后在该分支上修改和提交代码&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>开发者3不能直接push到上游仓库，而应该push到fork的仓库，然后创建MR请求合并到上游仓库的对应分支，需要在上游仓库中将该MR和对应Issue关联起来。&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="补充">补充
+&lt;/h2>&lt;h3 id="mr后远程库的分支被删除如何删除本地fetch的远程库">MR后远程库的分支被删除，如何删除本地fetch的远程库
+&lt;/h3>&lt;p>开发者1确认MR后，远程库的&lt;code>feat_xxx&lt;/code>分支被删除，但本地的&lt;code>feat_xxx&lt;/code>仍存在&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git fetch -p &lt;span class="c1">#-p为--prune缩写&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git checkout dev &lt;span class="c1">#如果当前在feat_xxx分支上&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git branch -d feat_xxx &lt;span class="c1">#删除本地feat_xxx分支&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git branch -D feat_xxx &lt;span class="c1">#注意：意味着本地分支没被合并，会被强制删除&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="某发布版本存在较大问题如何删除本地存储的已删除远程库tag">某发布版本存在较大问题，如何删除本地存储的已删除远程库tag
+&lt;/h3>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git fetch -P &lt;span class="c1">#-P为--prune-tags缩写&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="跨团队合作中上游仓库mr后如何将fork的远程库与其上游仓库同步">跨团队合作中，上游仓库MR后，如何将fork的远程库与其上游仓库同步
+&lt;/h3>&lt;p>假设自己MR请求将&lt;code>fix_xxx&lt;/code>合并到上游仓库的&lt;code>dev&lt;/code>分支，开发者1确认合并后，则操作如下&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git fetch upstream -a &lt;span class="c1">#获取上游仓库的更改&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git merge upstream/dev dev &lt;span class="c1">#将上游仓库同步到本地dev分支&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#or git pull upstream dev:dev #代替上面2行指令&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git push origin dev &lt;span class="c1">#将本地更改同步到fork仓库中&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git checkout dev &lt;span class="c1">#如果当前在fix_xxx分支&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git branch -d fix_xxx &lt;span class="c1">#删除本地fix_xxx分支&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git fetch -p &lt;span class="c1">#删除本地存储的已删除的fix_xxx分支&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="如何给新建分支命名">如何给新建分支命名
+&lt;/h3>&lt;p>比如，添加新功能&lt;em>添加查询温度功能&lt;/em>，应该在当前分支(一般为dev分支)创建名为&lt;code>feat_query_temp&lt;/code>的新分支(其中&lt;em>feat&lt;/em>为feature的缩写);&lt;/p>
+&lt;p>新分支命名格式如下:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-txt" data-lang="txt">&lt;span class="line">&lt;span class="cl">type_subject
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ul>
+&lt;li>
+&lt;p>提交类型(type): 包括&lt;code>feat&lt;/code>(新功能)、&lt;code>fix&lt;/code>(修复问题)、&lt;code>doc&lt;/code>(文档更改)、&lt;code>refactor&lt;/code>(代码重构，不是新增功能，也不是修复bug)、&lt;code>test&lt;/code>(添加或修改测试)、&lt;code>chore&lt;/code>(其他不修改源码或测试用例的提交)、&lt;code>style&lt;/code>(代码格式，不影响代码运行);&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>简短描述(subject): 使用下划线&lt;code>_&lt;/code>分割单词，要求简洁明了.&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>命名规则示例如下:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-txt" data-lang="txt">&lt;span class="line">&lt;span class="cl">feat_support_eth #支持网口
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">refactor_cmd_resp #重构指令回复提示信息
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">style_format_code #格式化源代码
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">test_cmd_resp #测试指令回复提示信息
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="如何编写提交注释">如何编写提交注释
+&lt;/h3>&lt;p>提交注释尽量做到简介明了，直观反映提交代码的更改;&lt;/p>
+&lt;p>也应该做到新功能和修复bug的代码应该分为2次来提交，其他类型的提交也应当如此;&lt;/p>
+&lt;p>可以通过&lt;code>git commit -m &amp;lt;message&amp;gt;&lt;/code>指令来提交到本地库，其中&lt;code>&amp;lt;message&amp;gt;&lt;/code>的说明如下所示:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-txt" data-lang="txt">&lt;span class="line">&lt;span class="cl">格式: [type]msg
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>其中，type取值及其含义如下:&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th style="text-align: center">type&lt;/th>
+&lt;th style="text-align: left">含义&lt;/th>
+&lt;th style="text-align: left">示例&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td style="text-align: center">feat&lt;/td>
+&lt;td style="text-align: left">新功能(feature)&lt;/td>
+&lt;td style="text-align: left">[feat]添加健康检查&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">fix&lt;/td>
+&lt;td style="text-align: left">修复问题(fix bug)&lt;/td>
+&lt;td style="text-align: left">[fix]修复健康检查归位问题&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">doc&lt;/td>
+&lt;td style="text-align: left">文档更改(documentation)&lt;/td>
+&lt;td style="text-align: left">[doc]完善技术文档&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">style&lt;/td>
+&lt;td style="text-align: left">代码格式化&lt;/td>
+&lt;td style="text-align: left">[style]格式化非生成的源码&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">refactor&lt;/td>
+&lt;td style="text-align: left">重构代码&lt;/td>
+&lt;td style="text-align: left">[refactor]重构指令回复提示&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">test&lt;/td>
+&lt;td style="text-align: left">添加或修改测试&lt;/td>
+&lt;td style="text-align: left">[test]测试健康检查&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">chore&lt;/td>
+&lt;td style="text-align: left">不修改源码或测试文件的提交&lt;/td>
+&lt;td style="text-align: left">[chore]完善.gitignore&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">perf&lt;/td>
+&lt;td style="text-align: left">提高性能的更改&lt;/td>
+&lt;td style="text-align: left">[perf]提高滑动平均性能&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">ci&lt;/td>
+&lt;td style="text-align: left">持续集成相关的更改&lt;/td>
+&lt;td style="text-align: left">[ci]能自动生成并发布hex和bin文件&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">build&lt;/td>
+&lt;td style="text-align: left">构建系统或外部依赖的更改&lt;/td>
+&lt;td style="text-align: left">[build]完善CMakelists.xt配置&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">revert&lt;/td>
+&lt;td style="text-align: left">撤销之前的提交&lt;/td>
+&lt;td style="text-align: left">[revert]回退定时任务&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h3 id="每次提交如何自动执行特定操作">每次提交如何自动执行特定操作
+&lt;/h3>&lt;p>假如每次提交前都要格式化代码，正常情况下应该通过主动进行特定操作，但可通过配置&lt;code>.git/hooks/pre-commit&lt;/code>来执行想要的操作，示例如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git clone https://&amp;lt;host&amp;gt;:&amp;lt;port&amp;gt;/path/to/repo_xxx.git
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> repo_xxx.git
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">touch .git/hooks/pre-commit &lt;span class="c1">#在.git/hooks目录下创建pre_commit文本文件&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#编辑pre-commit内容&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">chmod +x .git/hooks/pre_commit &lt;span class="c1">#修改pre-commit属性为可执行&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>其中pre-commit的内容如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#!/bin/sh
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">&lt;/span>&lt;span class="c1"># Find all C source files and header files&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">files&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$(&lt;/span>git diff --cached --name-only --diff-filter&lt;span class="o">=&lt;/span>ACM &lt;span class="p">|&lt;/span> grep -E &lt;span class="s1">&amp;#39;\.(c|h)$&amp;#39;&lt;/span>&lt;span class="k">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># If there are no files to format, exit&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">[&lt;/span> -z &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$files&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="o">]&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="nb">exit&lt;/span> &lt;span class="m">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Run clang-format on each file with the specified .clang-format file&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$files&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="p">|&lt;/span> xargs clang-format -i --style&lt;span class="o">=&lt;/span>file
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Add the formatted files back to the staging area&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$files&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="p">|&lt;/span> xargs git add
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">exit&lt;/span> &lt;span class="m">0&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>通过上述配置后，每次执行&lt;code>git commit&lt;/code>后它会在修改文件中过滤&amp;quot;.c&amp;quot;和&amp;quot;.h&amp;quot;的文件，然后存在该文件则通过&lt;code>clang-format&lt;/code>并按照根目录下的&amp;quot;.clang-format&amp;quot;配置文件来格式化该文件。&lt;/p>
+&lt;h2 id="参考">参考
+&lt;/h2>&lt;ol>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://www.cnblogs.com/xiaoqi/p/gitlab-flow.html" target="_blank" rel="noopener"
+>https://www.cnblogs.com/xiaoqi/p/gitlab-flow.html&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://www.atlassian.com/git/tutorials" target="_blank" rel="noopener"
+>https://www.atlassian.com/git/tutorials&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://git-scm.com/book/" target="_blank" rel="noopener"
+>https://git-scm.com/book/&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://docs.github.com/zh/get-started/start-your-journey/about-github-and-git" target="_blank" rel="noopener"
+>https://docs.github.com/zh/get-started/start-your-journey/about-github-and-git&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ol></description></item><item><title>使用DDNS访问内网设备</title><link>https://adja.com.cn/p/use-ddns-to-access-intranet-devices/</link><pubDate>Sat, 06 Jul 2024 16:08:49 +0800</pubDate><guid>https://adja.com.cn/p/use-ddns-to-access-intranet-devices/</guid><description>&lt;img src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/cover.jpg" alt="Featured image of post 使用DDNS访问内网设备" />&lt;h1 id="使用ddns访问内网设备">使用DDNS访问内网设备
+&lt;/h1>&lt;p> 有时出门需要访问家中的nas，由于国内的公网ipv4越来越难申请，且群晖官方的quickConnect服务速度也很慢，在参考相关教程后，决定通过DDNS将域名解析到公网ipv6，然后直接通过域名访问内网设备；&lt;/p>
+&lt;p> 在先前光猫破解获取超级用户修改桥接的实验基础上，我将路由器连接光猫，由路由器来拨号并开启ipv6，在分配到公网的ipv6后，便开始DDNS配置过程.&lt;/p>
+&lt;h2 id="通过群晖的dns服务">通过群晖的DNS服务
+&lt;/h2>&lt;p> 从&amp;quot;控制面板-&amp;gt;外部访问-&amp;gt;DDNS&amp;quot;点击新增，选择服务供应商为Synology，下面自定义配置；
+&lt;font color=red>注意，ipv6开头要为240开头的(电信为240e；移动为2409；联通为2408)，fe80开头的一般为内网ipv6&lt;/font>&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/1.png"
+width="1131"
+height="769"
+srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/1_hu_791072600dc1a28d.png 480w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/1_hu_d20dab7bd7422516.png 1024w"
+loading="lazy"
+alt="1"
+class="gallery-image"
+data-flex-grow="147"
+data-flex-basis="352px"
+>&lt;/p>
+&lt;p> 需要https访问的话，勾选&amp;quot;从Let&amp;rsquo;s Encrypt获取证书&amp;quot;，点击确定.&lt;/p>
+&lt;h2 id="使用其他供应商的dns服务">使用其他供应商的DNS服务
+&lt;/h2>&lt;p> 以下仅以腾讯云的DNS服务为例，需要预先在腾讯云官网申请一个域名;&lt;/p>
+&lt;h3 id="使用ddns-go镜像">使用&lt;em>ddns-go&lt;/em>镜像
+&lt;/h3>&lt;p> 进行动态域名解析，需要自己的nas设备定时的查询本机的ip地址，然后调用更新域名解析字段的接口，从而实现ddns；&lt;/p>
+&lt;p> 所以不能需要换个方法，网上有很多方法，这里我提供一个采用docker进行DDNS更新的方法；
+ 在套件中心种搜索docker，安装docker，步骤略；&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/3.png"
+width="1371"
+height="661"
+srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/3_hu_3d4bd212a1d39bc2.png 480w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/3_hu_557c3ea7c6613a97.png 1024w"
+loading="lazy"
+alt="3"
+class="gallery-image"
+data-flex-grow="207"
+data-flex-basis="497px"
+>&lt;/p>
+&lt;p> 打开docker，选择&amp;quot;注册表&amp;quot;，搜索ddns，安装第一个&amp;quot;ddns-go&amp;quot;&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/4.png"
+width="1475"
+height="841"
+srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/4_hu_c4798d82dd974946.png 480w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/4_hu_663562ac22997ff0.png 1024w"
+loading="lazy"
+alt="4"
+class="gallery-image"
+data-flex-grow="175"
+data-flex-basis="420px"
+>&lt;/p>
+&lt;p> 安装完成后打开映像，选择ddns-go，点击启动；&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/5.png"
+width="1467"
+height="520"
+srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/5_hu_b89a443ed6cc7a4a.png 480w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/5_hu_7779ac6e9d5fc9dc.png 1024w"
+loading="lazy"
+alt="5"
+class="gallery-image"
+data-flex-grow="282"
+data-flex-basis="677px"
+>&lt;/p>
+&lt;p> 点击高级设置-&amp;gt;存储空间-&amp;gt;添加文件夹；&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/6.png"
+width="1229"
+height="843"
+srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/6_hu_59474d9c95f3bbed.png 480w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/6_hu_ff103df09dfe4be2.png 1024w"
+loading="lazy"
+alt="6"
+class="gallery-image"
+data-flex-grow="145"
+data-flex-basis="349px"
+>&lt;/p>
+&lt;p> 修改装载路径，我的配置如下：&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/7.png"
+width="1174"
+height="744"
+srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/7_hu_3d209a1690770e0d.png 480w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/7_hu_30a5e390e7b316a1.png 1024w"
+loading="lazy"
+alt="7"
+class="gallery-image"
+data-flex-grow="157"
+data-flex-basis="378px"
+>&lt;/p>
+&lt;p> 点击网络-&amp;gt;勾上host网络-&amp;gt;应用；&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/8.png"
+width="966"
+height="822"
+srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/8_hu_6afe4e6b2cf55073.png 480w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/8_hu_40c2faf981cade2d.png 1024w"
+loading="lazy"
+alt="8"
+class="gallery-image"
+data-flex-grow="117"
+data-flex-basis="282px"
+>&lt;/p>
+&lt;p> 点击下一步，点击完成.&lt;/p>
+&lt;h3 id="配置ddns">配置DDNS
+&lt;/h3>&lt;p> 打开&lt;code>http://[域名对应的nas的ip]:9876/&lt;/code>&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/9.png"
+width="1061"
+height="490"
+srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/9_hu_757d8d28f3be637a.png 480w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/9_hu_e4d56b0ca80e396b.png 1024w"
+loading="lazy"
+alt="9"
+class="gallery-image"
+data-flex-grow="216"
+data-flex-basis="519px"
+>&lt;/p>
+&lt;p> 配置DNS服务商，选择腾讯云，输入ID与Token，&lt;font color=red>注意，这里的ID与Token对应&amp;quot;DNSPod Token&amp;quot;，不是&amp;quot;腾讯云API密钥&amp;quot;&lt;/font>，链接是https:
+//console.dnspod.cn/account/token/token&lt;/p>
+&lt;p> 只启用ipv6，我的配置如下：&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/10.png"
+width="1041"
+height="579"
+srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/10_hu_fd17a94b8ff738a2.png 480w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/10_hu_32c08252c116d7d7.png 1024w"
+loading="lazy"
+alt="10"
+class="gallery-image"
+data-flex-grow="179"
+data-flex-basis="431px"
+>&lt;/p>
+&lt;p> 在点击&amp;quot;Save&amp;quot;之前，需要配置下域名解析，添加AAAA类型(表示ipv6地址)记录，随便填下，它会自动更新，我的配置如下：&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/11.png"
+width="1629"
+height="356"
+srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/11_hu_b61b25f03e392220.png 480w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/11_hu_ba3d0e55e5479ace.png 1024w"
+loading="lazy"
+alt="11"
+class="gallery-image"
+data-flex-grow="457"
+data-flex-basis="1098px"
+>&lt;/p>
+&lt;p> 配置完成后点击保存，右边会出现最新的历史记录；&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/12.png"
+width="538"
+height="344"
+srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/12_hu_b1df0995618dc228.png 480w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/12_hu_f81cd796f84c613e.png 1024w"
+loading="lazy"
+alt="12"
+class="gallery-image"
+data-flex-grow="156"
+data-flex-basis="375px"
+>&lt;/p>
+&lt;p> 应该出现&amp;quot;更新域名解析 xxxxxx 成功&amp;quot;或“更新域名解析 xxxxx 没有变化”&lt;/p>
+&lt;p> 通过域名+端口来进行测试.&lt;/p>
+&lt;h2 id="补充">补充
+&lt;/h2>&lt;p> 在2022年的暑假，搭建完成后我请同学帮测试了江苏不同地级市的速度，速度还是挺快的;&lt;/p>
+&lt;p> 后来毕业后去了其他省，在找到第一份工作后重新想起nas然后试着重新搭建，但发现同样的方法完全行不通，主要因为不同省份网络基础设施的完善度差别很大;&lt;/p>
+&lt;p> 如果在ipv6都未推广开的省份，还是建议少折腾，此外因为过去几年&lt;em>PCDN&lt;/em>的泛滥，运营商会根据带宽的上行速度查看用户有没有搭建&lt;em>PCDN&lt;/em>，如果DDNS被恶意使用，可能导致宽带被封.&lt;/p>
+&lt;hr>
+&lt;p>&lt;font size=3 color=blue>2022-06-19 记录&lt;/font>&lt;/p>
+&lt;p>&lt;font size=3 color=blue>2023-07-07 更新&lt;/font>&lt;/p></description></item><item><title>开发环境管理工具</title><link>https://adja.com.cn/p/dev-environment-management-tools/</link><pubDate>Wed, 19 Jun 2024 07:34:46 +0800</pubDate><guid>https://adja.com.cn/p/dev-environment-management-tools/</guid><description>&lt;img src="https://adja.com.cn/p/dev-environment-management-tools/cover.jpg" alt="Featured image of post 开发环境管理工具" />&lt;h1 id="开发环境管理工具">开发环境管理工具
+&lt;/h1>&lt;p> 开发时，时常用到多开发环境，大家可能用到过类似&lt;em>miniconda&lt;/em>、&lt;em>nvm&lt;/em>和&lt;em>gvm&lt;/em>的工具，它们分别用于管理&lt;em>python&lt;/em>、&lt;em>nodejs&lt;/em>及&lt;em>go&lt;/em>的版本; 此外还有如&lt;em>maven&lt;/em>的包管理工具;&lt;/p>
+&lt;p> 如果用到新的编程语言或包管理工具，安装对应的版本管理工具都比较麻烦，接下来介绍3款开发环境管理工具&lt;em>asdf&lt;/em>、&lt;em>mise&lt;/em>和&lt;em>vfox&lt;/em>.&lt;/p>
+&lt;h2 id="asdfmise和vfox的对比">asdf、mise和vfox的对比
+&lt;/h2>&lt;p> 三者都是用于管理开发环境的工具，都提供统一的命令行指令，可通过安装插件来拓展其功能.&lt;/p>
+&lt;ul>
+&lt;li>asdf&lt;/li>
+&lt;/ul>
+&lt;p> 其中asdf诞生的时间更早，插件生态更加完善，它主要采用shell脚本开发，能非常好地适配于Linux及Mac，当谈到对Windows的支持时，有人向官方提出了类似的issue，但后续未提供支持Win的版本;&lt;/p>
+&lt;p> 当然，如果非要在Win平台使用asdf，可在wsl中安装使用，但考虑到wsl的速度远不如原生的exe格式程序，再加上shell本身为解释执行的，速度就更慢了; 因此，除了Win平台，其他平台都推荐使用asdf.&lt;/p>
+&lt;ul>
+&lt;li>mise&lt;/li>
+&lt;/ul>
+&lt;p> 该工具原名&lt;em>rtx&lt;/em>，由于原名很容易与Nvidia的显卡名混淆，后更名为&lt;em>mise&lt;/em>，它采用rust编程语言开发;&lt;/p>
+&lt;p> 由于后端采用&lt;em>asdf&lt;/em>，它也继承了&lt;em>asdf&lt;/em>的缺点，同样对Win平台支持比较差.&lt;/p>
+&lt;ul>
+&lt;li>vfox&lt;/li>
+&lt;/ul>
+&lt;p> &lt;em>vfox&lt;/em>采用go编程语言开发，相对于另外2款工具，它最后编译成可执行文件，因此，速度快了很多，体积也较小，对Win平台也提供了原生支持.&lt;/p>
+&lt;p> 美中不足的是，可能这类工具的使用者大多采用Linux与Mac系统，&lt;em>vfox&lt;/em>的贡献者较少，功能有待完善，但后续应该会超过前两者.&lt;/p>
+&lt;h2 id="总结">总结
+&lt;/h2>&lt;p> 比较三者的特点，我更偏向于使用&lt;em>vfox&lt;/em>管理开发环境，尽管如此，日常仍会使用语言专用的版本管理工具比如&lt;em>miniconda&lt;/em>;&lt;/p>
+&lt;p> 即便学了很多编程语言，但日常大多人主要使用3门及一下的编程语言; 解决3款工具的安装及使用相对于解决1款工具bug的难度，前者花费的时间更少，不至于寻遍方法而只能提issue;&lt;/p>
+&lt;p> 此外，最近我在折腾自动化工具的过程中，发现环境的配置愈发简单，&lt;em>Dev Container&lt;/em>对软件开发算是福音，或许未来任何平台的开发者都不必关注环境的安装配置，期待这一天的到来.&lt;/p>
+&lt;hr>
+&lt;p>&lt;font color=blue size=3>2024-06-19 更新&lt;/font>&lt;/p></description></item><item><title>博客迁移</title><link>https://adja.com.cn/p/blog-migration/</link><pubDate>Mon, 17 Jun 2024 00:46:21 +0800</pubDate><guid>https://adja.com.cn/p/blog-migration/</guid><description>&lt;img src="https://adja.com.cn/p/blog-migration/cover.jpg" alt="Featured image of post 博客迁移" />&lt;h1 id="博客迁移">博客迁移
+&lt;/h1>&lt;p> 距离上次写文章接近5个月了，期间主要忙于工作中，即便空闲时也没有抽时间查漏补缺，直到前个月差不多在4月中旬，我逐渐想摆脱这种状态，于是从自己感兴趣的方面入手，下面回顾下过去的遭遇.&lt;/p>
+&lt;h2 id="起因">起因
+&lt;/h2>&lt;p> 毕业入职半年以来，除了日常娱乐外，我时常浏览&lt;code>Github&lt;/code>、和朋友出去聚餐、或和同学组网打魔兽等，但总感觉少了什么，在朋友与同学相继工作与升学后，聚餐与一起娱乐的时间愈发少了;&lt;/p>
+&lt;p> 尽管每天工作中会学到新东西，但感觉仍有不足，后来想通了大概是行动的太少，被网上的焦虑裹挟着内耗，逐渐意识到再这样下去，将会永远达不到预期.&lt;/p>
+&lt;h2 id="迁移">迁移
+&lt;/h2>&lt;p> 我从5月初开始便一直考虑迁移博客，有必要考虑以下几方面来迁移博客:&lt;/p>
+&lt;ol>
+&lt;li>更低的学习成本&lt;/li>
+&lt;li>能够复用&lt;/li>
+&lt;li>可间接或直接接触感兴趣的方面&lt;/li>
+&lt;li>框架的稳定性&lt;/li>
+&lt;/ol>
+&lt;p> 综合考虑，我最终选择了hugo框架，一方面hugo使用数相当多，另外未来探索网络会用到go编程语言，恰好hugo就是用go开发的;&lt;/p>
+&lt;p> 接着，选择一款好看的主题，hugo相对hexo来说参考文档稍少了点，最开始我是考虑的&lt;a class="link" href="https://github.com/razonyang/hugo-theme-bootstrap.git" target="_blank" rel="noopener"
+>hugo-theme-bootstrap&lt;/a>，它的中文文档写的很好，且支持博客及文档的布局，然而参与者不多，可能作者不会长时间维护，最终没采用; 后来采用了&lt;a class="link" href="https://github.com/CaiJimmy/hugo-theme-stack.git" target="_blank" rel="noopener"
+>hugo-theme-stack&lt;/a>，它几乎没有第三方依赖，中文文档比较完善;&lt;/p>
+&lt;p> 在完善整体布局与部分细节后，又花了半天时间琢磨&lt;code>Github Actions&lt;/code>，此前使用过&lt;code>Jenkins&lt;/code>构建，这次使用Github构建在认证部署公钥上卡了好久，最终还是解决了.&lt;/p>
+&lt;h2 id="规划">规划
+&lt;/h2>&lt;p> 该反省的是，过去制定的规划我大多没有坚持下来(比如加强英语、学习FPGA与电路知识、探索计算机网络等);&lt;/p>
+&lt;p> 其中加强英语实在坚持不下来，索性通过支持多语种文章来学习英语; 至于计网，在工作中常接触LWIP，生活中时常会在云服务器与本地nas上折腾，后续可能会参与相关开源项目; 而谈到硬件相关的东西，我感到头疼，但由于未来工作会用到，打算把买的开发板学习起来了; 此外，还要了解新出的rust语言(和同事交流下)、学习Linux开发、学习408&amp;hellip; 头大啊，想要做的实在太多了;&lt;/p>
+&lt;p> 综合兴趣与工作，接下来需要完善博客、探索计网、学习FPGA与电路、抽空了解下rust语言.&lt;/p>
+&lt;hr>
+&lt;p>&lt;font color=blue size=3>2024-06-17 首次更新&lt;/font>&lt;/p></description></item><item><title>通过Jenkins自动化构建</title><link>https://adja.com.cn/p/automated-build-via-jenkins/</link><pubDate>Thu, 16 Feb 2023 15:10:34 +0800</pubDate><guid>https://adja.com.cn/p/automated-build-via-jenkins/</guid><description>&lt;img src="https://adja.com.cn/p/automated-build-via-jenkins/cover.jpg" alt="Featured image of post 通过Jenkins自动化构建" />&lt;h1 id="通过jenkins自动化构建">通过Jenkins自动化构建
+&lt;/h1>&lt;p> 续之前Jenkins相关的实验，这次的服务复杂一些，docker-compose.yml的文件包它包含7个service.&lt;/p>
+&lt;h2 id="项目概览">项目概览
+&lt;/h2>&lt;p> 项目是前后端分离项目，后端是采用&lt;em>SpringBoot&lt;/em>的多模块项目，项目结构如下:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-text" data-lang="text">&lt;span class="line">&lt;span class="cl">+---backend # 后端
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">| +---src
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">| \---target
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">+---frontend # 前端
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">| +---dist # 前端生成文件
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">| \---src
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">+---others # 后端依赖的模块或拓展功能
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">| +---mqtt # mqtt的身份验证模块
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">| +---src
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">| \---target
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">+---data # 数据库建表及数据，配置
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">| +---conf # 配置
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">| +---init # 用于mysql镜像初始化数据，控制多个sql文件执行顺序
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">| \---sql # sql语句
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">+---conf # 配置
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">| +---emqx # mqtt相关配置
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">| \---nginx # nginx配置
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">+---dockerfile # 构建自定义镜像的文件
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">+---shell # 脚本
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">\---docker-compose.yml # 所有服务构建配置
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="问题">问题
+&lt;/h2>&lt;p> Jenkins是通过docker构建运行的，此次自动化构建采用Pipeline进行，接下来介绍中间遇到的各种问题，仅供参考;&lt;/p>
+&lt;h3 id="pipeline无法构建前端">Pipeline无法构建前端
+&lt;/h3>&lt;p> 通过日志发现是找不到npm指令，由于是采用的nvm对node进行管理，参考网上装nodejs插件文章也无法解决，一直报错 &lt;code>/usr/bin/env: node: No such file or directory&lt;/code>;&lt;/p>
+&lt;p> 最后将nvm安装目录及/etc/profile.d/nvm.sh挂载到Jenkins，在前端构建阶段通过source指令使nvm指令生效，然后切换到对应的nodejs版本，如此也没必要安装nodejs插件了，pipeline部分如下:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-text" data-lang="text">&lt;span class="line">&lt;span class="cl">stage(&amp;#39;build-frontend&amp;#39;) {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> steps {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> dir(&amp;#34;./frontend&amp;#34;) {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> sh &amp;#39;&amp;#39;&amp;#39;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> source /etc/profile.d/nvm.sh
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> nvm use 16.15.0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> npm cache clean –force
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> npm cache verify
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> if [ -f dist ]; then rm dist -rf; fi;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> pnpm config get registry
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> pnpm config set registry https://registry.npmmirror.com/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> pnpm install
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> pnpm run build:prod
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#39;&amp;#39;&amp;#39;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>&lt;font size=2 color=red>注意：类似找不到指令的报错都可以通过挂载安装目录和使配置生效的方法来解决.&lt;/font>&lt;/p>
+&lt;h3 id="通过ssh远程操作">通过ssh远程操作
+&lt;/h3>&lt;p> 在全局凭据上配置好私钥后，在Pipeline最好通过插件(SSH Pipeline Steps)进行ssh，如果直接采用密码，日志上会回显，参考如下:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-text" data-lang="text">&lt;span class="line">&lt;span class="cl">steps {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> withCredentials(bindings: [ \
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> sshUserPrivateKey(credentialsId: &amp;#39;private-key&amp;#39;,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> keyFileVariable: &amp;#39;primaryKeyVar&amp;#39;,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> passphraseVariable: &amp;#39;pwdVar&amp;#39;,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> usernameVariable: &amp;#39;userVar&amp;#39;)]) {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> script {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> def remote = [:]
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> remote.name = &amp;#39;192.168.137.2&amp;#39;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> remote.host = &amp;#39;192.168.137.2&amp;#39;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> remote.user = userVar
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> remote.identityFile = primaryKeyVar
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> remote.allowAnyHosts = true
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> stage(&amp;#39;Remote SSH&amp;#39;) {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> sshCommand remote: remote, command: &amp;#34;mkdir -p ${REMOTE_WORKDIR}/frontend&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> // 前端打包文件
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> sshPut remote: remote, from: &amp;#34;./frontend/dist&amp;#34;, into: &amp;#34;${REMOTE_WORKDIR}/frontend&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> // 显示传输所有文件
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> sshCommand remote: remote, command: &amp;#34;ls -lrt ${REMOTE_WORKDIR}/**&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="控制服务启动顺序">控制服务启动顺序
+&lt;/h3>&lt;p> 在docker-compose.yml如果需要控制启动顺序，单靠depends_on是不足的，它仅仅控制启动顺序，但不保证服务启动成功才启动下一个;&lt;/p>
+&lt;p> 参考文章说，通过挂载wait-for-it.sh，容器启动通过执行该脚本判断依赖服务是否启动，指导启动成功才运行本服务，也可参考&lt;a class="link" href="https://www.cnblogs.com/wang_yb/p/9400291.html" target="_blank" rel="noopener"
+>这篇文章&lt;/a>;&lt;/p>
+&lt;p> 然而如果镜像已经设定了entrypoint，那么还需要了解该镜像的entrypoint做了什么，只需要将wait-for-it.sh脚本添加到该镜像的entrypoint指令之前;&lt;/p>
+&lt;p> 其中wait-for-it.sh参考https:
+//github.com/vishnubob/wait-for-it，我将该文件改名为entrypoint.sh放入shell目录中，挂载到容器，设定CMD或者entrypoint即可，参考如下:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="nt">service&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">backend&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c"># 后端主模块&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">build&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">context&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">.&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">dockerfile&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">dockerfile/backend-Dockerfile&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">image&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">backend_app&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">container_name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">prod-backend-app&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">ports&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="s2">&amp;#34;13245:13245&amp;#34;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c"># 端口映射&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">environment&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">TZ&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Asia/Shanghai &lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c"># 时区&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">PORT&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">13245&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c"># 容器运行端口&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">PROFILE&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">prod &lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c"># 运行环境，默认&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">volumes&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="l">./shell/entrypoint.sh:/entrypoint.sh&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">depends_on&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="l">emq&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="l">influx&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p> 名为backend的service的&lt;em>Dockerfile&lt;/em>文件改名为backend-Dockerfile放入dockerfile路径中，由于后端依赖于mysql、redis，所以内容如下:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-dockerfile" data-lang="dockerfile">&lt;span class="line">&lt;span class="cl">&lt;span class="k">FROM&lt;/span>&lt;span class="s"> openjdk:8-jdk&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">ADD&lt;/span> backend/target/*.jar /app.jar&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">CMD&lt;/span> bash /entrypoint.sh mysqldb:3306 -t &lt;span class="m">30&lt;/span> -- &lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;mysql started&amp;#34;&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> bash /entrypoint.sh redisdb:6379 -t &lt;span class="m">20&lt;/span> -- &lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;redisdb started&amp;#34;&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> java -jar -Dfile.encoding&lt;span class="o">=&lt;/span>utf-8 -Dserver.port&lt;span class="o">=&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">PORT&lt;/span>&lt;span class="si">}&lt;/span> -Dspring.profiles.active&lt;span class="o">=&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">PROFILE&lt;/span>&lt;span class="si">}&lt;/span> /app.jar&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="消息队列emqx配置">消息队列emqx配置
+&lt;/h3>&lt;p> 我采用的emqx版本为4.4.2，参考了官网通过环境变量的方式配置，其中emq_web_hook插件有效但emq_http_auth插件始终不生效;&lt;/p>
+&lt;p> 参考了&lt;em>Emqx&lt;/em>的官方github上的issue也没解决，最后还得靠挂载emqx的配置才解决;&lt;/p>
+&lt;p> 然后，还有个问题待解决，由于emqx用了http认证插件，我单独将认证的auth模块拿出来作为一个service，这时应该是auth启动完才启动emqx，但后端service在启动之前是不会连emq，emq也就不会用到auth模块的认证接口，便没有自定义构建emq镜像，但该问题还得解决;&lt;/p>
+&lt;p> 参考我写的emq服务:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="nt">service&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">emq&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">user&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">root&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">restart&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">always&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">container_name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">prod-emqx&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">image&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">emqx/emqx:4.4.2&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">ports&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="s2">&amp;#34;18083:18083&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="s2">&amp;#34;1883:1883&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="s2">&amp;#34;8083:8083&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="s2">&amp;#34;8084:8084&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="s2">&amp;#34;8883:8883&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">volumes&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="l">/etc/localtime:/etc/localtime&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="l">/root/docker/emqx/log:/opt/emqx/log&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="l">./conf/emqx/emqx_auth_http.conf:/opt/emqx/etc/plugins/emqx_auth_http.conf&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="l">./conf/emqx/emqx_web_hook.conf:/opt/emqx/etc/plugins/emqx_web_hook.conf&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="c"># TODO:存在bug，emq依赖于auth的http认证服务，取消以下两行注释会无法运行，发现emqx自带entrypoint和CMD&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="c"># - ./shell/entrypoint.sh:/entrypoint.sh&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="c">#entrypoint: bash /entrypoint.sh auth:13244 -t 50 -- echo &amp;#34;auth started&amp;#34; &amp;amp;&amp;amp; /opt/emqx/bin/emqx foreground;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">environment&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">EMQX_ALLOW_ANONYMOUS&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">false&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c"># allow_anonymous&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">EMQX_LOADED_PLUGINS&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;emqx_management,emqx_auth_http,emqx_dashboard,emqx_web_hook&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">EMQX_DASHBOARD__DEFAULT_USER__LOGIN&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">root&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">EMQX_DASHBOARD__DEFAULT_USER__PASSWORD&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">12345&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">networks&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">app_net&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">ipv4_address&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">172.31.0.10&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">depends_on&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="l">auth&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">links&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="l">auth&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="前端构建成功但无法访问或请求本地">前端构建成功但无法访问或请求本地
+&lt;/h3>&lt;p> 参考网上，大多采用nginx作为基础镜像构建新镜像，再配置nginx的转发规则;&lt;/p>
+&lt;p> 找到一篇不错的文章，它没有构建新镜像，而是通过挂载前端文件和配置文件实现，节约了构建新镜像所需的时间和空间，文章地址为:https://juejin.cn/post/6844903837774397447;&lt;/p>
+&lt;p> 自己配置的nginx.conf如下:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-text" data-lang="text">&lt;span class="line">&lt;span class="cl">server {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> listen 13246;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> server_name localhost;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> location / {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> root /usr/share/nginx/html;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> index index.html index.htm;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> #Location配置
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> location /api/ {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> rewrite /api/(.*) /$1 break;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> proxy_pass http://backend:13245;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p> 由于对nginx没有深入学过，遇到各种问题，经过反复尝试后，最终达到了预期.&lt;/p>
+&lt;h2 id="补充些依赖配置">补充些依赖配置
+&lt;/h2>&lt;p> 项目基于&lt;em>Vue3&lt;/em>和&lt;em>SpringBoot&lt;/em>，采用&lt;em>Jenkins&lt;/em>的容器进行自动化构建和部署，然而也不能什么软件都装在容器中，最好的办法就是宿主机装常用工具软件，再挂载到容器中;&lt;/p>
+&lt;ol>
+&lt;li>安装docker&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">curl -fsSL https://get.docker.com &lt;span class="p">|&lt;/span> bash -s docker --mirror Aliyun
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ol start="2">
+&lt;li>安装jdk8&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">rm /tmp/jdk*.tar.gz -f
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">wget https://repo.huaweicloud.com/java/jdk/8u202-b08/jdk-8u202-linux-x64.tar.gz -P /tmp
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ls -lht /tmp/ &lt;span class="p">|&lt;/span> grep jdk
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">mkdir -p /usr/local/java/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">tar -zxf /tmp/jdk-8u202-linux-x64.tar.gz -C /usr/local/java/ &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> ls /usr/local/java/ -l
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># 添加环境jdk1.8环境变量&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">cat &amp;gt; /etc/profile.d/java.sh &lt;span class="s">&amp;lt;&amp;lt;EOF
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">export JAVA_HOME=/usr/local/java/jdk1.8.0_202
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">export JRE_HOME=\${JAVA_HOME}/jre
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">export CLASSPATH=.:\${JAVA_HOME}/lib:\${JRE_HOME}/lib
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">export PATH=\${JAVA_HOME}/bin:\$PATH
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">EOF&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">source&lt;/span> /etc/profile.d/java.sh
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ln -s &lt;span class="si">${&lt;/span>&lt;span class="nv">JAVA_HOME&lt;/span>&lt;span class="si">}&lt;/span>/bin/java /usr/bin/java
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">java -version
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ol start="3">
+&lt;li>安装Maven&lt;/li>
+&lt;/ol>
+&lt;p> maven镜像有许多失效了，建议还是网上找找，下方的maven版本号改成对应的，脚本仅作参考;&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nv">maven_version&lt;/span>&lt;span class="o">=&lt;/span>3.9.0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">rm /tmp/*maven*.tar.gz -rf
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#wget https://dlcdn.apache.org/maven/maven-3/3.9.0/binaries/apache-maven-3.9.0-bin.tar.gz -P /tmp&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">wget https://mirrors.aliyun.com/apache/maven/maven-3/3.9.0/binaries/apache-maven-3.9.0-bin.tar.gz -P /tmp
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ls -lht /tmp/ &lt;span class="p">|&lt;/span> grep maven
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">mkdir -p /usr/local/maven/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">tar -zxf /tmp/apache-maven-*.tar.gz -C /usr/local/maven/ &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> ls /usr/local/maven/ -l
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># 添加Maven环境变量&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">cat &amp;gt; /etc/profile.d/maven.sh &lt;span class="s">&amp;lt;&amp;lt; EOF
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">export MAVEN_VERSION=&amp;#34;${maven_version}&amp;#34;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">export M2_HOME=/usr/local/maven/apache-maven-\${MAVEN_VERSION}
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">export MAVEN_HOME=/usr/local/maven/apache-maven-3.9.0
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">export PATH=\${MAVEN_HOME}/bin:\${PATH}
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">EOF&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">chmod +x /etc/profile.d/maven.sh
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">source&lt;/span> /etc/profile.d/maven.sh
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">mvn -version
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ol start="4">
+&lt;li>安装nvm&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="nv">nvm_version&lt;/span>&lt;span class="o">=&lt;/span>0.39.3
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">rm /tmp/v&lt;span class="si">${&lt;/span>&lt;span class="nv">nvm_version&lt;/span>&lt;span class="si">}&lt;/span>.tar.gz -rf
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">wget https://github.com/nvm-sh/nvm/archive/refs/tags/v&lt;span class="si">${&lt;/span>&lt;span class="nv">nvm_version&lt;/span>&lt;span class="si">}&lt;/span>.tar.gz -P /tmp
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ls -lht /tmp/ &lt;span class="p">|&lt;/span> grep &lt;span class="s2">&amp;#34;v&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">nvm_version&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">.tar.gz&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">mkdir -p /usr/local/nvm/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">tar -zxf /tmp/v&lt;span class="si">${&lt;/span>&lt;span class="nv">nvm_version&lt;/span>&lt;span class="si">}&lt;/span>.tar.gz -C /usr/local/nvm/ &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> ls /usr/local/nvm/ -l
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># 添加nvm环境变量&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">cat &lt;span class="s">&amp;lt;&amp;lt; EOF &amp;gt; /etc/profile.d/nvm.sh
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">export NVM_VERSION=&amp;#34;${nvm_version}&amp;#34;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">export NVM_DIR=&amp;#34;/usr/local/nvm/nvm-\${NVM_VERSION}&amp;#34;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">[ -s &amp;#34;\$NVM_DIR/nvm.sh&amp;#34; ] &amp;amp;&amp;amp; \. &amp;#34;\$NVM_DIR/nvm.sh&amp;#34; # This loads nvm
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">[ -s &amp;#34;\$NVM_DIR/bash_completion&amp;#34; ] &amp;amp;&amp;amp; \. &amp;#34;\$NVM_DIR/bash_completion&amp;#34;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">EOF&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">chmod +x /etc/profile.d/nvm.sh
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">source&lt;/span> /etc/profile.d/nvm.sh
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">nvm version
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ol start="5">
+&lt;li>安装docker-compose&lt;/li>
+&lt;/ol>
+&lt;p> 建议docker-compose去github官网下，国内大多可下的版本太旧了;&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">curl -L https://github.com/docker/compose/releases/download/v2.16.0/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">chmod +x /usr/local/bin/docker-compose
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker-compose -v
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="总结">总结
+&lt;/h2>&lt;p> 通过将新学的Jenkins自动化技术应用于项目中，可以极大地节省时间，运维不必重复地手动部署，测试成了开发的一部分，只需编写测试脚本，开发人员每次代码提交会自动执行测试脚本，再通过ssh部署至远程，由传统的一个一个阶段地开发，不能直接跳过某个阶段，到如今开发能够迅速测试并投入生产得到反馈，效率倍增，或许这就是CI/CD概念及工具流行的原因。&lt;/p>
+&lt;h2 id="参考">参考
+&lt;/h2>&lt;ol>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://github.com/vishnubob/wait-for-it" target="_blank" rel="noopener"
+>https://github.com/vishnubob/wait-for-it&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://www.cnblogs.com/wang_yb/p/9400291.html" target="_blank" rel="noopener"
+>https://www.cnblogs.com/wang_yb/p/9400291.html&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://juejin.cn/post/6844903837774397447" target="_blank" rel="noopener"
+>https://juejin.cn/post/6844903837774397447&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://juejin.cn/post/7095729903684829191" target="_blank" rel="noopener"
+>https://juejin.cn/post/7095729903684829191&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;hr>
+&lt;p>&lt;font size=3 color=blue>2023-02-16 更新&lt;/font>&lt;/p>
+&lt;p>&lt;font size=3 color=blue>2023-02-26 添加依赖的安装配置&lt;/font>&lt;/p>
+&lt;p>&lt;font size=3 color=blue>2024-07-06 支持英文&lt;/font>&lt;/p></description></item></channel></rss>
