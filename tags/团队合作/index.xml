@@ -1,0 +1,598 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>团队合作 on Loong's Blog</title><link>https://adja.com.cn/tags/%E5%9B%A2%E9%98%9F%E5%90%88%E4%BD%9C/</link><description>Recent content in 团队合作 on Loong's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Loong</copyright><lastBuildDate>Sun, 08 Dec 2024 15:41:04 +0800</lastBuildDate><atom:link href="https://adja.com.cn/tags/%E5%9B%A2%E9%98%9F%E5%90%88%E4%BD%9C/index.xml" rel="self" type="application/rss+xml"/><item><title>使用Git进行团队合作</title><link>https://adja.com.cn/p/teamwork-using-git/</link><pubDate>Sun, 06 Oct 2024 11:34:59 +0800</pubDate><guid>https://adja.com.cn/p/teamwork-using-git/</guid><description>&lt;img src="https://adja.com.cn/p/teamwork-using-git/cover.jpg" alt="Featured image of post 使用Git进行团队合作" />&lt;h1 id="使用git进行团队合作">使用Git进行团队合作
+&lt;/h1>&lt;p>自上次迁移博客便好久没有更新了，这次更新的内容是关于如何使用Git进行团队合作。这篇文章主要介绍团队合作的工作流程。&lt;/p>
+&lt;h2 id="基础教程">基础教程
+&lt;/h2>&lt;p>这篇文章假设你已经对Git有一定的了解，如果你对Git还不太熟悉，建议你先阅读一些关于Git的基础教程，比如&lt;a class="link" href="https://www.liaoxuefeng.com/wiki/896043488029600" target="_blank" rel="noopener"
+>廖雪峰的Git教程&lt;/a>。&lt;/p>
+&lt;p>此外，还推荐参考以下教程：&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>&lt;strong>Git&lt;/strong>官方文档：&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://git-scm.com/docs" target="_blank" rel="noopener"
+>Git官方文档&lt;/a>适合初学者和高级用户。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Pro Git&lt;/strong>书籍&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://git-scm.com/book/zh/v2" target="_blank" rel="noopener"
+>Pro Git&lt;/a>是一本免费的电子书，涵盖了 Git 的基础知识和高级用法，非常适合团队合作。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;p>如果你已经对Git有了一定的了解，那么我们就可以开始介绍如何使用Git进行团队合作。&lt;/p>
+&lt;h2 id="团队合作的工作流程">团队合作的工作流程
+&lt;/h2>&lt;p>在GitLab中，仓库成员有5种角色：&lt;/p>
+&lt;ol>
+&lt;li>&lt;strong>Guest(访客)&lt;/strong>：只能查看仓库内容，不能进行写操作；&lt;/li>
+&lt;li>&lt;strong>Reporter(报告者)&lt;/strong>：可以查看和克隆仓库，但不能进行写操作；&lt;/li>
+&lt;li>&lt;strong>Developer(开发者)&lt;/strong>：可以进行写操作，但不能管理项目设置；&lt;/li>
+&lt;li>&lt;strong>Maintainer(维护者)&lt;/strong>：可以管理项目设置和成员；&lt;/li>
+&lt;li>&lt;strong>Owner(所有者)&lt;/strong>：拥有所有权限，包括删除项目。&lt;/li>
+&lt;/ol>
+&lt;p>假设有一个项目，团队成员包括项目经理(1人)、开发者(3人，其中1人中途加入)、测试者(1人)等共5人;&lt;/p>
+&lt;p>这5人的角色及职责如下：&lt;/p>
+&lt;ol>
+&lt;li>&lt;strong>项目经理&lt;/strong>：Owner&lt;/li>
+&lt;li>&lt;strong>开发者1&lt;/strong>：Maintainer(负责开发、审核代码)&lt;/li>
+&lt;li>&lt;strong>开发者2&lt;/strong>：Developer&lt;/li>
+&lt;li>&lt;strong>开发者3&lt;/strong>：Developer(中途加入)&lt;/li>
+&lt;li>&lt;strong>测试者&lt;/strong>：Reporter&lt;/li>
+&lt;/ol>
+&lt;p>在开发者3加入之前，项目开发都为团队内部合作开发，代码都应该提交到一个仓库。&lt;/p>
+&lt;p>在开发者3加入之后，项目涉及到跨团队开发，开发者3应该fork仓库，如果使用&lt;em>GitLab&lt;/em>，则通过&lt;em>Merge Request&lt;/em>(简称MR)的方式来将代码合并到上游仓库(上游仓库为被fork的仓库)；&lt;/p>
+&lt;p>下面按照&lt;strong>GitLab Flow&lt;/strong>工作流说明。&lt;/p>
+&lt;ol>
+&lt;li>项目经理创建仓库，提交需求文档，并添加团队成员为Developer&lt;/li>
+&lt;/ol>
+&lt;p>初次提交如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git init .
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">touch README.md &lt;span class="c1">#该文章简要介绍下项目背景及作用&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git add README.md &lt;span class="c1">#添加README.md到暂存区&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git commit -m &lt;span class="s2">&amp;#34;first commit&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git remote add origin https://&amp;lt;host&amp;gt;:&amp;lt;port&amp;gt;/path/to/xxx.git &lt;span class="c1">#添加远程库，这里修改成自己的远程库&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git push -u origin master
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>接着提交需求文档：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">mkdir docs &lt;span class="c1">#创建docs目录，在该目录下添加需求文档&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">touch docs/requirements.md &lt;span class="c1">#采用markdown格式记录需求文档&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>打开&lt;code>docs/requirements.md&lt;/code>文件，完成编写需求文档后操作如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git add docs/requirements.md &lt;span class="c1">#将需求文档添加到暂存区&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git commit -m &lt;span class="s2">&amp;#34;[docs] 添加需求文档&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git push origin master
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ol start="2">
+&lt;li>开发者1提交技术文档，开发者1创建dev分支&lt;/li>
+&lt;/ol>
+&lt;p>提交技术文档操作如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git remote add origin https://&amp;lt;host&amp;gt;:&amp;lt;port&amp;gt;/path/to/xxx.git &lt;span class="c1">#添加远程库，这里修改成自己的远程库&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git fetch origin -a &lt;span class="c1">#获取远程库所有分支&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">touch docs/technical.md &lt;span class="c1">#采用markdown格式记录技术文档&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>打开&lt;code>docs/technical.md&lt;/code>文件，完成编写技术文档后操作如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git add docs/technical.md &lt;span class="c1">#将技术文档添加到暂存区&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git commit -m &lt;span class="s2">&amp;#34;[docs]添加技术文档&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git push origin master
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git checkout -b dev &lt;span class="c1">#创建并切换到dev分支&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git push origin dev
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="团队内部合作">团队内部合作
+&lt;/h3>&lt;p>团队内部合作时，开发者1、开发者2、测试者都在同一个团队中，他们都是项目的成员，可以直接提交代码到同一个仓库；&lt;/p>
+&lt;p>接下来按照&lt;code>GitLab Flow&lt;/code>工作流程说明两种应用场景。&lt;/p>
+&lt;h4 id="开发新功能">开发新功能
+&lt;/h4>&lt;p>开发和测试新功能不能都在一个分支上修改，而应该创建新分支，命名为&lt;code>feat_xxx&lt;/code>表示开发xxx功能。&lt;/p>
+&lt;p>接下来介绍开发者1提Issue并在该Issue中创建2个新分支分别名为&lt;code>feat_xxx&lt;/code>和&lt;code>test_xxx&lt;/code>，用于开发者2提交功能代码到&lt;code>feat_xxx&lt;/code>分支和测试者提交用例代码到&lt;code>test_xxx&lt;/code>分支中。&lt;/p>
+&lt;p>其中，&lt;code>feat_xxx&lt;/code>分支是基于最新的&lt;code>dev&lt;/code>分支，&lt;code>test_xxx&lt;/code>分支是基于&lt;code>feat_xxx&lt;/code>分支，工作流如下：&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>开发者1按照dev分支的文档提Issue，开发者1在该Issue中基于&lt;code>dev&lt;/code>分支创建新分支&lt;code>feat_xxx&lt;/code>，并通知开发者2开发该功能&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>开发者2获取并checkout到&lt;code>feat_xxx&lt;/code>分支&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>不存在&lt;code>feat_xxx&lt;/code>分支则需要创建并切换到新分支，执行以下指令：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git fetch origin -a &lt;span class="c1">#获取远程库所有分支&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git checkout -b feat_xxx origin/feat_xxx &lt;span class="c1">#基于远程的feat_xxx分支在本地创建feat_xxx分支，并切换到该分支&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>已存在&lt;code>feat_xxx&lt;/code>分支则执行以下指令：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git checkout feat_xxx &lt;span class="c1">#不需要-base参数，因为已经存在本地feat_xxx分支&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git pull origin feat_xxx:feat_xxx &lt;span class="c1">#拉取远程feat_xxx分支到本地feat_xxx分支&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ol start="3">
+&lt;li>开发者2在&lt;code>feat_xxx&lt;/code>上进行开发，开发完成后并push到远程库&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git add &amp;lt;files&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git commit -m &lt;span class="s2">&amp;#34;[feat]添加xxx功能&amp;#34;&lt;/span> &lt;span class="c1">#&amp;#34;[feat]&amp;#34;表明这是新增功能&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git push origin feat_xxx
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>注意：修改feat_xxx如果是新增功能，则提交记录的注释应该添加前缀&amp;quot;[feat]&amp;quot;&lt;/p>
+&lt;ol start="4">
+&lt;li>开发者2此前没有提MR，则创建MR请求将&lt;code>feat_xxx&lt;/code>合并到&lt;code>dev&lt;/code>分支，需将Issue和该MR关联起来&lt;/li>
+&lt;/ol>
+&lt;p>其中在开发者2需要在完成新功能后，需在Issue中关联MR，通过&lt;code>!&amp;lt;MR_number&amp;gt;&lt;/code>的方式，假设该MR的序号为9，则应该在Issue中添加注释&lt;code>See merge request !9&lt;/code>；&lt;/p>
+&lt;p>同样在&lt;em>Merge Request&lt;/em>中添加注释表明这是对应哪个Issue，通过&lt;code>#&amp;lt;Issue_number&lt;/code>的方式，假设该MR对应的Issue为5，则添加注释&lt;code>See issue #5&lt;/code>。&lt;/p>
+&lt;ol start="5">
+&lt;li>开发者1审核代码，审核不通过则在MR中说明改进建议，并回到步骤(3)&lt;/li>
+&lt;/ol>
+&lt;p>这里提交记录的注释仍应该为&lt;code>[perf]改进xxx&lt;/code>，这里的&amp;quot;[perf]&amp;ldquo;为针对xxx做出的改进&lt;/p>
+&lt;ol start="6">
+&lt;li>开发者1审核通过则在该Issue中创建子项Issue，基于&lt;code>feat_xxx&lt;/code>分支创建&lt;code>test_xxx&lt;/code>分支，将该Issue分配给测试者&lt;/li>
+&lt;/ol>
+&lt;p>注意：这里开发者1审核通过不应该通过MR，需要等测试者提交测试用例后并测试通过，然后测试者需要提MR请求将&lt;code>test_xxx&lt;/code>分支合并到&lt;code>feat_xxx&lt;/code>分支，之后开发者1才能通过确认MR，&lt;code>feat_xxx&lt;/code>才被删除；&lt;/p>
+&lt;ol start="7">
+&lt;li>测试者拉取测试分支代码，编写测试用例并提交到&lt;code>test_xxx&lt;/code>分支&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#已存在test_xxx分支则执行以下指令&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git checkout test_xxx &lt;span class="c1">#第一次拉取时执行：git checkout -b test_xxx origin/test_xxx&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">touch test/test_xxx &lt;span class="c1">#编写测试脚本&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#编写脚本可以为其他语言编写的测试用例&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git add test/test_xxx
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git commit -m &lt;span class="s2">&amp;#34;[test]测试xxx功能&amp;#34;&lt;/span> &lt;span class="c1">#提交记录注释的&amp;#34;[test]&amp;#34;，表明它修改了测试代码&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git push origin test_xxx
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>无论测试用例是否正确，都应该提交测试用例程序，且提交记录前缀应该为&amp;rdquo;[test]&amp;quot;，表明这是测试用例。&lt;/p>
+&lt;ol start="8">
+&lt;li>
+&lt;p>测试者此前没有提出MR，则创建MR请求将&lt;code>test_xxx&lt;/code>合并到&lt;code>feat_xxx&lt;/code>分支中，需将Issue和对应的MR关联&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>开发者2审核测试者的MR，不通过则回到步骤(10)，否则交由开发者1审核，开发者1审核通过则允许合并&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>开发者1允许合并将会删除&lt;code>test_xxx&lt;/code>分支，然后该MR将被关闭，还需要开发者1标记测试Issue为已完成&lt;/p>
+&lt;ol start="10">
+&lt;li>开发者1、开发者2更新&lt;code>feat_xxx&lt;/code>，可以先本地测试，若存在问题，则回到步骤(3)&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git fetch origin feat_xxx
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git checkout feat_xxx &lt;span class="c1">#切换到要合并的本地分支&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git merge origin/feat_xxx &lt;span class="c1">#将远程库合并到当前分支&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ol start="11">
+&lt;li>测试用例都通过则由开发者1确认通过MR，将&lt;code>feat_xxx&lt;/code>合并到&lt;code>dev&lt;/code>分支中&lt;/li>
+&lt;/ol>
+&lt;p>添加新功能的时序图如下所示：&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/teamwork-using-git/1.png"
+width="1001"
+height="1001"
+srcset="https://adja.com.cn/p/teamwork-using-git/1_hu_f7177451ffb65463.png 480w, https://adja.com.cn/p/teamwork-using-git/1_hu_d65c1e730264123e.png 1024w"
+loading="lazy"
+alt="1"
+class="gallery-image"
+data-flex-grow="100"
+data-flex-basis="240px"
+>&lt;/p>
+&lt;p>也可以简单的按照如下图理解：&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/teamwork-using-git/2.png"
+width="393"
+height="189"
+srcset="https://adja.com.cn/p/teamwork-using-git/2_hu_5627da20f1a4a952.png 480w, https://adja.com.cn/p/teamwork-using-git/2_hu_b71a5a2081590b5e.png 1024w"
+loading="lazy"
+alt="2"
+class="gallery-image"
+data-flex-grow="207"
+data-flex-basis="499px"
+>&lt;/p>
+&lt;h4 id="处理集成时的问题">处理集成时的问题
+&lt;/h4>&lt;p>单独测试某功能时，该功能一切正常，但在集成时出现问题，便以下面这个示例介绍。&lt;/p>
+&lt;p>假设需求没有较大变化，原来已有功能feat_xxx1(不存在问题)，添加新功能feat_xxx2，单独测试feat_xxx2也不存在问题，但在集成测试后出现了问题，测试者需要先提出Issue，其他成员都应该积极讨论定位问题；&lt;/p>
+&lt;p>这里不用回到feat_xxx2的分支修复问题(可能feat_xxx1的问题在先前的集成测试中没暴露出来)，而是在集成后的&lt;code>dev&lt;/code>分支上创建新分支来修复集成问题，&lt;/p>
+&lt;p>具体工作流如下：&lt;/p>
+&lt;ol>
+&lt;li>测试者基于&lt;code>dev&lt;/code>分支进行测试，测出问题则提Issue，说明问题的现象和执行了什么操作&lt;/li>
+&lt;/ol>
+&lt;p>如果该问题是在某次测试用例中出现，则应该提交测试用例程序然后提交MR请求将&lt;code>test_dev&lt;/code>合并到&lt;code>dev&lt;/code>分支，然后在Issue中关联MR和对应Issue&lt;/p>
+&lt;p>如果其他成员讨论确认存在问题，则在开发者1、开发者2通过测试者的MR后，由开发者1确认合并，&lt;code>test_dev&lt;/code>分支将被删除&lt;/p>
+&lt;p>&lt;font size=3 color=red>注意：&lt;/font>&lt;/p>
+&lt;p>可能同时在开发feat_xxx3和feat_xxx4功能，每个功能单独测试都没问题，但在集成后出现问题，它们恰好没有冲突地被合并到&lt;code>dev&lt;/code>分支，测试者应当在本地新建两个新分支针对这两次集成，针对feat_xxx3合并到dev的提交，则创建&lt;code>test_dev&lt;/code>分支，针对feat_xxx4合并到dev的提交则创建&lt;code>test_dev1&lt;/code>分支，分支命名依次类推。&lt;/p>
+&lt;p>如果连续多次合并到&lt;code>dev&lt;/code>分支，包括添加新功能、修复旧功能的问题，则应该通过如下指令创建tag：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git checkout dev
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git tag release-x.x.x &lt;span class="c1">#切换到dev分支，将当前分支创建为一个发布版本&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git push origin release-x.x.x &lt;span class="c1">#将该版本推送到远程&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>一般情况，测试者是在&lt;code>release-x.x.x&lt;/code>的分支上测试代码，如果存在问题则在本地创建&lt;code>test-release-x.x.x&lt;/code>分支来测试，操作如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git fetch origin -a
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git checkout -b test-release-x.x.x origin/release-x.x.x &lt;span class="c1">#基于远程发布版本创建测试分支&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#测试，如果存在必现的问题则提交对应的测试用例，需要进行以下操作&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git commit -m &lt;span class="s2">&amp;#34;[test]测试发布版本x.x.x&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git push origin test-release-x.x.x
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ol start="2">
+&lt;li>
+&lt;p>在定位问题(假设问题出现在开发者2开发的feat_xxx2)后，则开发者1在Issue中基于存在问题的&lt;code>dev&lt;/code>分支创建&lt;code>fix_xxx2&lt;/code>分支，并将其指派给开发者2&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>开发者2需在&lt;code>fix_xxx2&lt;/code>上修改和提交代码&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>这里的提交记录注释为&lt;code>[fix]修复xxx问题&lt;/code>&lt;/p>
+&lt;ol start="4">
+&lt;li>
+&lt;p>开发者2进行和测试者同样的操作，若问题仍浮现则回到步骤(3)&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>开发者2提交MR请求将&lt;code>fix_xxx2&lt;/code>合并到&lt;code>dev&lt;/code>分支中，并将该MR和对应的修复Issue关联起来&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>测试者2拉取&lt;code>fix_xxx2&lt;/code>进行测试，没有问题后则通过，但不会合并到&lt;code>dev&lt;/code>分支&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>开发者1观察到bug修复，则最终通过合并，&lt;code>fix_xxx2&lt;/code>分支将被删除&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;h3 id="跨团队开发工作流">跨团队开发工作流
+&lt;/h3>&lt;p>在开发者3加入后，开发者3会因缺乏注意事项导致提交的代码影响到已有功能，因此开发者3应该fork上游仓库来开发，其他成员仍然按照原来的方式开发。&lt;/p>
+&lt;p>开发者3应该如下操作：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git clone https://&amp;lt;host&amp;gt;:&amp;lt;port&amp;gt;/path/to/repo-xxx.git &lt;span class="c1">#克隆fork的仓库到本地&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> repo-xxx
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git remote add upstream https://&amp;lt;host&amp;gt;:&amp;lt;port&amp;gt;/path/to/repo-xxx.git &lt;span class="c1">#添加被fork的仓库为上游仓库&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>假设项目紧急，本应该由开发者2实现的功能交由开发者3开发，则开发者1应当在上游仓库中提出Issue，基于&lt;code>dev&lt;/code>分支创建&lt;code>feat_xxx&lt;/code>分支，开发者3收到通知，则应该如下操作：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git fetch upstream feat_xxx &lt;span class="c1">#获取上游仓库的feat_xxx分支&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git checkout -b feat_xxx upstream/feat_xxx
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>此后的操作和团队内开发工作流类似。&lt;/p>
+&lt;p>&lt;font size=3 color=red>注意：&lt;/font>&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>开发者3如果需要提MR，则应当在自己fork的仓库创建MR；&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>开发者3如果接收到某个指派任务，则应当从上游仓库&lt;code>upstream&lt;/code>中拉取对应分支到本地，然后在该分支上修改和提交代码&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>开发者3不能直接push到上游仓库，而应该push到fork的仓库，然后创建MR请求合并到上游仓库的对应分支，需要在上游仓库中将该MR和对应Issue关联起来。&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="补充">补充
+&lt;/h2>&lt;h3 id="mr后远程库的分支被删除如何删除本地fetch的远程库">MR后远程库的分支被删除，如何删除本地fetch的远程库
+&lt;/h3>&lt;p>开发者1确认MR后，远程库的&lt;code>feat_xxx&lt;/code>分支被删除，但本地的&lt;code>feat_xxx&lt;/code>仍存在&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git fetch -p &lt;span class="c1">#-p为--prune缩写&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git checkout dev &lt;span class="c1">#如果当前在feat_xxx分支上&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git branch -d feat_xxx &lt;span class="c1">#删除本地feat_xxx分支&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git branch -D feat_xxx &lt;span class="c1">#注意：意味着本地分支没被合并，会被强制删除&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="某发布版本存在较大问题如何删除本地存储的已删除远程库tag">某发布版本存在较大问题，如何删除本地存储的已删除远程库tag
+&lt;/h3>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git fetch -P &lt;span class="c1">#-P为--prune-tags缩写&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="跨团队合作中上游仓库mr后如何将fork的远程库与其上游仓库同步">跨团队合作中，上游仓库MR后，如何将fork的远程库与其上游仓库同步
+&lt;/h3>&lt;p>假设自己MR请求将&lt;code>fix_xxx&lt;/code>合并到上游仓库的&lt;code>dev&lt;/code>分支，开发者1确认合并后，则操作如下&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git fetch upstream -a &lt;span class="c1">#获取上游仓库的更改&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git merge upstream/dev dev &lt;span class="c1">#将上游仓库同步到本地dev分支&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#or git pull upstream dev:dev #代替上面2行指令&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git push origin dev &lt;span class="c1">#将本地更改同步到fork仓库中&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git checkout dev &lt;span class="c1">#如果当前在fix_xxx分支&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git branch -d fix_xxx &lt;span class="c1">#删除本地fix_xxx分支&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git fetch -p &lt;span class="c1">#删除本地存储的已删除的fix_xxx分支&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="如何给新建分支命名">如何给新建分支命名
+&lt;/h3>&lt;p>比如，添加新功能&lt;em>添加查询温度功能&lt;/em>，应该在当前分支(一般为dev分支)创建名为&lt;code>feat_query_temp&lt;/code>的新分支(其中&lt;em>feat&lt;/em>为feature的缩写);&lt;/p>
+&lt;p>新分支命名格式如下:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-txt" data-lang="txt">&lt;span class="line">&lt;span class="cl">type_subject
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ul>
+&lt;li>
+&lt;p>提交类型(type): 包括&lt;code>feat&lt;/code>(新功能)、&lt;code>fix&lt;/code>(修复问题)、&lt;code>doc&lt;/code>(文档更改)、&lt;code>refactor&lt;/code>(代码重构，不是新增功能，也不是修复bug)、&lt;code>test&lt;/code>(添加或修改测试)、&lt;code>chore&lt;/code>(其他不修改源码或测试用例的提交)、&lt;code>style&lt;/code>(代码格式，不影响代码运行);&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>简短描述(subject): 使用下划线&lt;code>_&lt;/code>分割单词，要求简洁明了.&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>命名规则示例如下:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-txt" data-lang="txt">&lt;span class="line">&lt;span class="cl">feat_support_eth #支持网口
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">refactor_cmd_resp #重构指令回复提示信息
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">style_format_code #格式化源代码
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">test_cmd_resp #测试指令回复提示信息
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="如何编写提交注释">如何编写提交注释
+&lt;/h3>&lt;p>提交注释尽量做到简介明了，直观反映提交代码的更改;&lt;/p>
+&lt;p>也应该做到新功能和修复bug的代码应该分为2次来提交，其他类型的提交也应当如此;&lt;/p>
+&lt;p>可以通过&lt;code>git commit -m &amp;lt;message&amp;gt;&lt;/code>指令来提交到本地库，其中&lt;code>&amp;lt;message&amp;gt;&lt;/code>的说明如下所示:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-txt" data-lang="txt">&lt;span class="line">&lt;span class="cl">格式: [type]msg
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>其中，type取值及其含义如下:&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th style="text-align: center">type&lt;/th>
+&lt;th style="text-align: left">含义&lt;/th>
+&lt;th style="text-align: left">示例&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td style="text-align: center">feat&lt;/td>
+&lt;td style="text-align: left">新功能(feature)&lt;/td>
+&lt;td style="text-align: left">[feat]添加健康检查&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">fix&lt;/td>
+&lt;td style="text-align: left">修复问题(fix bug)&lt;/td>
+&lt;td style="text-align: left">[fix]修复健康检查归位问题&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">doc&lt;/td>
+&lt;td style="text-align: left">文档更改(documentation)&lt;/td>
+&lt;td style="text-align: left">[doc]完善技术文档&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">style&lt;/td>
+&lt;td style="text-align: left">代码格式化&lt;/td>
+&lt;td style="text-align: left">[style]格式化非生成的源码&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">refactor&lt;/td>
+&lt;td style="text-align: left">重构代码&lt;/td>
+&lt;td style="text-align: left">[refactor]重构指令回复提示&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">test&lt;/td>
+&lt;td style="text-align: left">添加或修改测试&lt;/td>
+&lt;td style="text-align: left">[test]测试健康检查&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">chore&lt;/td>
+&lt;td style="text-align: left">不修改源码或测试文件的提交&lt;/td>
+&lt;td style="text-align: left">[chore]完善.gitignore&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">perf&lt;/td>
+&lt;td style="text-align: left">提高性能的更改&lt;/td>
+&lt;td style="text-align: left">[perf]提高滑动平均性能&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">ci&lt;/td>
+&lt;td style="text-align: left">持续集成相关的更改&lt;/td>
+&lt;td style="text-align: left">[ci]能自动生成并发布hex和bin文件&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">build&lt;/td>
+&lt;td style="text-align: left">构建系统或外部依赖的更改&lt;/td>
+&lt;td style="text-align: left">[build]完善CMakelists.xt配置&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">revert&lt;/td>
+&lt;td style="text-align: left">撤销之前的提交&lt;/td>
+&lt;td style="text-align: left">[revert]回退定时任务&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h3 id="每次提交如何自动执行特定操作">每次提交如何自动执行特定操作
+&lt;/h3>&lt;p>假如每次提交前都要格式化代码，正常情况下应该通过主动进行特定操作，但可通过配置&lt;code>.git/hooks/pre-commit&lt;/code>来执行想要的操作，示例如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">git clone https://&amp;lt;host&amp;gt;:&amp;lt;port&amp;gt;/path/to/repo_xxx.git
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> repo_xxx.git
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">touch .git/hooks/pre-commit &lt;span class="c1">#在.git/hooks目录下创建pre_commit文本文件&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#编辑pre-commit内容&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">chmod +x .git/hooks/pre_commit &lt;span class="c1">#修改pre-commit属性为可执行&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>其中pre-commit的内容如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#!/bin/sh
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">&lt;/span>&lt;span class="c1"># Find all C source files and header files&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">files&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$(&lt;/span>git diff --cached --name-only --diff-filter&lt;span class="o">=&lt;/span>ACM &lt;span class="p">|&lt;/span> grep -E &lt;span class="s1">&amp;#39;\.(c|h)$&amp;#39;&lt;/span>&lt;span class="k">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># If there are no files to format, exit&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">[&lt;/span> -z &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$files&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="o">]&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="nb">exit&lt;/span> &lt;span class="m">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Run clang-format on each file with the specified .clang-format file&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$files&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="p">|&lt;/span> xargs clang-format -i --style&lt;span class="o">=&lt;/span>file
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Add the formatted files back to the staging area&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$files&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="p">|&lt;/span> xargs git add
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">exit&lt;/span> &lt;span class="m">0&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>通过上述配置后，每次执行&lt;code>git commit&lt;/code>后它会在修改文件中过滤&amp;quot;.c&amp;quot;和&amp;quot;.h&amp;quot;的文件，然后存在该文件则通过&lt;code>clang-format&lt;/code>并按照根目录下的&amp;quot;.clang-format&amp;quot;配置文件来格式化该文件。&lt;/p>
+&lt;h2 id="参考">参考
+&lt;/h2>&lt;ol>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://www.cnblogs.com/xiaoqi/p/gitlab-flow.html" target="_blank" rel="noopener"
+>https://www.cnblogs.com/xiaoqi/p/gitlab-flow.html&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://www.atlassian.com/git/tutorials" target="_blank" rel="noopener"
+>https://www.atlassian.com/git/tutorials&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://git-scm.com/book/" target="_blank" rel="noopener"
+>https://git-scm.com/book/&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://docs.github.com/zh/get-started/start-your-journey/about-github-and-git" target="_blank" rel="noopener"
+>https://docs.github.com/zh/get-started/start-your-journey/about-github-and-git&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ol></description></item></channel></rss>

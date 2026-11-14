@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>DDNS on Loong's Blog</title><link>https://adja.com.cn/tags/ddns/</link><description>Recent content in DDNS on Loong's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Loong</copyright><lastBuildDate>Sun, 08 Dec 2024 15:41:04 +0800</lastBuildDate><atom:link href="https://adja.com.cn/tags/ddns/index.xml" rel="self" type="application/rss+xml"/><item><title>使用DDNS访问内网设备</title><link>https://adja.com.cn/p/use-ddns-to-access-intranet-devices/</link><pubDate>Sat, 06 Jul 2024 16:08:49 +0800</pubDate><guid>https://adja.com.cn/p/use-ddns-to-access-intranet-devices/</guid><description>&lt;img src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/cover.jpg" alt="Featured image of post 使用DDNS访问内网设备" />&lt;h1 id="使用ddns访问内网设备">使用DDNS访问内网设备
+&lt;/h1>&lt;p> 有时出门需要访问家中的nas，由于国内的公网ipv4越来越难申请，且群晖官方的quickConnect服务速度也很慢，在参考相关教程后，决定通过DDNS将域名解析到公网ipv6，然后直接通过域名访问内网设备；&lt;/p>
+&lt;p> 在先前光猫破解获取超级用户修改桥接的实验基础上，我将路由器连接光猫，由路由器来拨号并开启ipv6，在分配到公网的ipv6后，便开始DDNS配置过程.&lt;/p>
+&lt;h2 id="通过群晖的dns服务">通过群晖的DNS服务
+&lt;/h2>&lt;p> 从&amp;quot;控制面板-&amp;gt;外部访问-&amp;gt;DDNS&amp;quot;点击新增，选择服务供应商为Synology，下面自定义配置；
+&lt;font color=red>注意，ipv6开头要为240开头的(电信为240e；移动为2409；联通为2408)，fe80开头的一般为内网ipv6&lt;/font>&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/1.png"
+width="1131"
+height="769"
+srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/1_hu_791072600dc1a28d.png 480w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/1_hu_d20dab7bd7422516.png 1024w"
+loading="lazy"
+alt="1"
+class="gallery-image"
+data-flex-grow="147"
+data-flex-basis="352px"
+>&lt;/p>
+&lt;p> 需要https访问的话，勾选&amp;quot;从Let&amp;rsquo;s Encrypt获取证书&amp;quot;，点击确定.&lt;/p>
+&lt;h2 id="使用其他供应商的dns服务">使用其他供应商的DNS服务
+&lt;/h2>&lt;p> 以下仅以腾讯云的DNS服务为例，需要预先在腾讯云官网申请一个域名;&lt;/p>
+&lt;h3 id="使用ddns-go镜像">使用&lt;em>ddns-go&lt;/em>镜像
+&lt;/h3>&lt;p> 进行动态域名解析，需要自己的nas设备定时的查询本机的ip地址，然后调用更新域名解析字段的接口，从而实现ddns；&lt;/p>
+&lt;p> 所以不能需要换个方法，网上有很多方法，这里我提供一个采用docker进行DDNS更新的方法；
+ 在套件中心种搜索docker，安装docker，步骤略；&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/3.png"
+width="1371"
+height="661"
+srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/3_hu_3d4bd212a1d39bc2.png 480w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/3_hu_557c3ea7c6613a97.png 1024w"
+loading="lazy"
+alt="3"
+class="gallery-image"
+data-flex-grow="207"
+data-flex-basis="497px"
+>&lt;/p>
+&lt;p> 打开docker，选择&amp;quot;注册表&amp;quot;，搜索ddns，安装第一个&amp;quot;ddns-go&amp;quot;&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/4.png"
+width="1475"
+height="841"
+srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/4_hu_c4798d82dd974946.png 480w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/4_hu_663562ac22997ff0.png 1024w"
+loading="lazy"
+alt="4"
+class="gallery-image"
+data-flex-grow="175"
+data-flex-basis="420px"
+>&lt;/p>
+&lt;p> 安装完成后打开映像，选择ddns-go，点击启动；&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/5.png"
+width="1467"
+height="520"
+srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/5_hu_b89a443ed6cc7a4a.png 480w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/5_hu_7779ac6e9d5fc9dc.png 1024w"
+loading="lazy"
+alt="5"
+class="gallery-image"
+data-flex-grow="282"
+data-flex-basis="677px"
+>&lt;/p>
+&lt;p> 点击高级设置-&amp;gt;存储空间-&amp;gt;添加文件夹；&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/6.png"
+width="1229"
+height="843"
+srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/6_hu_59474d9c95f3bbed.png 480w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/6_hu_ff103df09dfe4be2.png 1024w"
+loading="lazy"
+alt="6"
+class="gallery-image"
+data-flex-grow="145"
+data-flex-basis="349px"
+>&lt;/p>
+&lt;p> 修改装载路径，我的配置如下：&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/7.png"
+width="1174"
+height="744"
+srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/7_hu_3d209a1690770e0d.png 480w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/7_hu_30a5e390e7b316a1.png 1024w"
+loading="lazy"
+alt="7"
+class="gallery-image"
+data-flex-grow="157"
+data-flex-basis="378px"
+>&lt;/p>
+&lt;p> 点击网络-&amp;gt;勾上host网络-&amp;gt;应用；&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/8.png"
+width="966"
+height="822"
+srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/8_hu_6afe4e6b2cf55073.png 480w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/8_hu_40c2faf981cade2d.png 1024w"
+loading="lazy"
+alt="8"
+class="gallery-image"
+data-flex-grow="117"
+data-flex-basis="282px"
+>&lt;/p>
+&lt;p> 点击下一步，点击完成.&lt;/p>
+&lt;h3 id="配置ddns">配置DDNS
+&lt;/h3>&lt;p> 打开&lt;code>http://[域名对应的nas的ip]:9876/&lt;/code>&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/9.png"
+width="1061"
+height="490"
+srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/9_hu_757d8d28f3be637a.png 480w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/9_hu_e4d56b0ca80e396b.png 1024w"
+loading="lazy"
+alt="9"
+class="gallery-image"
+data-flex-grow="216"
+data-flex-basis="519px"
+>&lt;/p>
+&lt;p> 配置DNS服务商，选择腾讯云，输入ID与Token，&lt;font color=red>注意，这里的ID与Token对应&amp;quot;DNSPod Token&amp;quot;，不是&amp;quot;腾讯云API密钥&amp;quot;&lt;/font>，链接是https:
+//console.dnspod.cn/account/token/token&lt;/p>
+&lt;p> 只启用ipv6，我的配置如下：&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/10.png"
+width="1041"
+height="579"
+srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/10_hu_fd17a94b8ff738a2.png 480w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/10_hu_32c08252c116d7d7.png 1024w"
+loading="lazy"
+alt="10"
+class="gallery-image"
+data-flex-grow="179"
+data-flex-basis="431px"
+>&lt;/p>
+&lt;p> 在点击&amp;quot;Save&amp;quot;之前，需要配置下域名解析，添加AAAA类型(表示ipv6地址)记录，随便填下，它会自动更新，我的配置如下：&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/11.png"
+width="1629"
+height="356"
+srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/11_hu_b61b25f03e392220.png 480w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/11_hu_ba3d0e55e5479ace.png 1024w"
+loading="lazy"
+alt="11"
+class="gallery-image"
+data-flex-grow="457"
+data-flex-basis="1098px"
+>&lt;/p>
+&lt;p> 配置完成后点击保存，右边会出现最新的历史记录；&lt;/p>
+&lt;p>&lt;img src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/12.png"
+width="538"
+height="344"
+srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/12_hu_b1df0995618dc228.png 480w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/12_hu_f81cd796f84c613e.png 1024w"
+loading="lazy"
+alt="12"
+class="gallery-image"
+data-flex-grow="156"
+data-flex-basis="375px"
+>&lt;/p>
+&lt;p> 应该出现&amp;quot;更新域名解析 xxxxxx 成功&amp;quot;或“更新域名解析 xxxxx 没有变化”&lt;/p>
+&lt;p> 通过域名+端口来进行测试.&lt;/p>
+&lt;h2 id="补充">补充
+&lt;/h2>&lt;p> 在2022年的暑假，搭建完成后我请同学帮测试了江苏不同地级市的速度，速度还是挺快的;&lt;/p>
+&lt;p> 后来毕业后去了其他省，在找到第一份工作后重新想起nas然后试着重新搭建，但发现同样的方法完全行不通，主要因为不同省份网络基础设施的完善度差别很大;&lt;/p>
+&lt;p> 如果在ipv6都未推广开的省份，还是建议少折腾，此外因为过去几年&lt;em>PCDN&lt;/em>的泛滥，运营商会根据带宽的上行速度查看用户有没有搭建&lt;em>PCDN&lt;/em>，如果DDNS被恶意使用，可能导致宽带被封.&lt;/p>
+&lt;hr>
+&lt;p>&lt;font size=3 color=blue>2022-06-19 记录&lt;/font>&lt;/p>
+&lt;p>&lt;font size=3 color=blue>2023-07-07 更新&lt;/font>&lt;/p></description></item></channel></rss>
