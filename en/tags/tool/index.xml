@@ -1,0 +1,1255 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Tool on Loong's Blog</title><link>https://adja.com.cn/en/tags/tool/</link><description>Recent content in Tool on Loong's Blog</description><generator>Hugo -- gohugo.io</generator><language>en</language><copyright>Loong</copyright><lastBuildDate>Sat, 14 Nov 2026 13:20:44 +0800</lastBuildDate><atom:link href="https://adja.com.cn/en/tags/tool/index.xml" rel="self" type="application/rss+xml"/><item><title>Remote Networking for Online Games</title><link>https://adja.com.cn/en/p/remote-networking/</link><pubDate>Sat, 22 Feb 2025 19:21:36 +0800</pubDate><guid>https://adja.com.cn/en/p/remote-networking/</guid><description>&lt;img src="https://adja.com.cn/p/remote-networking/cover.webp" alt="Featured image of post Remote Networking for Online Games" /&gt;&lt;h1 id="remote-networking-for-online-games"&gt;Remote Networking for Online Games
+&lt;/h1&gt;&lt;p&gt;After graduation, my classmates all went to different places to study and pursue their careers. They would occasionally play a game of Warcraft during
+holidays, but since they were in different provinces, it was a bit troublesome to connect to the LAN game.&lt;/p&gt;
+&lt;p&gt;During this period, I tried to use free networking tools, build my own transit server, and use Dandelion networking. Through comparison, I hope
+everyone can find a networking method that suits them.&lt;/p&gt;
+&lt;h2 id="easyn2n-or-n2n"&gt;EasyN2N Or N2N
+&lt;/h2&gt;&lt;p&gt;Since I used EasyN2N at the beginning, the experience was pretty good, and I was able to learn some network knowledge from the relevant community.&lt;/p&gt;
+&lt;p&gt;However, since the transit server of EasyN2N is free, when everyone is using it, the transit server will be overloaded, resulting in high latency or
+even failure to connect. After graduating and returning to my hometown, the network there is poor, and I often get disconnected halfway through
+playing.&lt;/p&gt;
+&lt;p&gt;In addition, EasyN2N is often accidentally deleted by antivirus software, which may also cause disconnection in the middle of the game, so it is
+recommended to use it through the command line instead of using its own visualization tool.&lt;/p&gt;
+&lt;p&gt;For related usage, please refer to &lt;a class="link" href="https://bugxia.com/n2n_launcher_param" target="_blank" rel="noopener"
+ &gt;this article&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id="beirui-dandelion"&gt;Beirui Dandelion
+&lt;/h2&gt;&lt;p&gt;Beirui Dandelion is a paid networking tool, free for up to 3 people. If you want to network with more than 3 people, you need to buy a package.&lt;/p&gt;
+&lt;p&gt;The free version of Beirui Dandelion cannot set the IP of the virtual LAN client. Some games, such as Warcraft, require packet capture and analysis.
+It can be found that client B cannot receive the UDP message broadcast by client A, so you have to use the network debugging assistant to assist in
+creating a room. The following are the specific steps:&lt;/p&gt;
+&lt;p&gt;Assume that there are two computers, A and B. The IP address of computer A is &lt;code&gt;172.16.3.130&lt;/code&gt;, the IP address of computer B is &lt;code&gt;172.16.3.150&lt;/code&gt;, and the
+subnet mask is &lt;code&gt;255.255.252.0&lt;/code&gt;.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;If computer B creates a room as the host, and computer A joins the room as the client&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;By capturing packets with Wireshark, it can be found that after computer B creates a room, it will continue to broadcast
+&lt;code&gt;f732100001000000010000000c000000&lt;/code&gt; to udp port 6112. Due to limited time, the meaning of the message will not be analyzed.&lt;/p&gt;
+&lt;p&gt;When computer A scans the existing room, computer A will broadcast &lt;code&gt;f72f1000505833571a00000000000000&lt;/code&gt; to udp port 6112. Since A and B are not in the
+same network segment, computer B cannot receive the broadcast of computer A, and A cannot know whether there is a room.&lt;/p&gt;
+&lt;p&gt;Next, we use the network debugging assistant to send a udp broadcast packet for scanning the room from computer A to computer B. Assume that the
+message msg (including the number of players, map information, etc.) is received.&lt;/p&gt;
+&lt;p&gt;Then, send the content of msg to computer A on computer B, and computer A can join the room.&lt;/p&gt;
+&lt;h2 id="summary"&gt;Summary
+&lt;/h2&gt;&lt;p&gt;If there are fewer clients to be networked, N2N and Beirui Dandelion are both low-cost networking methods.&lt;/p&gt;
+&lt;p&gt;If there are further needs, such as a large number of people in the room, or a more stable network is required, if the players are mainly concentrated
+in a few areas, you can consider building your own transit server. If the players are widely distributed, you can consider purchasing the Beirui
+Dandelion package.&lt;/p&gt;
+&lt;h2 id="reference"&gt;Reference
+&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class="link" href="https://bugxia.com/n2n_launcher_param" target="_blank" rel="noopener"
+ &gt;https://bugxia.com/n2n_launcher_param&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class="link" href="https://www.cnblogs.com/flying_bat/archive/2008/06/24/1228627.html" target="_blank" rel="noopener"
+ &gt;https://www.cnblogs.com/flying_bat/archive/2008/06/24/1228627.html&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;font size=3 color=blue&gt;2025-02-22 Update&lt;/font&gt;&lt;/p&gt;</description></item><item><title>Teamwork Using Git</title><link>https://adja.com.cn/en/p/teamwork-using-git/</link><pubDate>Sun, 06 Oct 2024 11:34:59 +0800</pubDate><guid>https://adja.com.cn/en/p/teamwork-using-git/</guid><description>&lt;img src="https://adja.com.cn/p/teamwork-using-git/cover.webp" alt="Featured image of post Teamwork Using Git" /&gt;&lt;h1 id="teamwork-using-git"&gt;Teamwork Using Git
+&lt;/h1&gt;&lt;p&gt;It&amp;rsquo;s been a long time since the last update of the blog. This time, the content of the update is about how to use Git for teamwork. This article mainly introduces the workflow of teamwork.&lt;/p&gt;
+&lt;h2 id="basic-tutorial"&gt;Basic Tutorial
+&lt;/h2&gt;&lt;p&gt;This article assumes that you have a basic understanding of Git. If you are not familiar with Git, you can refer to some basic tutorials about Git first such as &lt;a class="link" href="https://www.liaoxuefeng.com/wiki/896043488029600" target="_blank" rel="noopener"
+ &gt;Liao Xuefeng&amp;rsquo;s Git Tutorial&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;If you are not used to Chinese, it&amp;rsquo;s recommended to read the official Git documentation: &lt;a class="link" href="https://git-scm.com/doc" target="_blank" rel="noopener"
+ &gt;Git Documentation&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;If you have basic Git skills, you can continue to read this article to learn how to use Git for teamwork. Before reading this article, you can also read &lt;a class="link" href="https://git-scm.com/book" target="_blank" rel="noopener"
+ &gt;&lt;strong&gt;Pro Git&lt;/strong&gt;&lt;/a&gt;. Fortunately, the book is free to read online and available in many languages.&lt;/p&gt;
+&lt;p&gt;Then, let me introduce the workflow of teamwork using Git.&lt;/p&gt;
+&lt;h2 id="teamwork-workflow"&gt;Teamwork Workflow
+&lt;/h2&gt;&lt;p&gt;I introduce the workflow mainly based on Gitlab.&lt;/p&gt;
+&lt;p&gt;In GitLab, there are 5 roles for repository members:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Guest&lt;/strong&gt;: can only view repository contents, but cannot perform write operations;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Reporter&lt;/strong&gt;: can view and clone repositories, but cannot perform write operations;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Developer&lt;/strong&gt;: can perform write operations, but cannot manage project settings;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Maintainer&lt;/strong&gt;: can manage project settings and members;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Owner&lt;/strong&gt;: has all permissions, including deleting projects.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Suppose there is a project with 5 team members including project manager (1 person), developers (3 people, 1 of whom joined midway), tester (1 person);&lt;/p&gt;
+&lt;p&gt;The roles and responsibilities of these 5 people are as follows:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Project Manager&lt;/strong&gt;: Owner&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Developer #1&lt;/strong&gt;: Maintainer (responsible for developing and reviewing code)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Developer #2&lt;/strong&gt;: Developer&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Developer #3&lt;/strong&gt;: Developer (joined midway)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Tester&lt;/strong&gt;: Reporter&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Before Developer #3 joined, the project development was all done collaboratively within the team, and the code should be submitted to a repository.&lt;/p&gt;
+&lt;p&gt;After Developer #3 joins, the project involves cross-team development. Developer #3 should fork the repository. If using GitLab, merge the code into the upstream repository (the upstream repository is the forked repository) through Merge Request (MR for short).&lt;/p&gt;
+&lt;p&gt;The following is the workflow description of &lt;strong&gt;GitLab Flow&lt;/strong&gt;.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;The project manager creates a repository, submits the requirements document, and adds team members as Developers&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The initial submission is as follows:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;span class="lnt"&gt;6
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git init .
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;touch README.md &lt;span class="c1"&gt;#This article briefly introduces the project background and function&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git add README.md &lt;span class="c1"&gt;#Add README.md to the staging area&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git commit -m &lt;span class="s2"&gt;&amp;#34;first commit&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git remote add origin https://&amp;lt;host&amp;gt;:&amp;lt;port&amp;gt;/path/to/xxx.git &lt;span class="c1"&gt;#Add a remote library, change it to your own remote library here&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git push -u origin master
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Next, submit the requirements documents.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;mkdir docs &lt;span class="c1"&gt;#创建docs目录，在该目录下添加需求文档&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;touch docs/requirements.md &lt;span class="c1"&gt;#采用markdown格式记录需求文档&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Open the &lt;code&gt;docs/requirements.md&lt;/code&gt; file and complete the requirements document. After writing it, do the following:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git add docs/requirements.md &lt;span class="c1"&gt;#Add the requirements document to the staging area&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git commit -m &lt;span class="s2"&gt;&amp;#34;[docs] Add requirements document&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git push origin master
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;ol start="2"&gt;
+&lt;li&gt;Developer #1 submits technical documents and creates dev branch&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Submitting technical documents is as follows:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git remote add origin https://&amp;lt;host&amp;gt;:&amp;lt;port&amp;gt;/path/to/xxx.git &lt;span class="c1"&gt;#Add remote library, change it to your own remote library&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git fetch origin -a &lt;span class="c1"&gt;#Get all branches of remote library&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;touch docs/technical.md &lt;span class="c1"&gt;#Record technical documents in markdown format&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Open the &lt;code&gt;docs/technical.md&lt;/code&gt; file and complete the writing of the technical document. After that, do the following:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;span class="lnt"&gt;6
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git add docs/technical.md &lt;span class="c1"&gt;#Add the technical document to the staging area&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git commit -m &lt;span class="s2"&gt;&amp;#34;[docs]Add technical document&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git push origin master
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git checkout -b dev &lt;span class="c1"&gt;#Create and switch to the dev branch&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git push origin dev
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id="internal-team-collaboration"&gt;Internal team collaboration
+&lt;/h3&gt;&lt;p&gt;When collaborating internally, Developer #1, Developer #2, and Tester are all in the same team. They are all members of the project and can directly submit code to the same repository;&lt;/p&gt;
+&lt;p&gt;Next, two application scenarios are explained according to the &lt;code&gt;GitLab Flow&lt;/code&gt; workflow.&lt;/p&gt;
+&lt;h4 id="develop-new-features"&gt;Develop new features
+&lt;/h4&gt;&lt;p&gt;Development and testing of new features cannot be modified on one branch, but a new branch should be created, named &lt;code&gt;feat_xxx&lt;/code&gt; to represent the development of xxx feature.&lt;/p&gt;
+&lt;p&gt;Next, Developer #1 raises an issue and creates two new branches in the issue named &lt;code&gt;feat_xxx&lt;/code&gt; and &lt;code&gt;test_xxx&lt;/code&gt;, which are used by Developer #2 to submit feature code to the &lt;code&gt;feat_xxx&lt;/code&gt; branch and testers to submit test case code to the &lt;code&gt;test_xxx&lt;/code&gt; branch.&lt;/p&gt;
+&lt;p&gt;Among them, the &lt;code&gt;feat_xxx&lt;/code&gt; branch is based on the latest &lt;code&gt;dev&lt;/code&gt; branch, and the &lt;code&gt;test_xxx&lt;/code&gt; branch is based on the &lt;code&gt;feat_xxx&lt;/code&gt; branch. The workflow is as follows:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Developer #1 submits an issue according to the document of the dev branch. Developer #1 creates a new branch &lt;code&gt;feat_xxx&lt;/code&gt; based on the &lt;code&gt;dev&lt;/code&gt; branch in the issue and notifies Developer #2 to develop the function&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Developer #2 obtains and checks out to the &lt;code&gt;feat_xxx&lt;/code&gt; branch&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;If the &lt;code&gt;feat_xxx&lt;/code&gt; branch does not exist, you need to create and switch to a new branch. Execute the following instructions:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git fetch origin -a &lt;span class="c1"&gt;#Get all branches of the remote library&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git checkout -b feat_xxx origin/feat_xxx &lt;span class="c1"&gt;#Create a feat_xxx branch locally based on the remote feat_xxx branch and switch to it&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;If &lt;code&gt;feat_xxx&lt;/code&gt; branch already exists, execute the following command:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git checkout feat_xxx &lt;span class="c1"&gt;#No need for the -base parameter, because the local feat_xxx branch already exists&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git pull origin feat_xxx:feat_xxx &lt;span class="c1"&gt;#Pull the remote feat_xxx branch to the local feat_xxx branch&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;ol start="3"&gt;
+&lt;li&gt;Developer #2 develops on &lt;code&gt;feat_xxx&lt;/code&gt; and pushes it to the remote library after development is completed&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git add &amp;lt;files&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git commit -m &lt;span class="s2"&gt;&amp;#34;[feat] Add xxx function&amp;#34;&lt;/span&gt; &lt;span class="c1"&gt;#&amp;#34;[feat]&amp;#34; indicates that this is a new function&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git push origin feat_xxx
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Note: If the modification of feat_xxx is a new function, the comment of the commit record should be prefixed with &amp;ldquo;[feat]&amp;rdquo;.&lt;/p&gt;
+&lt;ol start="4"&gt;
+&lt;li&gt;Developer #2 has not submitted an MR before, so he creates an MR request to merge &lt;code&gt;feat_xxx&lt;/code&gt; into the &lt;code&gt;dev&lt;/code&gt; branch, and the Issue needs to be associated with the MR.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;After the Developer #2 completes the new function, he needs to associate the MR in the Issue, through the &lt;code&gt;!&amp;lt;MR_number&amp;gt;&lt;/code&gt; method. Assuming that the serial number of the MR is 9, the comment &lt;code&gt;See merge request !9&lt;/code&gt; should be added to the Issue;&lt;/p&gt;
+&lt;p&gt;Also, add a comment in &lt;em&gt;Merge Request&lt;/em&gt; to indicate which Issue this corresponds to, through the &lt;code&gt;#&amp;lt;Issue_number&lt;/code&gt; method. Assuming that the Issue corresponding to the MR is 5, the comment &lt;code&gt;See issue #5&lt;/code&gt; should be added.&lt;/p&gt;
+&lt;ol start="5"&gt;
+&lt;li&gt;Developer #1 reviews the code. If the review fails, he/she will state the improvement suggestions in the MR and return to step (3)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The comment of the submission record here should still be &lt;code&gt;[perf] Improve xxx&lt;/code&gt;, where &amp;ldquo;[perf]&amp;rdquo; is the improvement made for xxx&lt;/p&gt;
+&lt;ol start="6"&gt;
+&lt;li&gt;If the review passes, Developer #1 will create a sub-item Issue in the Issue, create a &lt;code&gt;test_xxx&lt;/code&gt; branch based on the &lt;code&gt;feat_xxx&lt;/code&gt; branch, and assign the Issue to the tester&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Note: Developer #1 should not pass the MR after the review passes. The tester needs to submit the test case and pass the test. Then the tester needs to submit an MR request to merge the &lt;code&gt;test_xxx&lt;/code&gt; branch into the &lt;code&gt;feat_xxx&lt;/code&gt; branch. Only then can Developer #1 confirm the MR and &lt;code&gt;feat_xxx&lt;/code&gt; will be deleted;&lt;/p&gt;
+&lt;ol start="7"&gt;
+&lt;li&gt;The tester pulls the test branch code, writes the test case and submits it to the &lt;code&gt;test_xxx&lt;/code&gt; branch&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;span class="lnt"&gt;6
+&lt;/span&gt;&lt;span class="lnt"&gt;7
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;#If the test_xxx branch already exists, execute the following command&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git checkout test_xxx &lt;span class="c1"&gt;#Execute for the first pull: git checkout -b test_xxx origin/test_xxx&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;touch test/test_xxx &lt;span class="c1"&gt;#Write a test script&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;#Write a script for test cases written in other languages&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git add test/test_xxx
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git commit -m &lt;span class="s2"&gt;&amp;#34;[test] Test xxx function&amp;#34;&lt;/span&gt; &lt;span class="c1"&gt;#Commit the &amp;#34;[test]&amp;#34; annotation of the record, indicating that it has modified the test code&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git push origin test_xxx
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Whether the test case is correct or not, the test case program should be submitted, and the submission record prefix should be &amp;ldquo;[test]&amp;rdquo;, indicating that this is a test case.&lt;/p&gt;
+&lt;ol start="8"&gt;
+&lt;li&gt;
+&lt;p&gt;If the tester has not proposed an MR before, then create an MR request to merge &lt;code&gt;test_xxx&lt;/code&gt; into the &lt;code&gt;feat_xxx&lt;/code&gt; branch. The Issue and the corresponding MR need to be associated&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Developer #2 reviews the tester&amp;rsquo;s MR. If it does not pass, return to step (10). Otherwise, it will be submitted to Developer #1 for review. If Developer #1 passes the review, the merge is allowed&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Developer #1 allows the merge, which will delete the &lt;code&gt;test_xxx&lt;/code&gt; branch, and then the MR will be closed. Developer #1 is also required to mark the test issue as completed&lt;/p&gt;
+&lt;ol start="10"&gt;
+&lt;li&gt;Developer #1 and Developer #2 update &lt;code&gt;feat_xxx&lt;/code&gt;. They can first test locally. If there are problems, return to step (3)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git fetch origin feat_xxx
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git checkout feat_xxx &lt;span class="c1"&gt;#Switch to the local branch to be merged&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git merge origin/feat_xxx &lt;span class="c1"&gt;#Merge the remote library into the current branch&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;ol start="11"&gt;
+&lt;li&gt;If all test cases pass, Developer #1 confirms that the MR has passed and merges &lt;code&gt;feat_xxx&lt;/code&gt; into the &lt;code&gt;dev&lt;/code&gt; branch.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id="dealing-with-integration-issues"&gt;Dealing with integration issues
+&lt;/h4&gt;&lt;p&gt;When testing a function alone, everything works fine, but there is a problem when integrating it. The following example is used to introduce it.&lt;/p&gt;
+&lt;p&gt;Assume that the requirements have not changed significantly, the original function feat_xxx1 (no problem), add a new function feat_xxx2, and there is no problem when testing feat_xxx2 alone, but a problem occurs after the integration test. The tester needs to raise an issue first, and other members should actively discuss and locate the problem;&lt;/p&gt;
+&lt;p&gt;Here, there is no need to go back to the feat_xxx2 branch to fix the problem (maybe the problem of feat_xxx1 was not exposed in the previous integration test), but to create a new branch on the integrated &lt;code&gt;dev&lt;/code&gt; branch to fix the integration problem.&lt;/p&gt;
+&lt;p&gt;The specific workflow is as follows:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;The tester tests based on the &lt;code&gt;dev&lt;/code&gt; branch, and raises an issue if a problem is found, explaining the phenomenon of the problem and what operations were performed&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;If the problem occurs in a certain test case, the test case program should be submitted and then an MR should be submitted to request to merge &lt;code&gt;test_dev&lt;/code&gt; into the &lt;code&gt;dev&lt;/code&gt; branch, and then the MR and the corresponding issue should be associated in the issue&lt;/p&gt;
+&lt;p&gt;If other members discuss and confirm that there is a problem, after Developer 1 and Developer 2 pass the tester&amp;rsquo;s MR, Developer 1 confirms the merge, and the &lt;code&gt;test_dev&lt;/code&gt; branch will be deleted&lt;/p&gt;
+&lt;p&gt;&lt;font size=3 color=red&gt;Note:&lt;/font&gt;&lt;/p&gt;
+&lt;p&gt;Feat_xxx3 and feat_xxx4 may be developed at the same time. Each function is fine when tested separately, but problems occur after integration. They are merged into the &lt;code&gt;dev&lt;/code&gt; branch without conflict. The tester should create two new branches locally for these two integrations. For the commits of feat_xxx3 merged into dev, create a &lt;code&gt;test_dev&lt;/code&gt; branch, and for the commits of feat_xxx4 merged into dev, create a &lt;code&gt;test_dev1&lt;/code&gt; branch. Branch naming is analogous.&lt;/p&gt;
+&lt;p&gt;If you merge into the &lt;code&gt;dev&lt;/code&gt; branch multiple times in a row, including adding new functions and fixing problems with old functions, you should create a tag through the following command:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git checkout dev
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git tag release-x.x.x &lt;span class="c1"&gt;#Switch to the dev branch and create the current branch as a release version&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git push origin release-x.x.x &lt;span class="c1"&gt;#Push the version to the remote&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Generally, the tester tests the code on the branch of &lt;code&gt;release-x.x.x&lt;/code&gt;. If there is a problem, create a &lt;code&gt;test-release-x.x.x&lt;/code&gt; branch locally for testing. The operation is as follows:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git fetch origin -a
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git checkout -b test-release-x.x.x origin/release-x.x.x &lt;span class="c1"&gt;#Create a test branch based on the remote release version&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;#Test, if there is a problem that must be found, submit the corresponding test case. The following operations are required&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git commit -m &lt;span class="s2"&gt;&amp;#34;[test] Test release version x.x.x&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git push origin test-release-x.x.x
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;ol start="2"&gt;
+&lt;li&gt;
+&lt;p&gt;After locating the problem (assuming that the problem occurs in feat_xxx2 developed by developer 2), developer 1 creates a &lt;code&gt;fix_xxx2&lt;/code&gt; branch in the Issue based on the problematic &lt;code&gt;dev&lt;/code&gt; branch and assigns it to developer 2&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Developer 2 needs to modify and submit the code on &lt;code&gt;fix_xxx2&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The submission record here is annotated as &lt;code&gt;[fix] Fix xxx problem&lt;/code&gt;&lt;/p&gt;
+&lt;ol start="4"&gt;
+&lt;li&gt;
+&lt;p&gt;Developer 2 performs the same operation as the tester. If the problem still occurs, return to step (3)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Developer 2 submits a MR request to merge &lt;code&gt;fix_xxx2&lt;/code&gt; into the &lt;code&gt;dev&lt;/code&gt; branch, and associates the MR with the corresponding fix issue&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Tester 2 pulls &lt;code&gt;fix_xxx2&lt;/code&gt; for testing. If there is no problem, it passes, but it will not be merged into the &lt;code&gt;dev&lt;/code&gt; branch&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Developer 1 observes the bug fix, and finally passes the merge, and the &lt;code&gt;fix_xxx2&lt;/code&gt; branch will be deleted&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="cross-team-development-workflow"&gt;Cross-team development workflow
+&lt;/h3&gt;&lt;p&gt;After developer 3 joins, the code submitted by developer 3 may affect existing functions due to lack of precautions. Therefore, developer 3 should fork the upstream repository for development, and other members should continue to develop in the original way.&lt;/p&gt;
+&lt;p&gt;Developer 3 should do the following:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git clone https://&amp;lt;host&amp;gt;:&amp;lt;port&amp;gt;/path/to/repo-xxx.git &lt;span class="c1"&gt;#Clone the forked repository to the local&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; repo-xxx
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git remote add upstream https://&amp;lt;host&amp;gt;:&amp;lt;port&amp;gt;/path/to/repo-xxx.git &lt;span class="c1"&gt;#Add the forked repository as the upstream repository&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Assuming that the project is urgent and the function that should have been implemented by Developer 2 is handed over to Developer 3 for development, Developer 1 should raise an Issue in the upstream repository and create a &lt;code&gt;feat_xxx&lt;/code&gt; branch based on the &lt;code&gt;dev&lt;/code&gt; branch. When Developer 3 receives the notification, he should do the following:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git fetch upstream feat_xxx &lt;span class="c1"&gt;#Get the feat_xxx branch of the upstream repository&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git checkout -b feat_xxx upstream/feat_xxx
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;The subsequent operations are similar to the development workflow within the team.&lt;/p&gt;
+&lt;p&gt;&lt;font size=3 color=red&gt;Note:&lt;/font&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;If developer 3 needs to submit an MR, he should create an MR in his forked repository;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;If developer 3 receives an assignment, he should pull the corresponding branch from the upstream repository &lt;code&gt;upstream&lt;/code&gt; to the local, and then modify and submit the code on the branch&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Developer 3 cannot push directly to the upstream repository, but should push to the forked repository, and then create an MR request to merge it into the corresponding branch of the upstream repository. The MR needs to be associated with the corresponding issue in the upstream repository.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="supplement"&gt;Supplement
+&lt;/h2&gt;&lt;h3 id="the-remote-library-branch-is-deleted-after-mr-how-to-delete-the-remote-library-fetched-locally"&gt;The remote library branch is deleted after MR, how to delete the remote library fetched locally
+&lt;/h3&gt;&lt;p&gt;After developer 1 confirms MR, the remote library&amp;rsquo;s &lt;code&gt;feat_xxx&lt;/code&gt; branch is deleted, but the local &lt;code&gt;feat_xxx&lt;/code&gt; still exists&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git fetch -p &lt;span class="c1"&gt;#-p is the abbreviation of --prune&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git checkout dev &lt;span class="c1"&gt;#If you are currently on the feat_xxx branch&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git branch -d feat_xxx &lt;span class="c1"&gt;#Delete the local feat_xxx branch&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git branch -D feat_xxx &lt;span class="c1"&gt;#Note: This means that the local branch has not been merged and will be forcibly deleted&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id="there-is-a-big-problem-with-a-certain-release-version-how-to-delete-the-deleted-remote-library-tag-stored-locally"&gt;There is a big problem with a certain release version. How to delete the deleted remote library tag stored locally
+&lt;/h3&gt;&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git fetch -P &lt;span class="c1"&gt;#-P is the abbreviation of --prune-tags&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id="in-cross-team-collaboration-after-the-upstream-warehouse-mr-how-to-synchronize-the-forked-remote-library-with-its-upstream-warehouse"&gt;In cross-team collaboration, after the upstream warehouse MR, how to synchronize the forked remote library with its upstream warehouse
+&lt;/h3&gt;&lt;p&gt;Assuming that your MR requests to merge &lt;code&gt;fix_xxx&lt;/code&gt; into the &lt;code&gt;dev&lt;/code&gt; branch of the upstream warehouse, after developer 1 confirms the merge, the operation is as follows&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;span class="lnt"&gt;6
+&lt;/span&gt;&lt;span class="lnt"&gt;7
+&lt;/span&gt;&lt;span class="lnt"&gt;8
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git fetch upstream -a &lt;span class="c1"&gt;#Get changes in the upstream warehouse&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git merge upstream/dev dev &lt;span class="c1"&gt;#Synchronize the upstream warehouse to the local dev branch&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;#or git pull upstream dev:dev #Replace the above 2 lines of instructions&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git push origin dev &lt;span class="c1"&gt;#Synchronize local changes to the fork warehouse&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git checkout dev &lt;span class="c1"&gt;#If you are currently in the fix_xxx branch&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git branch -d fix_xxx &lt;span class="c1"&gt;#Delete the local fix_xxx branch&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git fetch -p &lt;span class="c1"&gt;#Delete the deleted fix_xxx branch stored locally&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id="how-to-name-a-new-branch"&gt;How to name a new branch
+&lt;/h3&gt;&lt;p&gt;For example, to add a new feature &lt;em&gt;Add query temperature function&lt;/em&gt;, you should create a new branch named &lt;code&gt;feat_query_temp&lt;/code&gt; in the current branch (usually dev branch) (where &lt;em&gt;feat&lt;/em&gt; is the abbreviation of feature);&lt;/p&gt;
+&lt;p&gt;The naming format of the new branch is as follows:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-txt" data-lang="txt"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;type_subject
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Submission type (type): including &lt;code&gt;feat&lt;/code&gt; (new feature), &lt;code&gt;fix&lt;/code&gt; (fix problem), &lt;code&gt;doc&lt;/code&gt; (document change), &lt;code&gt;refactor&lt;/code&gt; (code refactoring, not new feature, not bug fix), &lt;code&gt;test&lt;/code&gt; (add or modify test), &lt;code&gt;chore&lt;/code&gt; (other submissions that do not modify source code or test cases), &lt;code&gt;style&lt;/code&gt; (code format, does not affect code operation);&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Short description (subject): Use underscores &lt;code&gt;_&lt;/code&gt; to separate words, and be concise and clear.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The naming rule example is as follows:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-txt" data-lang="txt"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;feat_support_eth #Support network port
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;refactor_cmd_resp #Refactor command reply prompt information
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;style_format_code #Format source code
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;test_cmd_resp #Test command reply prompt information
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id="how-to-write-commit-comments"&gt;How to write commit comments
+&lt;/h3&gt;&lt;p&gt;Commit comments should be as concise and clear as possible, and directly reflect the changes in the submitted code;&lt;/p&gt;
+&lt;p&gt;New features and bug fixes should also be submitted in two batches, and other types of submissions should be submitted in the same way;&lt;/p&gt;
+&lt;p&gt;You can submit to the local library through the &lt;code&gt;git commit -m &amp;lt;message&amp;gt;&lt;/code&gt; command, where the description of &lt;code&gt;&amp;lt;message&amp;gt;&lt;/code&gt; is as follows:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-txt" data-lang="txt"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Format: [type]msg
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Where type values ​​and their meanings are as follows:&lt;/p&gt;
+&lt;table&gt;
+ &lt;thead&gt;
+ &lt;tr&gt;
+ &lt;th style="text-align: center"&gt;type&lt;/th&gt;
+ &lt;th style="text-align: left"&gt;Meaning&lt;/th&gt;
+ &lt;th style="text-align: left"&gt;Example&lt;/th&gt;
+ &lt;/tr&gt;
+ &lt;/thead&gt;
+ &lt;tbody&gt;
+ &lt;tr&gt;
+ &lt;td style="text-align: center"&gt;feat&lt;/td&gt;
+ &lt;td style="text-align: left"&gt;New feature (feature)&lt;/td&gt;
+ &lt;td style="text-align: left"&gt;[feat] Add health check&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td style="text-align: center"&gt;fix&lt;/td&gt;
+ &lt;td style="text-align: left"&gt;Fix bug (fix bug)&lt;/td&gt;
+ &lt;td style="text-align: left"&gt;[fix] Fix health check relocation problem&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td style="text-align: center"&gt;doc&lt;/td&gt;
+ &lt;td style="text-align: left"&gt;Documentation changes (documentation)&lt;/td&gt;
+ &lt;td style="text-align: left"&gt;[doc] Improve technical documentation&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td style="text-align: center"&gt;style&lt;/td&gt;
+ &lt;td style="text-align: left"&gt;Code formatting&lt;/td&gt;
+ &lt;td style="text-align: left"&gt;[style] Format non-generated source code&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td style="text-align: center"&gt;refactor&lt;/td&gt;
+ &lt;td style="text-align: left"&gt;Refactor code&lt;/td&gt;
+ &lt;td style="text-align: left"&gt;[refactor] Refactor command reply prompt&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td style="text-align: center"&gt;test&lt;/td&gt;
+ &lt;td style="text-align: left"&gt;Add or modify tests&lt;/td&gt;
+ &lt;td style="text-align: left"&gt;[test] Test health check&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td style="text-align: center"&gt;chore&lt;/td&gt;
+ &lt;td style="text-align: left"&gt;Commit without modifying source code or test files&lt;/td&gt;
+ &lt;td style="text-align: left"&gt;[chore] Improve .gitignore&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td style="text-align: center"&gt;perf&lt;/td&gt;
+ &lt;td style="text-align: left"&gt;Changes to improve performance&lt;/td&gt;
+ &lt;td style="text-align: left"&gt;[perf] Improve sliding average performance&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td style="text-align: center"&gt;ci&lt;/td&gt;
+ &lt;td style="text-align: left"&gt;Changes related to continuous integration&lt;/td&gt;
+ &lt;td style="text-align: left"&gt;[ci] Automatically generate and publish hex and bin files&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td style="text-align: center"&gt;build&lt;/td&gt;
+ &lt;td style="text-align: left"&gt;Changes to build system or external dependencies&lt;/td&gt;
+ &lt;td style="text-align: left"&gt;[build] Improve CMakelists.xt configuration&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td style="text-align: center"&gt;revert&lt;/td&gt;
+ &lt;td style="text-align: left"&gt;Undo previous submission&lt;/td&gt;
+ &lt;td style="text-align: left"&gt;[revert] Rollback scheduled tasks&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id="how-to-automatically-perform-specific-operations-for-each-submission"&gt;How to automatically perform specific operations for each submission
+&lt;/h3&gt;&lt;p&gt;If you need to format the code before each submission, you should normally perform specific operations actively, but you can configure &lt;code&gt;.git/hooks/pre-commit&lt;/code&gt; to perform the desired operations. The example is as follows:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;span class="lnt"&gt;6
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git clone https://&amp;lt;host&amp;gt;:&amp;lt;port&amp;gt;/path/to/repo_xxx.git
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; repo_xxx.git
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;touch .git/hooks/pre-commit &lt;span class="c1"&gt;#Create a pre_commit text file in the .git/hooks directory&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;#Edit pre-commit content&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;chmod +x .git/hooks/pre_commit &lt;span class="c1"&gt;#Modify the pre-commit attribute to be executable&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;The content of pre-commit is as follows:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="cp"&gt;#!/bin/sh
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# Find all C source files and header files&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nv"&gt;files&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;git diff --cached --name-only --diff-filter&lt;span class="o"&gt;=&lt;/span&gt;ACM &lt;span class="p"&gt;|&lt;/span&gt; grep -E &lt;span class="s1"&gt;&amp;#39;\.(c|h)$&amp;#39;&lt;/span&gt;&lt;span class="k"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# If there are no files to format, exit&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="o"&gt;[&lt;/span&gt; -z &lt;span class="s2"&gt;&amp;#34;&lt;/span&gt;&lt;span class="nv"&gt;$files&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="nb"&gt;exit&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# Run clang-format on each file with the specified .clang-format file&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;&lt;/span&gt;&lt;span class="nv"&gt;$files&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; xargs clang-format -i --style&lt;span class="o"&gt;=&lt;/span&gt;file
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# Add the formatted files back to the staging area&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;&lt;/span&gt;&lt;span class="nv"&gt;$files&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; xargs git add
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;exit&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;After the above configuration, each time &lt;code&gt;git commit&lt;/code&gt; is executed, it will filter &amp;ldquo;.c&amp;rdquo; and &amp;ldquo;.h&amp;rdquo; files in the modified files, and then format the files through &lt;code&gt;clang-format&lt;/code&gt; according to the &amp;ldquo;.clang-format&amp;rdquo; configuration file in the root directory.&lt;/p&gt;
+&lt;h2 id="reference"&gt;Reference
+&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class="link" href="https://www.cnblogs.com/xiaoqi/p/gitlab-flow.html" target="_blank" rel="noopener"
+ &gt;https://www.cnblogs.com/xiaoqi/p/gitlab-flow.html&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class="link" href="https://www.atlassian.com/git/tutorials" target="_blank" rel="noopener"
+ &gt;https://www.atlassian.com/git/tutorials&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class="link" href="https://git-scm.com/book/" target="_blank" rel="noopener"
+ &gt;https://git-scm.com/book/&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class="link" href="https://docs.github.com/zh/get-started/start-your-journey/about-github-and-git" target="_blank" rel="noopener"
+ &gt;https://docs.github.com/zh/get-started/start-your-journey/about-github-and-git&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;</description></item><item><title>Use DDNS To Access Intranet Devices</title><link>https://adja.com.cn/en/p/use-ddns-to-access-intranet-devices/</link><pubDate>Sat, 06 Jul 2024 16:08:49 +0800</pubDate><guid>https://adja.com.cn/en/p/use-ddns-to-access-intranet-devices/</guid><description>&lt;img src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/cover.webp" alt="Featured image of post Use DDNS To Access Intranet Devices" /&gt;&lt;h1 id="use-ddns-to-access-intranet-devices"&gt;Use DDNS To Access Intranet Devices
+&lt;/h1&gt;&lt;p&gt; Sometimes I need to access my home NAS when I go out.
+Since it is increasingly challenging to apply for a public IPv4 in China, and the official QuickConnect service of Synology is also very slow.
+After referring to relevant tutorials,
+I decided to resolve the domain name to public IPv6 through DDNS and access the intranet devices directly through the domain name.&lt;/p&gt;
+&lt;p&gt; Based on the previous experiment of cracking the optical modem to get the superuser privileges to modify the routing mode,
+I connected the router to the optical modem.
+Then let the router dial and turn on IPv6, and after assigning the public network IPv6, I started the DDNS configuration process.&lt;/p&gt;
+&lt;h2 id="through-synologys-dns-service"&gt;Through Synology&amp;rsquo;s DNS service
+&lt;/h2&gt;&lt;p&gt; Open the Control Panel, click External Access, select DDNS, then click Add, and select Synology as the service provider.
+Then customize the configuration below.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="1" class="gallery-image" data-flex-basis="352px" data-flex-grow="147" height="769" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px" src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/1.png" srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/1_hu_69f201a0e4c480f3.png 800w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/1.png 1131w" width="1131"&gt;&lt;/p&gt;
+&lt;p&gt; If you need https access, check &amp;ldquo;Get a certificate from Let&amp;rsquo;s Encrypt&amp;rdquo; and click OK.&lt;/p&gt;
+&lt;h2 id="using-a-dns-service-from-another-provider"&gt;Using a DNS service from another provider
+&lt;/h2&gt;&lt;p&gt; The following only takes Tencent Cloud&amp;rsquo;s DNS service as an example. You need to apply for a domain name on Tencent Cloud&amp;rsquo;s official website in
+advance.&lt;/p&gt;
+&lt;h3 id="using-the-ddns-go-image"&gt;Using the &lt;em&gt;ddns-go&lt;/em&gt; image
+&lt;/h3&gt;&lt;p&gt; To perform dynamic domain name resolution, you need your own NAS device to query the local IP address regularly, and then call the interface to
+update the domain name resolution field to implement DDNS.&lt;/p&gt;
+&lt;p&gt; So you can&amp;rsquo;t change the method. There are many methods on the Internet. Here I provide a method to use Docker to update DDNS.&lt;/p&gt;
+&lt;p&gt; Search for Docker in the package center and install Docker. The steps are omitted.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="3" class="gallery-image" data-flex-basis="497px" data-flex-grow="207" height="661" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px" src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/3.png" srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/3_hu_eca8b7d01b1fc388.png 800w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/3.png 1371w" width="1371"&gt;&lt;/p&gt;
+&lt;p&gt; Open Docker, select &amp;ldquo;Registry&amp;rdquo;, search for ddns, and install the first &amp;ldquo;ddns-go&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="4" class="gallery-image" data-flex-basis="420px" data-flex-grow="175" height="841" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px" src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/4.png" srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/4_hu_1a857ad7af926065.png 800w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/4.png 1475w" width="1475"&gt;&lt;/p&gt;
+&lt;p&gt; After the installation is complete, open the image, select ddns-go, and click Start.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="5" class="gallery-image" data-flex-basis="677px" data-flex-grow="282" height="520" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px" src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/5.png" srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/5_hu_50f76bffd33e54f1.png 800w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/5.png 1467w" width="1467"&gt;&lt;/p&gt;
+&lt;p&gt; Click Advanced Settings-&amp;gt;Storage-&amp;gt;Add Folder.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="6" class="gallery-image" data-flex-basis="349px" data-flex-grow="145" height="843" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px" src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/6.png" srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/6_hu_b13acdd7557fda94.png 800w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/6.png 1229w" width="1229"&gt;&lt;/p&gt;
+&lt;p&gt; Modify the mount path, my configuration is as follows:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="7" class="gallery-image" data-flex-basis="378px" data-flex-grow="157" height="744" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px" src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/7.png" srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/7_hu_ecbcbb4a0ad9a4b8.png 800w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/7.png 1174w" width="1174"&gt;&lt;/p&gt;
+&lt;p&gt; Click Network-&amp;gt;Check Host Network-&amp;gt;Apply.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="8" class="gallery-image" data-flex-basis="282px" data-flex-grow="117" height="822" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px" src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/8.png" srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/8_hu_f99871db60269c12.png 800w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/8.png 966w" width="966"&gt;&lt;/p&gt;
+&lt;p&gt; Click Next, click Finish.&lt;/p&gt;
+&lt;h3 id="configuring-ddns"&gt;Configuring DDNS
+&lt;/h3&gt;&lt;p&gt; Open &lt;code&gt;http://[nas ip corresponding to the domain name]:9876/&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="9" class="gallery-image" data-flex-basis="519px" data-flex-grow="216" height="490" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px" src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/9.png" srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/9_hu_925b9fdb642161f3.png 800w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/9.png 1061w" width="1061"&gt;&lt;/p&gt;
+&lt;p&gt; Configure DNS service provider, select Tencent Cloud, enter ID and Token, &lt;font color=red&gt;Note that the ID and Token here correspond to &amp;ldquo;DNSPod
+Token&amp;rdquo;, not &amp;ldquo;Tencent Cloud API Key&amp;rdquo;&lt;/font&gt;, the link is https:
+//console.dnspod.cn/account/token/token&lt;/p&gt;
+&lt;p&gt; Only enable ipv6, my configuration is as follows:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="10" class="gallery-image" data-flex-basis="431px" data-flex-grow="179" height="579" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px" src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/10.png" srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/10_hu_16fb044404419bdd.png 800w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/10.png 1041w" width="1041"&gt;&lt;/p&gt;
+&lt;p&gt; Before clicking &amp;ldquo;Save&amp;rdquo;, you need to configure the domain name resolution and add an AAAA type (indicating an IPv6 address) record.
+Fill it out and it will automatically update. My configuration is as follows:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="11" class="gallery-image" data-flex-basis="1098px" data-flex-grow="457" height="356" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px" src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/11.png" srcset="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/11_hu_53f18511fd287e58.png 800w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/11_hu_34fd2a7dcdc69cff.png 1600w, https://adja.com.cn/p/use-ddns-to-access-intranet-devices/11.png 1629w" width="1629"&gt;&lt;/p&gt;
+&lt;p&gt; After the configuration is completed, click Save, and the latest history records will appear on the right.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="12" class="gallery-image" data-flex-basis="375px" data-flex-grow="156" height="344" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px" src="https://adja.com.cn/p/use-ddns-to-access-intranet-devices/12.png" width="538"&gt;&lt;/p&gt;
+&lt;p&gt; Finally, you can test it through domain name + port.&lt;/p&gt;
+&lt;h2 id="additional"&gt;Additional
+&lt;/h2&gt;&lt;p&gt; In the summer of 2022, after the installation was completed, I asked my classmates to help test the speed of different prefecture-level cities
+in Jiangsu. The speed was still quite fast.&lt;/p&gt;
+&lt;p&gt; After graduation, I went to other provinces.
+After finding my first job.
+I thought about NAS again and tried to continue using it,
+but found that the same method did not work at all, mainly because the network infrastructure varies greatly between provinces.&lt;/p&gt;
+&lt;p&gt; If you are in a province where IPv6 has not been promoted, it is recommended to Avoid tossing. In addition, due to the proliferation of &lt;em&gt;PCDN&lt;/em&gt;
+in the past few years, operators will check whether users have built &lt;em&gt;PCDN&lt;/em&gt; based on the upstream speed of bandwidth. If DDNS is used maliciously, it
+may cause broadband to be blocked.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;font size=3 color=blue&gt;2022-06-19 Record&lt;/font&gt;&lt;/p&gt;
+&lt;p&gt;&lt;font size=3 color=blue&gt;2023-07-07 Update&lt;/font&gt;&lt;/p&gt;</description></item><item><title>Development Environment Management Tools</title><link>https://adja.com.cn/en/p/dev-environment-management-tools/</link><pubDate>Wed, 19 Jun 2024 07:34:46 +0800</pubDate><guid>https://adja.com.cn/en/p/dev-environment-management-tools/</guid><description>&lt;img src="https://adja.com.cn/p/dev-environment-management-tools/cover.webp" alt="Featured image of post Development Environment Management Tools" /&gt;&lt;h1 id="development-environment-management-tools"&gt;Development Environment Management Tools
+&lt;/h1&gt;&lt;p&gt; When developing, multiple development environments are often used. You may have used tools like &lt;em&gt;miniconda&lt;/em&gt;, &lt;em&gt;nvm&lt;/em&gt;, and &lt;em&gt;gvm&lt;/em&gt;, which are used to manage versions of &lt;em&gt;python&lt;/em&gt;, &lt;em&gt;nodejs&lt;/em&gt;, and &lt;em&gt;go&lt;/em&gt; respectively. in addition, there are package management tools such as &lt;em&gt;maven&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt; If you use a new programming language or package management tool, it is troublesome to install the corresponding version management tool. Next, we will introduce three development environment management tools: &lt;em&gt;asdf&lt;/em&gt;, &lt;em&gt;mise&lt;/em&gt;, and &lt;em&gt;vfox&lt;/em&gt;.&lt;/p&gt;
+&lt;h2 id="comparison-of-asdf-mise-and-vfox"&gt;Comparison of &lt;em&gt;asdf&lt;/em&gt;, &lt;em&gt;mise&lt;/em&gt; and &lt;em&gt;vfox&lt;/em&gt;
+&lt;/h2&gt;&lt;p&gt; All three are tools for managing development environments, and all provide unified command line instructions. Their functions can be expanded by installing plugins.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;asdf&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt; Asdf was born earlier, and its plug-in ecosystem is more complete. It is mainly developed using shell scripts and can be well adapted to Linux and Mac. When it comes to support for Windows, someone raised a similar issue to the official, but no version supporting Win was provided later.&lt;/p&gt;
+&lt;p&gt; Of course, if you must use asdf on the Win platform, you can install and use it in wsl, but considering that the speed of wsl is far inferior to that of the native exe format program, and the shell itself is interpreted and executed, the speed is even slower. Therefore, except for the Win platform, other platforms recommend using asdf.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;mise&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt; The original name of this tool is &lt;em&gt;rtx&lt;/em&gt;. Since the original name is easily confused with the name of Nvidia&amp;rsquo;s graphics card, it was later renamed &lt;em&gt;mise&lt;/em&gt;. It is developed in the rust programming language.&lt;/p&gt;
+&lt;p&gt; Because the backend uses &lt;em&gt;asdf&lt;/em&gt;, it also inherits the shortcomings of &lt;em&gt;asdf&lt;/em&gt; and also has poor support for the Win platform.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;vfox&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt; &lt;em&gt;vfox&lt;/em&gt; is developed in the go programming language. Compared with the other two tools, it is finally compiled into an executable file. Therefore, it is much faster and has a smaller size, and it also provides native support for the Win platform.&lt;/p&gt;
+&lt;p&gt; The only drawback is that most users of this type of tool may use Linux and Mac systems, and &lt;em&gt;vfox&lt;/em&gt; has fewer contributors and its functions need to be improved, but it should exceed the first two in the future.&lt;/p&gt;
+&lt;h2 id="summary"&gt;Summary
+&lt;/h2&gt;&lt;p&gt; Comparing the characteristics of the three, I prefer to use &lt;em&gt;vfox&lt;/em&gt; to manage the development environment. Despite this, I still use language-specific version management tools such as &lt;em&gt;miniconda&lt;/em&gt; in daily life.&lt;/p&gt;
+&lt;p&gt; Even if you have learned a lot of programming languages, most people mainly use 3 or less programming languages in daily life. Solving the installation and use of three tools is more difficult than solving the bug of one tool. The former takes less time and does not require searching for solutions and then raising an issue.&lt;/p&gt;
+&lt;p&gt; In addition, I have recently found that the configuration of the environment is becoming simpler while tossing automation tools. &lt;em&gt;Dev Container&lt;/em&gt; is a blessing for software development. Perhaps in the future, developers of any platform will not have to pay attention to the installation and configuration of the environment. I look forward to the arrival of this day.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;font color=blue size=3&gt;2024-06-119 First update&lt;/font&gt;&lt;/p&gt;</description></item><item><title>Blog Migration</title><link>https://adja.com.cn/en/p/blog-migration/</link><pubDate>Mon, 17 Jun 2024 00:46:21 +0800</pubDate><guid>https://adja.com.cn/en/p/blog-migration/</guid><description>&lt;img src="https://adja.com.cn/p/blog-migration/cover.webp" alt="Featured image of post Blog Migration" /&gt;&lt;h1 id="blog-migration"&gt;Blog Migration
+&lt;/h1&gt;&lt;p&gt; It has gone about 5 months since I wrote blogs last time. During this time, I spent most of my time at work. Even if I&amp;rsquo;m free, I didn&amp;rsquo;t spend much time to make up for the lack of knowledge. It wasn&amp;rsquo;t until last month, around mid-April, that I gradually wanted to get rid of this state. So I stated from the areas that interests me. Next, let me review what happened in the past months.&lt;/p&gt;
+&lt;h2 id="cause"&gt;Cause
+&lt;/h2&gt;&lt;p&gt; Since I graduated and worked nearly half a year ago, in addition to daily entertainment, I often browse &lt;code&gt;GitHub&lt;/code&gt;, go out for dinner with friends, or play &amp;lsquo;World of Warcraft&amp;rsquo; online with classmates, etc. But I always felt like something was missing. After they started working and going to school, they had less and less time for dinner and entertainment together.&lt;/p&gt;
+&lt;p&gt; Although I can study new things in daily work, I feel still lacking. Later I realized that It was probably because I didn&amp;rsquo;t take enough action and was consumed by the anxiety on the Internet. I gradually realized that if I continued like this, I would never live up to my expectations.&lt;/p&gt;
+&lt;h2 id="migration"&gt;Migration
+&lt;/h2&gt;&lt;p&gt; I have been considering migrating my blog since the beginning of May. It&amp;rsquo;s necessary to consider the following aspects when migrating my blog:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Lower learning cost&lt;/li&gt;
+&lt;li&gt;Reusable&lt;/li&gt;
+&lt;li&gt;Indirect or direct access to areas of interest&lt;/li&gt;
+&lt;li&gt;Framework stability&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt; After comprehensive consideration, I finally chose the hugo framework. On the one hand, hugo is widely used. In addition, I may use Golang when exploring network knowledge in the future. It just so happened that hugo was developed using the Golang.&lt;/p&gt;
+&lt;p&gt; Next, I need to choose a nice theme. However, Hugo has less reference documents than Hexo. So at first, I considered &lt;a class="link" href="https://github.com/razonyang/hugo-theme-bootstrap.git" target="_blank" rel="noopener"
+ &gt;hugo-theme-bootstrap&lt;/a&gt; Because its Chinese documents is well written and supports both blog and document layouts. However, there are not many participants, and the author may not maintain it for a long time, so I didn&amp;rsquo;t adopt it in the end. Later I adopted &lt;a class="link" href="https://github.com/CaiJimmy/hugo-theme-stack.git" target="_blank" rel="noopener"
+ &gt;hugo-theme-stack&lt;/a&gt;, it has almost no third-party dependencies, and the Chinese document is relatively complete.&lt;/p&gt;
+&lt;p&gt; After improving the overall layout and some details, I spent half a day thinking about &lt;code&gt;Github Actions&lt;/code&gt;. I had used &lt;code&gt;Jenkins&lt;/code&gt; to build before, but this time I was struck on the authentication of the deployment public key. Finally I solved it.&lt;/p&gt;
+&lt;h2 id="planning"&gt;Planning
+&lt;/h2&gt;&lt;p&gt; I should reflect on the fact that I didn&amp;rsquo;t stick to most of the plans I made in the past (such as improving English, learning FPGA and circuit knowledge, exploring computer networks, etc.).&lt;/p&gt;
+&lt;p&gt; Among them, I really couldn&amp;rsquo;t stick to improving English, so I simply learned English by supporting multilingual articles; As for computer networks, I often debug LWIP at work, and often toss around on cloud servers and local nas in my life. I may participate in related open source projects in the future; When it comes to hardware-related things, I feel a headache, but since I will use it in my future work, I plan to learn the development board I bought; In addition, I also need to understand the new rust language (communicate with colleagues), learn Linux development, learn 408&amp;hellip; It&amp;rsquo;s such a headache that there are too many things I want to do.&lt;/p&gt;
+&lt;p&gt; Combining interests and work, I need to improve my blog, explore computer networks, learn FPGA and circuits, and find time to understand the rust language.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;font color=blue size=3&gt;2024-06-17 First update&lt;/font&gt;&lt;/p&gt;</description></item><item><title>Automated Build Via Jenkins</title><link>https://adja.com.cn/en/p/automated-build-via-jenkins/</link><pubDate>Thu, 16 Feb 2023 15:10:34 +0800</pubDate><guid>https://adja.com.cn/en/p/automated-build-via-jenkins/</guid><description>&lt;img src="https://adja.com.cn/p/automated-build-via-jenkins/cover.webp" alt="Featured image of post Automated Build Via Jenkins" /&gt;&lt;h1 id="automated-build-via-jenkins"&gt;Automated Build Via Jenkins
+&lt;/h1&gt;&lt;p&gt; Continuing on from the previous experiment, we will implement a one-click deployment project through &lt;em&gt;Jenkins&lt;/em&gt;.&lt;/p&gt;
+&lt;h2 id="project-overview"&gt;Project Overview
+&lt;/h2&gt;&lt;p&gt; The project is a frontend and backend separation project. The backend is a multimodule project using &lt;em&gt;SpringBoot&lt;/em&gt;, and its structure is as
+follows:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;span class="lnt"&gt;11
+&lt;/span&gt;&lt;span class="lnt"&gt;12
+&lt;/span&gt;&lt;span class="lnt"&gt;13
+&lt;/span&gt;&lt;span class="lnt"&gt;14
+&lt;/span&gt;&lt;span class="lnt"&gt;15
+&lt;/span&gt;&lt;span class="lnt"&gt;16
+&lt;/span&gt;&lt;span class="lnt"&gt;17
+&lt;/span&gt;&lt;span class="lnt"&gt;18
+&lt;/span&gt;&lt;span class="lnt"&gt;19
+&lt;/span&gt;&lt;span class="lnt"&gt;20
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;+---backend # Backend 
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;| +---src
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;| \---target
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;+---frontend # Frontend
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;| +---dist
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;| \---src
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;+---others # Other Backend Modules
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;| +---mqtt
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;| +---src
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;| \---target
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;+---data # Database Config
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;| +---conf
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;| +---init
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;| \---sql
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;+---conf # Config
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;| +---emqx
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;| \---nginx
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;+---dockerfile
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;+---shell # Scripts To Help Build Images
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;\---docker-compose.yml
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id="problems"&gt;Problems
+&lt;/h2&gt;&lt;p&gt; For convenience, the automated build process is done in a Jenkins container.
+With Docker, we don&amp;rsquo;t have to spend a lot of time configuring the environment.
+Next, let me introduce the problems encountered.&lt;/p&gt;
+&lt;h3 id="commends-not-found"&gt;Commends not found
+&lt;/h3&gt;&lt;p&gt; Through the logs, I observed that the npm command could not be found.
+Because I manged the &lt;em&gt;Node&lt;/em&gt; environment through nvm and didn&amp;rsquo;t configure the &lt;em&gt;PATH&lt;/em&gt; variable, npm command always failed to execute.&lt;/p&gt;
+&lt;p&gt; Finally I mounted the nvm installation directory and configuration to the &lt;em&gt;Jenkins&lt;/em&gt; container.
+When the container is started, first make the configuration file in the &lt;code&gt;/etc/profile.d&lt;/code&gt; directory take effect, and then switch the node environment.
+The Pipeline I wrote is as follows.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;span class="lnt"&gt;11
+&lt;/span&gt;&lt;span class="lnt"&gt;12
+&lt;/span&gt;&lt;span class="lnt"&gt;13
+&lt;/span&gt;&lt;span class="lnt"&gt;14
+&lt;/span&gt;&lt;span class="lnt"&gt;15
+&lt;/span&gt;&lt;span class="lnt"&gt;16
+&lt;/span&gt;&lt;span class="lnt"&gt;17
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;stage(&amp;#39;build-frontend&amp;#39;) {
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; steps {
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; dir(&amp;#34;./frontend&amp;#34;) {
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; sh &amp;#39;&amp;#39;&amp;#39;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; source /etc/profile.d/nvm.sh
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; nvm use 16.15.0
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; npm cache clean –force
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; npm cache verify
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; if [ -f dist ]; then rm dist -rf; fi;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; pnpm config get registry
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; pnpm config set registry https://registry.npmmirror.com/
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; pnpm install
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; pnpm run build:prod
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &amp;#39;&amp;#39;&amp;#39;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;font size=2 color=red&gt;Note:
+Errors such as commands not found can be solved by mounting its installation directory and making the configuration effective.&lt;/font&gt;&lt;/p&gt;
+&lt;h3 id="how-to-deploy-remotely-via-ssh"&gt;How to deploy remotely via ssh
+&lt;/h3&gt;&lt;p&gt; After configuring the private key on the global credentials, it is best to deploy remotely in Pipeline through a plugin (SSH Pipeline Steps).
+You can refer to my configuration.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;span class="lnt"&gt;11
+&lt;/span&gt;&lt;span class="lnt"&gt;12
+&lt;/span&gt;&lt;span class="lnt"&gt;13
+&lt;/span&gt;&lt;span class="lnt"&gt;14
+&lt;/span&gt;&lt;span class="lnt"&gt;15
+&lt;/span&gt;&lt;span class="lnt"&gt;16
+&lt;/span&gt;&lt;span class="lnt"&gt;17
+&lt;/span&gt;&lt;span class="lnt"&gt;18
+&lt;/span&gt;&lt;span class="lnt"&gt;19
+&lt;/span&gt;&lt;span class="lnt"&gt;20
+&lt;/span&gt;&lt;span class="lnt"&gt;21
+&lt;/span&gt;&lt;span class="lnt"&gt;22
+&lt;/span&gt;&lt;span class="lnt"&gt;23
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;steps {
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; withCredentials(bindings: [ \
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; sshUserPrivateKey(credentialsId: &amp;#39;private-key&amp;#39;,
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; keyFileVariable: &amp;#39;primaryKeyVar&amp;#39;,
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; passphraseVariable: &amp;#39;pwdVar&amp;#39;,
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; usernameVariable: &amp;#39;userVar&amp;#39;)]) {
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; script {
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; def remote = [:]
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; remote.name = &amp;#39;192.168.137.2&amp;#39;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; remote.host = &amp;#39;192.168.137.2&amp;#39;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; remote.user = userVar
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; remote.identityFile = primaryKeyVar
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; remote.allowAnyHosts = true
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; stage(&amp;#39;Remote SSH&amp;#39;) {
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; sshCommand remote: remote, command: &amp;#34;mkdir -p ${REMOTE_WORKDIR}/frontend&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; // Frontend Packaging File
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; sshPut remote: remote, from: &amp;#34;./frontend/dist&amp;#34;, into: &amp;#34;${REMOTE_WORKDIR}/frontend&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; // Show All Files Transferred
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; sshCommand remote: remote, command: &amp;#34;ls -lrt ${REMOTE_WORKDIR}/**&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id="how-to-control-the-startup-order-of-services"&gt;How to control the startup order of services
+&lt;/h3&gt;&lt;p&gt; When writing &lt;em&gt;docker-compose.yml&lt;/em&gt;, if you need to control the startup order, the &lt;em&gt;depends_on&lt;/em&gt; field alone is not enough.
+It only controls the startup order, but doesn&amp;rsquo;t guarantee that the next service will be started only after the service is successfully started.&lt;/p&gt;
+&lt;p&gt; I referred to many articles and found a solution.
+By mounting &lt;em&gt;wait-for-it.sh&lt;/em&gt;, write a script to replace the container&amp;rsquo;s entrypoint.
+If you have any question, you can also refer to [this article]
+(&lt;a class="link" href="https://www.cnblogs.com/wang_yb/p/9400291.html%29" target="_blank" rel="noopener"
+ &gt;https://www.cnblogs.com/wang_yb/p/9400291.html)&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt; I downloaded the script called *wait-for-it from [https:
+//github.com/vishnubob/wait-for-it](https:
+//github.com/vishnubob/wait-for-it).
+I renamed it &lt;em&gt;entrypoint.sh&lt;/em&gt; and put it in the &lt;em&gt;shell&lt;/em&gt; directory.
+Below is part of the docker-compose configuration.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;span class="lnt"&gt;11
+&lt;/span&gt;&lt;span class="lnt"&gt;12
+&lt;/span&gt;&lt;span class="lnt"&gt;13
+&lt;/span&gt;&lt;span class="lnt"&gt;14
+&lt;/span&gt;&lt;span class="lnt"&gt;15
+&lt;/span&gt;&lt;span class="lnt"&gt;16
+&lt;/span&gt;&lt;span class="lnt"&gt;17
+&lt;/span&gt;&lt;span class="lnt"&gt;18
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;service&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;backend&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;build&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;context&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;.&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;dockerfile&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;dockerfile/backend-Dockerfile&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;image&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;backend_app&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;container_name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;prod-backend-app&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;ports&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="s2"&gt;&amp;#34;13245:13245&amp;#34;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;environment&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;TZ&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;Asia/Shanghai&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;PORT&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;13245&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;PROFILE&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;prod&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;volumes&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="l"&gt;./shell/entrypoint.sh:/entrypoint.sh&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;depends_on&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="l"&gt;emq&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="l"&gt;influx&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt; The Dockerfile of the service called &lt;em&gt;backend&lt;/em&gt; is renamed &lt;em&gt;backend-Dockerfile&lt;/em&gt; and is placed in the &lt;em&gt;dockerfile&lt;/em&gt; directory.
+Since the backend service relies on the mysql and redis services, the content of its Dockerfile is as follows:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-dockerfile" data-lang="dockerfile"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;FROM&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;openjdk:8-jdk&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;ADD&lt;/span&gt; backend/target/*.jar /app.jar&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;CMD&lt;/span&gt; bash /entrypoint.sh mysqldb:3306 -t &lt;span class="m"&gt;30&lt;/span&gt; -- &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;mysql started&amp;#34;&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; bash /entrypoint.sh redisdb:6379 -t &lt;span class="m"&gt;20&lt;/span&gt; -- &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;redisdb started&amp;#34;&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; java -jar -Dfile.encoding&lt;span class="o"&gt;=&lt;/span&gt;utf-8 -Dserver.port&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;PORT&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt; -Dspring.profiles.active&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;PROFILE&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt; /app.jar&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id="how-to-configure-emqx"&gt;How to configure Emqx
+&lt;/h3&gt;&lt;p&gt; First of all, the version of &lt;em&gt;Emqx&lt;/em&gt; is &lt;em&gt;4.4.2&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt; I referred to the official document and configured the container through environment variables.
+The &lt;em&gt;emq_web_hook&lt;/em&gt; plugins is effective but the &lt;em&gt;emq_http_auth&lt;/em&gt; plugin is always ineffective.
+I tried various methods but failed.
+At last, solved it by mounting its configuration file.&lt;/p&gt;
+&lt;p&gt; You can refer to my docker-compose configuration:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;span class="lnt"&gt;11
+&lt;/span&gt;&lt;span class="lnt"&gt;12
+&lt;/span&gt;&lt;span class="lnt"&gt;13
+&lt;/span&gt;&lt;span class="lnt"&gt;14
+&lt;/span&gt;&lt;span class="lnt"&gt;15
+&lt;/span&gt;&lt;span class="lnt"&gt;16
+&lt;/span&gt;&lt;span class="lnt"&gt;17
+&lt;/span&gt;&lt;span class="lnt"&gt;18
+&lt;/span&gt;&lt;span class="lnt"&gt;19
+&lt;/span&gt;&lt;span class="lnt"&gt;20
+&lt;/span&gt;&lt;span class="lnt"&gt;21
+&lt;/span&gt;&lt;span class="lnt"&gt;22
+&lt;/span&gt;&lt;span class="lnt"&gt;23
+&lt;/span&gt;&lt;span class="lnt"&gt;24
+&lt;/span&gt;&lt;span class="lnt"&gt;25
+&lt;/span&gt;&lt;span class="lnt"&gt;26
+&lt;/span&gt;&lt;span class="lnt"&gt;27
+&lt;/span&gt;&lt;span class="lnt"&gt;28
+&lt;/span&gt;&lt;span class="lnt"&gt;29
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;service&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;emq&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;user&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;root&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;restart&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;always&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;container_name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;prod-emqx&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;image&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;emqx/emqx:4.4.2&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;ports&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="s2"&gt;&amp;#34;18083:18083&amp;#34;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="s2"&gt;&amp;#34;1883:1883&amp;#34;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="s2"&gt;&amp;#34;8083:8083&amp;#34;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="s2"&gt;&amp;#34;8084:8084&amp;#34;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="s2"&gt;&amp;#34;8883:8883&amp;#34;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;volumes&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="l"&gt;/etc/localtime:/etc/localtime&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="l"&gt;/root/docker/emqx/log:/opt/emqx/log&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="l"&gt;./conf/emqx/emqx_auth_http.conf:/opt/emqx/etc/plugins/emqx_auth_http.conf&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="l"&gt;./conf/emqx/emqx_web_hook.conf:/opt/emqx/etc/plugins/emqx_web_hook.conf&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;environment&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;EMQX_ALLOW_ANONYMOUS&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kc"&gt;false&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="c"&gt;# allow_anonymous&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;EMQX_LOADED_PLUGINS&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;emqx_management,emqx_auth_http,emqx_dashboard,emqx_web_hook&amp;#34;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;EMQX_DASHBOARD__DEFAULT_USER__LOGIN&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;root&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;EMQX_DASHBOARD__DEFAULT_USER__PASSWORD&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;12345&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;networks&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;app_net&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;ipv4_address&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;172.31.0.10&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;depends_on&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="l"&gt;auth&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;links&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="l"&gt;auth&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id="the-frontend-cant-access-the-backend-containers-interface"&gt;The frontend can&amp;rsquo;t access the backend container&amp;rsquo;s interface
+&lt;/h3&gt;&lt;p&gt; Many articles introduce the use of nginx as the base image to build the front-end image.&lt;/p&gt;
+&lt;p&gt; I referred &lt;a class="link" href="https://juejin.cn/post/6844903837774397447" target="_blank" rel="noopener"
+ &gt;this article&lt;/a&gt; and wrote the nginx configuration file, the example is as follows:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;span class="lnt"&gt;11
+&lt;/span&gt;&lt;span class="lnt"&gt;12
+&lt;/span&gt;&lt;span class="lnt"&gt;13
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;server {
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; listen 13246;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; server_name localhost;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; location / {
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; root /usr/share/nginx/html;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; index index.html index.htm;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; #Location配置
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; location /api/ {
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; rewrite /api/(.*) /$1 break;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; proxy_pass http://backend:13245;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt; Since I had not learned nginx in depth, I encountered various problems. After repeated attempts, I finally achieved my expectations.&lt;/p&gt;
+&lt;h2 id="additional-notes"&gt;Additional Notes
+&lt;/h2&gt;&lt;p&gt; The project is based on &lt;em&gt;Vue3&lt;/em&gt; and &lt;em&gt;SpringBoot&lt;/em&gt;, and uses &lt;em&gt;Jenkins&lt;/em&gt; container for automated construction and deployment.
+For convenience and space saving, the best way is to install common tool software on the host machine and then mount it into the container.&lt;/p&gt;
+&lt;p&gt; Next I will add some installation dependencies&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Install Docker&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;curl -fsSL https://get.docker.com &lt;span class="p"&gt;|&lt;/span&gt; bash -s docker --mirror Aliyun
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;ol start="2"&gt;
+&lt;li&gt;Install jdk8&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;span class="lnt"&gt;11
+&lt;/span&gt;&lt;span class="lnt"&gt;12
+&lt;/span&gt;&lt;span class="lnt"&gt;13
+&lt;/span&gt;&lt;span class="lnt"&gt;14
+&lt;/span&gt;&lt;span class="lnt"&gt;15
+&lt;/span&gt;&lt;span class="lnt"&gt;16
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;rm /tmp/jdk*.tar.gz -f
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;wget https://repo.huaweicloud.com/java/jdk/8u202-b08/jdk-8u202-linux-x64.tar.gz -P /tmp
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;ls -lht /tmp/ &lt;span class="p"&gt;|&lt;/span&gt; grep jdk
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;mkdir -p /usr/local/java/
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;tar -zxf /tmp/jdk-8u202-linux-x64.tar.gz -C /usr/local/java/ &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; ls /usr/local/java/ -l
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# Add environment jdk1.8 environment variables&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;cat &amp;gt; /etc/profile.d/java.sh &lt;span class="s"&gt;&amp;lt;&amp;lt;EOF
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;export JAVA_HOME=/usr/local/java/jdk1.8.0_202
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;export JRE_HOME=\${JAVA_HOME}/jre
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;export CLASSPATH=.:\${JAVA_HOME}/lib:\${JRE_HOME}/lib
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;export PATH=\${JAVA_HOME}/bin:\$PATH
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;EOF&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;source&lt;/span&gt; /etc/profile.d/java.sh
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;ln -s &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;JAVA_HOME&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;/bin/java /usr/bin/java
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;java -version
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;ol start="3"&gt;
+&lt;li&gt;Install Maven&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;span class="lnt"&gt;11
+&lt;/span&gt;&lt;span class="lnt"&gt;12
+&lt;/span&gt;&lt;span class="lnt"&gt;13
+&lt;/span&gt;&lt;span class="lnt"&gt;14
+&lt;/span&gt;&lt;span class="lnt"&gt;15
+&lt;/span&gt;&lt;span class="lnt"&gt;16
+&lt;/span&gt;&lt;span class="lnt"&gt;17
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nv"&gt;maven_version&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;3.9.0
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;rm /tmp/*maven*.tar.gz -rf
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;#wget https://dlcdn.apache.org/maven/maven-3/3.9.0/binaries/apache-maven-3.9.0-bin.tar.gz -P /tmp&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;wget https://mirrors.aliyun.com/apache/maven/maven-3/3.9.0/binaries/apache-maven-3.9.0-bin.tar.gz -P /tmp
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;ls -lht /tmp/ &lt;span class="p"&gt;|&lt;/span&gt; grep maven
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;mkdir -p /usr/local/maven/
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;tar -zxf /tmp/apache-maven-*.tar.gz -C /usr/local/maven/ &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; ls /usr/local/maven/ -l
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# Add Maven environment variables&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;cat &amp;gt; /etc/profile.d/maven.sh &lt;span class="s"&gt;&amp;lt;&amp;lt; EOF
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;export MAVEN_VERSION=&amp;#34;${maven_version}&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;export M2_HOME=/usr/local/maven/apache-maven-\${MAVEN_VERSION}
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;export MAVEN_HOME=/usr/local/maven/apache-maven-3.9.0
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;export PATH=\${MAVEN_HOME}/bin:\${PATH}
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;EOF&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;chmod +x /etc/profile.d/maven.sh
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;source&lt;/span&gt; /etc/profile.d/maven.sh
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;mvn -version
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;ol start="4"&gt;
+&lt;li&gt;Install nvm&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;span class="lnt"&gt;11
+&lt;/span&gt;&lt;span class="lnt"&gt;12
+&lt;/span&gt;&lt;span class="lnt"&gt;13
+&lt;/span&gt;&lt;span class="lnt"&gt;14
+&lt;/span&gt;&lt;span class="lnt"&gt;15
+&lt;/span&gt;&lt;span class="lnt"&gt;16
+&lt;/span&gt;&lt;span class="lnt"&gt;17
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nv"&gt;nvm_version&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;0.39.3
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;rm /tmp/v&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;nvm_version&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;.tar.gz -rf
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;wget https://github.com/nvm-sh/nvm/archive/refs/tags/v&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;nvm_version&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;.tar.gz -P /tmp
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;ls -lht /tmp/ &lt;span class="p"&gt;|&lt;/span&gt; grep &lt;span class="s2"&gt;&amp;#34;v&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;nvm_version&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;.tar.gz&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;mkdir -p /usr/local/nvm/
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;tar -zxf /tmp/v&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;nvm_version&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;.tar.gz -C /usr/local/nvm/ &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; ls /usr/local/nvm/ -l
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# Add nvm environment variables&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;cat &lt;span class="s"&gt;&amp;lt;&amp;lt; EOF &amp;gt; /etc/profile.d/nvm.sh
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;export NVM_VERSION=&amp;#34;${nvm_version}&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;export NVM_DIR=&amp;#34;/usr/local/nvm/nvm-\${NVM_VERSION}&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;[ -s &amp;#34;\$NVM_DIR/nvm.sh&amp;#34; ] &amp;amp;&amp;amp; \. &amp;#34;\$NVM_DIR/nvm.sh&amp;#34; # This loads nvm
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;[ -s &amp;#34;\$NVM_DIR/bash_completion&amp;#34; ] &amp;amp;&amp;amp; \. &amp;#34;\$NVM_DIR/bash_completion&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;EOF&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;chmod +x /etc/profile.d/nvm.sh
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;source&lt;/span&gt; /etc/profile.d/nvm.sh
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;nvm version
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;ol start="5"&gt;
+&lt;li&gt;Install docker-compose&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt; It is recommended to download docker-compose from github official website, some mirror website packages are too old.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;curl -L https://github.com/docker/compose/releases/download/v2.16.0/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;chmod +x /usr/local/bin/docker-compose
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;docker-compose -v
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id="summary"&gt;Summary
+&lt;/h2&gt;&lt;p&gt; By applying the newly learned Jenkins automation technology to the project, time can be greatly saved.
+Operation and maintenance do not have to repeatedly deploy manually, and testing becomes a part of development.
+Only test scripts need to be written.
+Each time the developer submits code, the test scripts will be automatically executed and then deployed to the remote via ssh. From the traditional
+stage-by-stage development, where a stage cannot be skipped directly, development can now be quickly tested and put into production to get feedback,
+doubling efficiency. Perhaps this is why the CI/CD concept and tools are popular.&lt;/p&gt;
+&lt;h2 id="references"&gt;References
+&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class="link" href="https://github.com/vishnubob/wait-for-it" target="_blank" rel="noopener"
+ &gt;https://github.com/vishnubob/wait-for-it&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class="link" href="https://www.cnblogs.com/wang_yb/p/9400291.html" target="_blank" rel="noopener"
+ &gt;https://www.cnblogs.com/wang_yb/p/9400291.html&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class="link" href="https://juejin.cn/post/6844903837774397447" target="_blank" rel="noopener"
+ &gt;https://juejin.cn/post/6844903837774397447&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class="link" href="https://juejin.cn/post/7095729903684829191" target="_blank" rel="noopener"
+ &gt;https://juejin.cn/post/7095729903684829191&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;font size=3 color=blue&gt;2023-02-16 First Update&lt;/font&gt;&lt;/p&gt;
+&lt;p&gt;&lt;font size=3 color=blue&gt;2023-02-26 Add Dependent Installation configuration&lt;/font&gt;&lt;/p&gt;
+&lt;p&gt;&lt;font size=3 color=blue&gt;2024-07-06 Support English&lt;/font&gt;&lt;/p&gt;</description></item></channel></rss>

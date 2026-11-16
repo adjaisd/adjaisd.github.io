@@ -1,0 +1,574 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Teamwork on Loong's Blog</title><link>https://adja.com.cn/en/tags/teamwork/</link><description>Recent content in Teamwork on Loong's Blog</description><generator>Hugo -- gohugo.io</generator><language>en</language><copyright>Loong</copyright><lastBuildDate>Sat, 14 Nov 2026 13:20:44 +0800</lastBuildDate><atom:link href="https://adja.com.cn/en/tags/teamwork/index.xml" rel="self" type="application/rss+xml"/><item><title>Teamwork Using Git</title><link>https://adja.com.cn/en/p/teamwork-using-git/</link><pubDate>Sun, 06 Oct 2024 11:34:59 +0800</pubDate><guid>https://adja.com.cn/en/p/teamwork-using-git/</guid><description>&lt;img src="https://adja.com.cn/p/teamwork-using-git/cover.webp" alt="Featured image of post Teamwork Using Git" /&gt;&lt;h1 id="teamwork-using-git"&gt;Teamwork Using Git
+&lt;/h1&gt;&lt;p&gt;It&amp;rsquo;s been a long time since the last update of the blog. This time, the content of the update is about how to use Git for teamwork. This article mainly introduces the workflow of teamwork.&lt;/p&gt;
+&lt;h2 id="basic-tutorial"&gt;Basic Tutorial
+&lt;/h2&gt;&lt;p&gt;This article assumes that you have a basic understanding of Git. If you are not familiar with Git, you can refer to some basic tutorials about Git first such as &lt;a class="link" href="https://www.liaoxuefeng.com/wiki/896043488029600" target="_blank" rel="noopener"
+ &gt;Liao Xuefeng&amp;rsquo;s Git Tutorial&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;If you are not used to Chinese, it&amp;rsquo;s recommended to read the official Git documentation: &lt;a class="link" href="https://git-scm.com/doc" target="_blank" rel="noopener"
+ &gt;Git Documentation&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;If you have basic Git skills, you can continue to read this article to learn how to use Git for teamwork. Before reading this article, you can also read &lt;a class="link" href="https://git-scm.com/book" target="_blank" rel="noopener"
+ &gt;&lt;strong&gt;Pro Git&lt;/strong&gt;&lt;/a&gt;. Fortunately, the book is free to read online and available in many languages.&lt;/p&gt;
+&lt;p&gt;Then, let me introduce the workflow of teamwork using Git.&lt;/p&gt;
+&lt;h2 id="teamwork-workflow"&gt;Teamwork Workflow
+&lt;/h2&gt;&lt;p&gt;I introduce the workflow mainly based on Gitlab.&lt;/p&gt;
+&lt;p&gt;In GitLab, there are 5 roles for repository members:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Guest&lt;/strong&gt;: can only view repository contents, but cannot perform write operations;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Reporter&lt;/strong&gt;: can view and clone repositories, but cannot perform write operations;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Developer&lt;/strong&gt;: can perform write operations, but cannot manage project settings;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Maintainer&lt;/strong&gt;: can manage project settings and members;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Owner&lt;/strong&gt;: has all permissions, including deleting projects.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Suppose there is a project with 5 team members including project manager (1 person), developers (3 people, 1 of whom joined midway), tester (1 person);&lt;/p&gt;
+&lt;p&gt;The roles and responsibilities of these 5 people are as follows:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Project Manager&lt;/strong&gt;: Owner&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Developer #1&lt;/strong&gt;: Maintainer (responsible for developing and reviewing code)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Developer #2&lt;/strong&gt;: Developer&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Developer #3&lt;/strong&gt;: Developer (joined midway)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Tester&lt;/strong&gt;: Reporter&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Before Developer #3 joined, the project development was all done collaboratively within the team, and the code should be submitted to a repository.&lt;/p&gt;
+&lt;p&gt;After Developer #3 joins, the project involves cross-team development. Developer #3 should fork the repository. If using GitLab, merge the code into the upstream repository (the upstream repository is the forked repository) through Merge Request (MR for short).&lt;/p&gt;
+&lt;p&gt;The following is the workflow description of &lt;strong&gt;GitLab Flow&lt;/strong&gt;.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;The project manager creates a repository, submits the requirements document, and adds team members as Developers&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The initial submission is as follows:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;span class="lnt"&gt;6
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git init .
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;touch README.md &lt;span class="c1"&gt;#This article briefly introduces the project background and function&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git add README.md &lt;span class="c1"&gt;#Add README.md to the staging area&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git commit -m &lt;span class="s2"&gt;&amp;#34;first commit&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git remote add origin https://&amp;lt;host&amp;gt;:&amp;lt;port&amp;gt;/path/to/xxx.git &lt;span class="c1"&gt;#Add a remote library, change it to your own remote library here&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git push -u origin master
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Next, submit the requirements documents.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;mkdir docs &lt;span class="c1"&gt;#创建docs目录，在该目录下添加需求文档&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;touch docs/requirements.md &lt;span class="c1"&gt;#采用markdown格式记录需求文档&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Open the &lt;code&gt;docs/requirements.md&lt;/code&gt; file and complete the requirements document. After writing it, do the following:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git add docs/requirements.md &lt;span class="c1"&gt;#Add the requirements document to the staging area&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git commit -m &lt;span class="s2"&gt;&amp;#34;[docs] Add requirements document&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git push origin master
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;ol start="2"&gt;
+&lt;li&gt;Developer #1 submits technical documents and creates dev branch&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Submitting technical documents is as follows:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git remote add origin https://&amp;lt;host&amp;gt;:&amp;lt;port&amp;gt;/path/to/xxx.git &lt;span class="c1"&gt;#Add remote library, change it to your own remote library&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git fetch origin -a &lt;span class="c1"&gt;#Get all branches of remote library&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;touch docs/technical.md &lt;span class="c1"&gt;#Record technical documents in markdown format&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Open the &lt;code&gt;docs/technical.md&lt;/code&gt; file and complete the writing of the technical document. After that, do the following:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;span class="lnt"&gt;6
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git add docs/technical.md &lt;span class="c1"&gt;#Add the technical document to the staging area&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git commit -m &lt;span class="s2"&gt;&amp;#34;[docs]Add technical document&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git push origin master
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git checkout -b dev &lt;span class="c1"&gt;#Create and switch to the dev branch&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git push origin dev
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id="internal-team-collaboration"&gt;Internal team collaboration
+&lt;/h3&gt;&lt;p&gt;When collaborating internally, Developer #1, Developer #2, and Tester are all in the same team. They are all members of the project and can directly submit code to the same repository;&lt;/p&gt;
+&lt;p&gt;Next, two application scenarios are explained according to the &lt;code&gt;GitLab Flow&lt;/code&gt; workflow.&lt;/p&gt;
+&lt;h4 id="develop-new-features"&gt;Develop new features
+&lt;/h4&gt;&lt;p&gt;Development and testing of new features cannot be modified on one branch, but a new branch should be created, named &lt;code&gt;feat_xxx&lt;/code&gt; to represent the development of xxx feature.&lt;/p&gt;
+&lt;p&gt;Next, Developer #1 raises an issue and creates two new branches in the issue named &lt;code&gt;feat_xxx&lt;/code&gt; and &lt;code&gt;test_xxx&lt;/code&gt;, which are used by Developer #2 to submit feature code to the &lt;code&gt;feat_xxx&lt;/code&gt; branch and testers to submit test case code to the &lt;code&gt;test_xxx&lt;/code&gt; branch.&lt;/p&gt;
+&lt;p&gt;Among them, the &lt;code&gt;feat_xxx&lt;/code&gt; branch is based on the latest &lt;code&gt;dev&lt;/code&gt; branch, and the &lt;code&gt;test_xxx&lt;/code&gt; branch is based on the &lt;code&gt;feat_xxx&lt;/code&gt; branch. The workflow is as follows:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Developer #1 submits an issue according to the document of the dev branch. Developer #1 creates a new branch &lt;code&gt;feat_xxx&lt;/code&gt; based on the &lt;code&gt;dev&lt;/code&gt; branch in the issue and notifies Developer #2 to develop the function&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Developer #2 obtains and checks out to the &lt;code&gt;feat_xxx&lt;/code&gt; branch&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;If the &lt;code&gt;feat_xxx&lt;/code&gt; branch does not exist, you need to create and switch to a new branch. Execute the following instructions:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git fetch origin -a &lt;span class="c1"&gt;#Get all branches of the remote library&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git checkout -b feat_xxx origin/feat_xxx &lt;span class="c1"&gt;#Create a feat_xxx branch locally based on the remote feat_xxx branch and switch to it&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;If &lt;code&gt;feat_xxx&lt;/code&gt; branch already exists, execute the following command:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git checkout feat_xxx &lt;span class="c1"&gt;#No need for the -base parameter, because the local feat_xxx branch already exists&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git pull origin feat_xxx:feat_xxx &lt;span class="c1"&gt;#Pull the remote feat_xxx branch to the local feat_xxx branch&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;ol start="3"&gt;
+&lt;li&gt;Developer #2 develops on &lt;code&gt;feat_xxx&lt;/code&gt; and pushes it to the remote library after development is completed&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git add &amp;lt;files&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git commit -m &lt;span class="s2"&gt;&amp;#34;[feat] Add xxx function&amp;#34;&lt;/span&gt; &lt;span class="c1"&gt;#&amp;#34;[feat]&amp;#34; indicates that this is a new function&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git push origin feat_xxx
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Note: If the modification of feat_xxx is a new function, the comment of the commit record should be prefixed with &amp;ldquo;[feat]&amp;rdquo;.&lt;/p&gt;
+&lt;ol start="4"&gt;
+&lt;li&gt;Developer #2 has not submitted an MR before, so he creates an MR request to merge &lt;code&gt;feat_xxx&lt;/code&gt; into the &lt;code&gt;dev&lt;/code&gt; branch, and the Issue needs to be associated with the MR.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;After the Developer #2 completes the new function, he needs to associate the MR in the Issue, through the &lt;code&gt;!&amp;lt;MR_number&amp;gt;&lt;/code&gt; method. Assuming that the serial number of the MR is 9, the comment &lt;code&gt;See merge request !9&lt;/code&gt; should be added to the Issue;&lt;/p&gt;
+&lt;p&gt;Also, add a comment in &lt;em&gt;Merge Request&lt;/em&gt; to indicate which Issue this corresponds to, through the &lt;code&gt;#&amp;lt;Issue_number&lt;/code&gt; method. Assuming that the Issue corresponding to the MR is 5, the comment &lt;code&gt;See issue #5&lt;/code&gt; should be added.&lt;/p&gt;
+&lt;ol start="5"&gt;
+&lt;li&gt;Developer #1 reviews the code. If the review fails, he/she will state the improvement suggestions in the MR and return to step (3)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The comment of the submission record here should still be &lt;code&gt;[perf] Improve xxx&lt;/code&gt;, where &amp;ldquo;[perf]&amp;rdquo; is the improvement made for xxx&lt;/p&gt;
+&lt;ol start="6"&gt;
+&lt;li&gt;If the review passes, Developer #1 will create a sub-item Issue in the Issue, create a &lt;code&gt;test_xxx&lt;/code&gt; branch based on the &lt;code&gt;feat_xxx&lt;/code&gt; branch, and assign the Issue to the tester&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Note: Developer #1 should not pass the MR after the review passes. The tester needs to submit the test case and pass the test. Then the tester needs to submit an MR request to merge the &lt;code&gt;test_xxx&lt;/code&gt; branch into the &lt;code&gt;feat_xxx&lt;/code&gt; branch. Only then can Developer #1 confirm the MR and &lt;code&gt;feat_xxx&lt;/code&gt; will be deleted;&lt;/p&gt;
+&lt;ol start="7"&gt;
+&lt;li&gt;The tester pulls the test branch code, writes the test case and submits it to the &lt;code&gt;test_xxx&lt;/code&gt; branch&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;span class="lnt"&gt;6
+&lt;/span&gt;&lt;span class="lnt"&gt;7
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;#If the test_xxx branch already exists, execute the following command&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git checkout test_xxx &lt;span class="c1"&gt;#Execute for the first pull: git checkout -b test_xxx origin/test_xxx&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;touch test/test_xxx &lt;span class="c1"&gt;#Write a test script&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;#Write a script for test cases written in other languages&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git add test/test_xxx
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git commit -m &lt;span class="s2"&gt;&amp;#34;[test] Test xxx function&amp;#34;&lt;/span&gt; &lt;span class="c1"&gt;#Commit the &amp;#34;[test]&amp;#34; annotation of the record, indicating that it has modified the test code&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git push origin test_xxx
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Whether the test case is correct or not, the test case program should be submitted, and the submission record prefix should be &amp;ldquo;[test]&amp;rdquo;, indicating that this is a test case.&lt;/p&gt;
+&lt;ol start="8"&gt;
+&lt;li&gt;
+&lt;p&gt;If the tester has not proposed an MR before, then create an MR request to merge &lt;code&gt;test_xxx&lt;/code&gt; into the &lt;code&gt;feat_xxx&lt;/code&gt; branch. The Issue and the corresponding MR need to be associated&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Developer #2 reviews the tester&amp;rsquo;s MR. If it does not pass, return to step (10). Otherwise, it will be submitted to Developer #1 for review. If Developer #1 passes the review, the merge is allowed&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Developer #1 allows the merge, which will delete the &lt;code&gt;test_xxx&lt;/code&gt; branch, and then the MR will be closed. Developer #1 is also required to mark the test issue as completed&lt;/p&gt;
+&lt;ol start="10"&gt;
+&lt;li&gt;Developer #1 and Developer #2 update &lt;code&gt;feat_xxx&lt;/code&gt;. They can first test locally. If there are problems, return to step (3)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git fetch origin feat_xxx
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git checkout feat_xxx &lt;span class="c1"&gt;#Switch to the local branch to be merged&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git merge origin/feat_xxx &lt;span class="c1"&gt;#Merge the remote library into the current branch&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;ol start="11"&gt;
+&lt;li&gt;If all test cases pass, Developer #1 confirms that the MR has passed and merges &lt;code&gt;feat_xxx&lt;/code&gt; into the &lt;code&gt;dev&lt;/code&gt; branch.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id="dealing-with-integration-issues"&gt;Dealing with integration issues
+&lt;/h4&gt;&lt;p&gt;When testing a function alone, everything works fine, but there is a problem when integrating it. The following example is used to introduce it.&lt;/p&gt;
+&lt;p&gt;Assume that the requirements have not changed significantly, the original function feat_xxx1 (no problem), add a new function feat_xxx2, and there is no problem when testing feat_xxx2 alone, but a problem occurs after the integration test. The tester needs to raise an issue first, and other members should actively discuss and locate the problem;&lt;/p&gt;
+&lt;p&gt;Here, there is no need to go back to the feat_xxx2 branch to fix the problem (maybe the problem of feat_xxx1 was not exposed in the previous integration test), but to create a new branch on the integrated &lt;code&gt;dev&lt;/code&gt; branch to fix the integration problem.&lt;/p&gt;
+&lt;p&gt;The specific workflow is as follows:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;The tester tests based on the &lt;code&gt;dev&lt;/code&gt; branch, and raises an issue if a problem is found, explaining the phenomenon of the problem and what operations were performed&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;If the problem occurs in a certain test case, the test case program should be submitted and then an MR should be submitted to request to merge &lt;code&gt;test_dev&lt;/code&gt; into the &lt;code&gt;dev&lt;/code&gt; branch, and then the MR and the corresponding issue should be associated in the issue&lt;/p&gt;
+&lt;p&gt;If other members discuss and confirm that there is a problem, after Developer 1 and Developer 2 pass the tester&amp;rsquo;s MR, Developer 1 confirms the merge, and the &lt;code&gt;test_dev&lt;/code&gt; branch will be deleted&lt;/p&gt;
+&lt;p&gt;&lt;font size=3 color=red&gt;Note:&lt;/font&gt;&lt;/p&gt;
+&lt;p&gt;Feat_xxx3 and feat_xxx4 may be developed at the same time. Each function is fine when tested separately, but problems occur after integration. They are merged into the &lt;code&gt;dev&lt;/code&gt; branch without conflict. The tester should create two new branches locally for these two integrations. For the commits of feat_xxx3 merged into dev, create a &lt;code&gt;test_dev&lt;/code&gt; branch, and for the commits of feat_xxx4 merged into dev, create a &lt;code&gt;test_dev1&lt;/code&gt; branch. Branch naming is analogous.&lt;/p&gt;
+&lt;p&gt;If you merge into the &lt;code&gt;dev&lt;/code&gt; branch multiple times in a row, including adding new functions and fixing problems with old functions, you should create a tag through the following command:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git checkout dev
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git tag release-x.x.x &lt;span class="c1"&gt;#Switch to the dev branch and create the current branch as a release version&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git push origin release-x.x.x &lt;span class="c1"&gt;#Push the version to the remote&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Generally, the tester tests the code on the branch of &lt;code&gt;release-x.x.x&lt;/code&gt;. If there is a problem, create a &lt;code&gt;test-release-x.x.x&lt;/code&gt; branch locally for testing. The operation is as follows:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git fetch origin -a
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git checkout -b test-release-x.x.x origin/release-x.x.x &lt;span class="c1"&gt;#Create a test branch based on the remote release version&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;#Test, if there is a problem that must be found, submit the corresponding test case. The following operations are required&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git commit -m &lt;span class="s2"&gt;&amp;#34;[test] Test release version x.x.x&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git push origin test-release-x.x.x
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;ol start="2"&gt;
+&lt;li&gt;
+&lt;p&gt;After locating the problem (assuming that the problem occurs in feat_xxx2 developed by developer 2), developer 1 creates a &lt;code&gt;fix_xxx2&lt;/code&gt; branch in the Issue based on the problematic &lt;code&gt;dev&lt;/code&gt; branch and assigns it to developer 2&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Developer 2 needs to modify and submit the code on &lt;code&gt;fix_xxx2&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The submission record here is annotated as &lt;code&gt;[fix] Fix xxx problem&lt;/code&gt;&lt;/p&gt;
+&lt;ol start="4"&gt;
+&lt;li&gt;
+&lt;p&gt;Developer 2 performs the same operation as the tester. If the problem still occurs, return to step (3)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Developer 2 submits a MR request to merge &lt;code&gt;fix_xxx2&lt;/code&gt; into the &lt;code&gt;dev&lt;/code&gt; branch, and associates the MR with the corresponding fix issue&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Tester 2 pulls &lt;code&gt;fix_xxx2&lt;/code&gt; for testing. If there is no problem, it passes, but it will not be merged into the &lt;code&gt;dev&lt;/code&gt; branch&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Developer 1 observes the bug fix, and finally passes the merge, and the &lt;code&gt;fix_xxx2&lt;/code&gt; branch will be deleted&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="cross-team-development-workflow"&gt;Cross-team development workflow
+&lt;/h3&gt;&lt;p&gt;After developer 3 joins, the code submitted by developer 3 may affect existing functions due to lack of precautions. Therefore, developer 3 should fork the upstream repository for development, and other members should continue to develop in the original way.&lt;/p&gt;
+&lt;p&gt;Developer 3 should do the following:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git clone https://&amp;lt;host&amp;gt;:&amp;lt;port&amp;gt;/path/to/repo-xxx.git &lt;span class="c1"&gt;#Clone the forked repository to the local&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; repo-xxx
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git remote add upstream https://&amp;lt;host&amp;gt;:&amp;lt;port&amp;gt;/path/to/repo-xxx.git &lt;span class="c1"&gt;#Add the forked repository as the upstream repository&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Assuming that the project is urgent and the function that should have been implemented by Developer 2 is handed over to Developer 3 for development, Developer 1 should raise an Issue in the upstream repository and create a &lt;code&gt;feat_xxx&lt;/code&gt; branch based on the &lt;code&gt;dev&lt;/code&gt; branch. When Developer 3 receives the notification, he should do the following:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git fetch upstream feat_xxx &lt;span class="c1"&gt;#Get the feat_xxx branch of the upstream repository&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git checkout -b feat_xxx upstream/feat_xxx
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;The subsequent operations are similar to the development workflow within the team.&lt;/p&gt;
+&lt;p&gt;&lt;font size=3 color=red&gt;Note:&lt;/font&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;If developer 3 needs to submit an MR, he should create an MR in his forked repository;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;If developer 3 receives an assignment, he should pull the corresponding branch from the upstream repository &lt;code&gt;upstream&lt;/code&gt; to the local, and then modify and submit the code on the branch&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Developer 3 cannot push directly to the upstream repository, but should push to the forked repository, and then create an MR request to merge it into the corresponding branch of the upstream repository. The MR needs to be associated with the corresponding issue in the upstream repository.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="supplement"&gt;Supplement
+&lt;/h2&gt;&lt;h3 id="the-remote-library-branch-is-deleted-after-mr-how-to-delete-the-remote-library-fetched-locally"&gt;The remote library branch is deleted after MR, how to delete the remote library fetched locally
+&lt;/h3&gt;&lt;p&gt;After developer 1 confirms MR, the remote library&amp;rsquo;s &lt;code&gt;feat_xxx&lt;/code&gt; branch is deleted, but the local &lt;code&gt;feat_xxx&lt;/code&gt; still exists&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git fetch -p &lt;span class="c1"&gt;#-p is the abbreviation of --prune&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git checkout dev &lt;span class="c1"&gt;#If you are currently on the feat_xxx branch&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git branch -d feat_xxx &lt;span class="c1"&gt;#Delete the local feat_xxx branch&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git branch -D feat_xxx &lt;span class="c1"&gt;#Note: This means that the local branch has not been merged and will be forcibly deleted&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id="there-is-a-big-problem-with-a-certain-release-version-how-to-delete-the-deleted-remote-library-tag-stored-locally"&gt;There is a big problem with a certain release version. How to delete the deleted remote library tag stored locally
+&lt;/h3&gt;&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git fetch -P &lt;span class="c1"&gt;#-P is the abbreviation of --prune-tags&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id="in-cross-team-collaboration-after-the-upstream-warehouse-mr-how-to-synchronize-the-forked-remote-library-with-its-upstream-warehouse"&gt;In cross-team collaboration, after the upstream warehouse MR, how to synchronize the forked remote library with its upstream warehouse
+&lt;/h3&gt;&lt;p&gt;Assuming that your MR requests to merge &lt;code&gt;fix_xxx&lt;/code&gt; into the &lt;code&gt;dev&lt;/code&gt; branch of the upstream warehouse, after developer 1 confirms the merge, the operation is as follows&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;span class="lnt"&gt;6
+&lt;/span&gt;&lt;span class="lnt"&gt;7
+&lt;/span&gt;&lt;span class="lnt"&gt;8
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git fetch upstream -a &lt;span class="c1"&gt;#Get changes in the upstream warehouse&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git merge upstream/dev dev &lt;span class="c1"&gt;#Synchronize the upstream warehouse to the local dev branch&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;#or git pull upstream dev:dev #Replace the above 2 lines of instructions&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git push origin dev &lt;span class="c1"&gt;#Synchronize local changes to the fork warehouse&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git checkout dev &lt;span class="c1"&gt;#If you are currently in the fix_xxx branch&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git branch -d fix_xxx &lt;span class="c1"&gt;#Delete the local fix_xxx branch&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git fetch -p &lt;span class="c1"&gt;#Delete the deleted fix_xxx branch stored locally&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id="how-to-name-a-new-branch"&gt;How to name a new branch
+&lt;/h3&gt;&lt;p&gt;For example, to add a new feature &lt;em&gt;Add query temperature function&lt;/em&gt;, you should create a new branch named &lt;code&gt;feat_query_temp&lt;/code&gt; in the current branch (usually dev branch) (where &lt;em&gt;feat&lt;/em&gt; is the abbreviation of feature);&lt;/p&gt;
+&lt;p&gt;The naming format of the new branch is as follows:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-txt" data-lang="txt"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;type_subject
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Submission type (type): including &lt;code&gt;feat&lt;/code&gt; (new feature), &lt;code&gt;fix&lt;/code&gt; (fix problem), &lt;code&gt;doc&lt;/code&gt; (document change), &lt;code&gt;refactor&lt;/code&gt; (code refactoring, not new feature, not bug fix), &lt;code&gt;test&lt;/code&gt; (add or modify test), &lt;code&gt;chore&lt;/code&gt; (other submissions that do not modify source code or test cases), &lt;code&gt;style&lt;/code&gt; (code format, does not affect code operation);&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Short description (subject): Use underscores &lt;code&gt;_&lt;/code&gt; to separate words, and be concise and clear.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The naming rule example is as follows:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-txt" data-lang="txt"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;feat_support_eth #Support network port
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;refactor_cmd_resp #Refactor command reply prompt information
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;style_format_code #Format source code
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;test_cmd_resp #Test command reply prompt information
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id="how-to-write-commit-comments"&gt;How to write commit comments
+&lt;/h3&gt;&lt;p&gt;Commit comments should be as concise and clear as possible, and directly reflect the changes in the submitted code;&lt;/p&gt;
+&lt;p&gt;New features and bug fixes should also be submitted in two batches, and other types of submissions should be submitted in the same way;&lt;/p&gt;
+&lt;p&gt;You can submit to the local library through the &lt;code&gt;git commit -m &amp;lt;message&amp;gt;&lt;/code&gt; command, where the description of &lt;code&gt;&amp;lt;message&amp;gt;&lt;/code&gt; is as follows:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-txt" data-lang="txt"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Format: [type]msg
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Where type values ​​and their meanings are as follows:&lt;/p&gt;
+&lt;table&gt;
+ &lt;thead&gt;
+ &lt;tr&gt;
+ &lt;th style="text-align: center"&gt;type&lt;/th&gt;
+ &lt;th style="text-align: left"&gt;Meaning&lt;/th&gt;
+ &lt;th style="text-align: left"&gt;Example&lt;/th&gt;
+ &lt;/tr&gt;
+ &lt;/thead&gt;
+ &lt;tbody&gt;
+ &lt;tr&gt;
+ &lt;td style="text-align: center"&gt;feat&lt;/td&gt;
+ &lt;td style="text-align: left"&gt;New feature (feature)&lt;/td&gt;
+ &lt;td style="text-align: left"&gt;[feat] Add health check&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td style="text-align: center"&gt;fix&lt;/td&gt;
+ &lt;td style="text-align: left"&gt;Fix bug (fix bug)&lt;/td&gt;
+ &lt;td style="text-align: left"&gt;[fix] Fix health check relocation problem&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td style="text-align: center"&gt;doc&lt;/td&gt;
+ &lt;td style="text-align: left"&gt;Documentation changes (documentation)&lt;/td&gt;
+ &lt;td style="text-align: left"&gt;[doc] Improve technical documentation&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td style="text-align: center"&gt;style&lt;/td&gt;
+ &lt;td style="text-align: left"&gt;Code formatting&lt;/td&gt;
+ &lt;td style="text-align: left"&gt;[style] Format non-generated source code&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td style="text-align: center"&gt;refactor&lt;/td&gt;
+ &lt;td style="text-align: left"&gt;Refactor code&lt;/td&gt;
+ &lt;td style="text-align: left"&gt;[refactor] Refactor command reply prompt&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td style="text-align: center"&gt;test&lt;/td&gt;
+ &lt;td style="text-align: left"&gt;Add or modify tests&lt;/td&gt;
+ &lt;td style="text-align: left"&gt;[test] Test health check&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td style="text-align: center"&gt;chore&lt;/td&gt;
+ &lt;td style="text-align: left"&gt;Commit without modifying source code or test files&lt;/td&gt;
+ &lt;td style="text-align: left"&gt;[chore] Improve .gitignore&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td style="text-align: center"&gt;perf&lt;/td&gt;
+ &lt;td style="text-align: left"&gt;Changes to improve performance&lt;/td&gt;
+ &lt;td style="text-align: left"&gt;[perf] Improve sliding average performance&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td style="text-align: center"&gt;ci&lt;/td&gt;
+ &lt;td style="text-align: left"&gt;Changes related to continuous integration&lt;/td&gt;
+ &lt;td style="text-align: left"&gt;[ci] Automatically generate and publish hex and bin files&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td style="text-align: center"&gt;build&lt;/td&gt;
+ &lt;td style="text-align: left"&gt;Changes to build system or external dependencies&lt;/td&gt;
+ &lt;td style="text-align: left"&gt;[build] Improve CMakelists.xt configuration&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td style="text-align: center"&gt;revert&lt;/td&gt;
+ &lt;td style="text-align: left"&gt;Undo previous submission&lt;/td&gt;
+ &lt;td style="text-align: left"&gt;[revert] Rollback scheduled tasks&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id="how-to-automatically-perform-specific-operations-for-each-submission"&gt;How to automatically perform specific operations for each submission
+&lt;/h3&gt;&lt;p&gt;If you need to format the code before each submission, you should normally perform specific operations actively, but you can configure &lt;code&gt;.git/hooks/pre-commit&lt;/code&gt; to perform the desired operations. The example is as follows:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;span class="lnt"&gt;6
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git clone https://&amp;lt;host&amp;gt;:&amp;lt;port&amp;gt;/path/to/repo_xxx.git
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; repo_xxx.git
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;touch .git/hooks/pre-commit &lt;span class="c1"&gt;#Create a pre_commit text file in the .git/hooks directory&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;#Edit pre-commit content&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;chmod +x .git/hooks/pre_commit &lt;span class="c1"&gt;#Modify the pre-commit attribute to be executable&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;The content of pre-commit is as follows:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="cp"&gt;#!/bin/sh
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# Find all C source files and header files&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nv"&gt;files&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;git diff --cached --name-only --diff-filter&lt;span class="o"&gt;=&lt;/span&gt;ACM &lt;span class="p"&gt;|&lt;/span&gt; grep -E &lt;span class="s1"&gt;&amp;#39;\.(c|h)$&amp;#39;&lt;/span&gt;&lt;span class="k"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# If there are no files to format, exit&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="o"&gt;[&lt;/span&gt; -z &lt;span class="s2"&gt;&amp;#34;&lt;/span&gt;&lt;span class="nv"&gt;$files&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="nb"&gt;exit&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# Run clang-format on each file with the specified .clang-format file&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;&lt;/span&gt;&lt;span class="nv"&gt;$files&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; xargs clang-format -i --style&lt;span class="o"&gt;=&lt;/span&gt;file
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# Add the formatted files back to the staging area&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;&lt;/span&gt;&lt;span class="nv"&gt;$files&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; xargs git add
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;exit&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;After the above configuration, each time &lt;code&gt;git commit&lt;/code&gt; is executed, it will filter &amp;ldquo;.c&amp;rdquo; and &amp;ldquo;.h&amp;rdquo; files in the modified files, and then format the files through &lt;code&gt;clang-format&lt;/code&gt; according to the &amp;ldquo;.clang-format&amp;rdquo; configuration file in the root directory.&lt;/p&gt;
+&lt;h2 id="reference"&gt;Reference
+&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class="link" href="https://www.cnblogs.com/xiaoqi/p/gitlab-flow.html" target="_blank" rel="noopener"
+ &gt;https://www.cnblogs.com/xiaoqi/p/gitlab-flow.html&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class="link" href="https://www.atlassian.com/git/tutorials" target="_blank" rel="noopener"
+ &gt;https://www.atlassian.com/git/tutorials&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class="link" href="https://git-scm.com/book/" target="_blank" rel="noopener"
+ &gt;https://git-scm.com/book/&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class="link" href="https://docs.github.com/zh/get-started/start-your-journey/about-github-and-git" target="_blank" rel="noopener"
+ &gt;https://docs.github.com/zh/get-started/start-your-journey/about-github-and-git&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;</description></item></channel></rss>

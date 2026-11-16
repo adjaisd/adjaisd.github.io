@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Develop on Loong's Blog</title><link>https://adja.com.cn/en/categories/develop/</link><description>Recent content in Develop on Loong's Blog</description><generator>Hugo -- gohugo.io</generator><language>en</language><copyright>Loong</copyright><atom:link href="https://adja.com.cn/en/categories/develop/index.xml" rel="self" type="application/rss+xml"/><item><title>Development Environment Management Tools</title><link>https://adja.com.cn/en/p/dev-environment-management-tools/</link><pubDate>Wed, 19 Jun 2024 07:34:46 +0800</pubDate><guid>https://adja.com.cn/en/p/dev-environment-management-tools/</guid><description>&lt;img src="https://adja.com.cn/p/dev-environment-management-tools/cover.webp" alt="Featured image of post Development Environment Management Tools" /&gt;&lt;h1 id="development-environment-management-tools"&gt;Development Environment Management Tools
+&lt;/h1&gt;&lt;p&gt; When developing, multiple development environments are often used. You may have used tools like &lt;em&gt;miniconda&lt;/em&gt;, &lt;em&gt;nvm&lt;/em&gt;, and &lt;em&gt;gvm&lt;/em&gt;, which are used to manage versions of &lt;em&gt;python&lt;/em&gt;, &lt;em&gt;nodejs&lt;/em&gt;, and &lt;em&gt;go&lt;/em&gt; respectively. in addition, there are package management tools such as &lt;em&gt;maven&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt; If you use a new programming language or package management tool, it is troublesome to install the corresponding version management tool. Next, we will introduce three development environment management tools: &lt;em&gt;asdf&lt;/em&gt;, &lt;em&gt;mise&lt;/em&gt;, and &lt;em&gt;vfox&lt;/em&gt;.&lt;/p&gt;
+&lt;h2 id="comparison-of-asdf-mise-and-vfox"&gt;Comparison of &lt;em&gt;asdf&lt;/em&gt;, &lt;em&gt;mise&lt;/em&gt; and &lt;em&gt;vfox&lt;/em&gt;
+&lt;/h2&gt;&lt;p&gt; All three are tools for managing development environments, and all provide unified command line instructions. Their functions can be expanded by installing plugins.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;asdf&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt; Asdf was born earlier, and its plug-in ecosystem is more complete. It is mainly developed using shell scripts and can be well adapted to Linux and Mac. When it comes to support for Windows, someone raised a similar issue to the official, but no version supporting Win was provided later.&lt;/p&gt;
+&lt;p&gt; Of course, if you must use asdf on the Win platform, you can install and use it in wsl, but considering that the speed of wsl is far inferior to that of the native exe format program, and the shell itself is interpreted and executed, the speed is even slower. Therefore, except for the Win platform, other platforms recommend using asdf.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;mise&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt; The original name of this tool is &lt;em&gt;rtx&lt;/em&gt;. Since the original name is easily confused with the name of Nvidia&amp;rsquo;s graphics card, it was later renamed &lt;em&gt;mise&lt;/em&gt;. It is developed in the rust programming language.&lt;/p&gt;
+&lt;p&gt; Because the backend uses &lt;em&gt;asdf&lt;/em&gt;, it also inherits the shortcomings of &lt;em&gt;asdf&lt;/em&gt; and also has poor support for the Win platform.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;vfox&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt; &lt;em&gt;vfox&lt;/em&gt; is developed in the go programming language. Compared with the other two tools, it is finally compiled into an executable file. Therefore, it is much faster and has a smaller size, and it also provides native support for the Win platform.&lt;/p&gt;
+&lt;p&gt; The only drawback is that most users of this type of tool may use Linux and Mac systems, and &lt;em&gt;vfox&lt;/em&gt; has fewer contributors and its functions need to be improved, but it should exceed the first two in the future.&lt;/p&gt;
+&lt;h2 id="summary"&gt;Summary
+&lt;/h2&gt;&lt;p&gt; Comparing the characteristics of the three, I prefer to use &lt;em&gt;vfox&lt;/em&gt; to manage the development environment. Despite this, I still use language-specific version management tools such as &lt;em&gt;miniconda&lt;/em&gt; in daily life.&lt;/p&gt;
+&lt;p&gt; Even if you have learned a lot of programming languages, most people mainly use 3 or less programming languages in daily life. Solving the installation and use of three tools is more difficult than solving the bug of one tool. The former takes less time and does not require searching for solutions and then raising an issue.&lt;/p&gt;
+&lt;p&gt; In addition, I have recently found that the configuration of the environment is becoming simpler while tossing automation tools. &lt;em&gt;Dev Container&lt;/em&gt; is a blessing for software development. Perhaps in the future, developers of any platform will not have to pay attention to the installation and configuration of the environment. I look forward to the arrival of this day.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;font color=blue size=3&gt;2024-06-119 First update&lt;/font&gt;&lt;/p&gt;</description></item></channel></rss>
